@@ -1266,28 +1266,31 @@
                 }, 3000);
             }
 
-            // Upload image to Supabase Storage
-            async function uploadImage(file) {
-                if (!supabase) return null;
-                try {
-                    const fileExt = file.name.split('.').pop();
-                    const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-                    const filePath = `${fileName}`;
-                    const { data, error } = await supabase.storage
-                        .from('product-images')
-                        .upload(filePath, file);
-                    if (error) throw error;
-                    const {  urlData } = supabase.storage
-                        .from('product-images')
-                        .getPublicUrl(filePath);
-                    return urlData.publicUrl;
-                } catch (error) {
-                    console.error('Error uploading image:', error);
-                    showToast('Error al subir imagen: ' + error.message, 'error');
-                    return null;
-                }
-            }
-
+// Upload image to Supabase Storage
+async function uploadImage(file) {
+    if (!supabase) return null;
+    try {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+        const filePath = `${fileName}`;
+        const { data, error } = await supabase.storage
+            .from('product-images')
+            .upload(filePath, file);
+        if (error) throw error;
+        // Corrección aquí:
+        // getPublicUrl devuelve { data: { publicUrl: '...' }, error: null }
+        // No necesitas desestructurar 'urlData'
+        const publicUrlResponse = supabase.storage
+            .from('product-images')
+            .getPublicUrl(filePath);
+        // Accede directamente a .data.publicUrl
+        return publicUrlResponse.data.publicUrl;
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        showToast('Error al subir imagen: ' + error.message, 'error');
+        return null;
+    }
+}
             // Handle image upload
             document.getElementById('imageUpload').addEventListener('change', async (e) => {
                 const file = e.target.files[0];

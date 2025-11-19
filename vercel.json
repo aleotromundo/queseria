@@ -1,5 +1,26 @@
 {
-  "rewrites": [
+  "headers": [
+    {
+      "source": "/admin(.*)",
+      "headers": [
+        {
+          "key": "WWW-Authenticate",
+          "value": "Basic realm=\"Área Administrativa\""
+        },
+        {
+          "key": "Status",
+          "value": "401"
+        }
+      ],
+      "headersNot": [
+        {
+          "key": "Authorization",
+          "value": "Basic YWRtaW46YWRtaW4xMjM="
+        }
+      ]
+    }
+  ],
+  "redirects": [
     {
       "source": "/admin",
       "destination": "/dashboard.html"

@@ -54,7 +54,8 @@
             color: var(--text-dark);
             line-height: 1.6;
             transition: all 0.3s ease;
-            overflow: hidden; /* Oculta scroll inicialmente */
+            overflow-x: hidden; /* Evita scroll horizontal no deseado */
+            overflow-y: auto; /* Permite scroll vertical */
         }
         /* === LOGIN SCREEN === */
         .login-screen {
@@ -69,7 +70,7 @@
         .login-box {
             background: var(--bg-card);
             border-radius: 16px;
-            padding: 3rem;
+            padding: 2rem; /* Ajuste para móviles */
             box-shadow: var(--shadow-lg);
             border: 1px solid var(--border);
             max-width: 400px;
@@ -78,22 +79,22 @@
         }
 
         .login-logo {
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem; /* Ajuste */
         }
 
         .login-logo h1 {
             color: var(--primary);
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.5rem; /* Ajuste */
+            margin-bottom: 0.3rem;
         }
 
         .login-logo p {
             color: var(--text-medium);
-            font-size: 0.95rem;
+            font-size: 0.9rem; /* Ajuste */
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem; /* Ajuste */
             text-align: left;
         }
 
@@ -155,273 +156,282 @@
             margin-top: 1rem;
             color: var(--danger);
             display: none; /* Oculto por defecto */
+            font-size: 0.9rem; /* Ajuste */
         }
 
-        /* === DASHBOARD STYLES (ocultas inicialmente) === */
+        /* === DASHBOARD LAYOUT === */
+        .dashboard-container {
+            display: flex;
+            flex-direction: row; /* Horizontal en desktop */
+            min-height: 100vh;
+        }
+
         .sidebar {
-            position: fixed;
-            left: 0;
+            position: fixed; /* Fijo en móvil */
             top: 0;
-            height: 100vh;
+            left: -280px; /* Oculto inicialmente en móvil */
             width: 260px;
+            height: 100vh;
             background: var(--primary);
             color: white;
             padding: 2rem 0;
             z-index: 100;
             box-shadow: var(--shadow-lg);
             overflow-y: auto;
-            transition: all 0.3s ease;
-            display: none; /* Oculto por defecto */
+            transition: left 0.3s ease;
+            display: block; /* Siempre visible en desktop */
         }
+
+        .sidebar.active {
+            left: 0; /* Visible en móvil */
+        }
+
         body.dark-mode .sidebar {
             background: linear-gradient(180deg, #2c2520 0%, #1a1612 100%);
             border-right: 1px solid var(--border);
         }
+
         .logo-dashboard {
-            padding: 0 2rem 2rem;
+            padding: 0 1.5rem 1.5rem; /* Ajuste */
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem; /* Ajuste */
         }
+
         .logo-dashboard h1 {
-            font-size: 1.5rem;
+            font-size: 1.3rem; /* Ajuste */
             font-weight: 700;
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.2rem;
         }
+
         .logo-dashboard p {
-            font-size: 0.85rem;
+            font-size: 0.8rem; /* Ajuste */
             opacity: 0.8;
         }
+
         .nav-menu {
             list-style: none;
         }
+
         .nav-item {
-            margin: 0.5rem 0;
+            margin: 0.4rem 0; /* Ajuste */
         }
+
         .nav-link {
             display: flex;
             align-items: center;
             gap: 1rem;
-            padding: 1rem 2rem;
+            padding: 0.8rem 1.5rem; /* Ajuste */
             color: white;
             text-decoration: none;
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
         }
+
         .nav-link:hover,
         .nav-link.active {
             background: rgba(255,255,255,0.1);
             border-left-color: var(--accent);
         }
+
         .nav-icon {
-            font-size: 1.3rem;
+            font-size: 1.2rem; /* Ajuste */
         }
+
         .main-content {
-            margin-left: 260px;
-            padding: 2rem;
+            flex: 1; /* Ocupa el resto del espacio */
+            margin-left: 0; /* Se ajusta con JS en desktop */
+            padding: 1.5rem; /* Ajuste */
             min-height: 100vh;
-            display: none; /* Oculto por defecto */
+            display: none; /* Oculto hasta login */
         }
+
+        /* === DASHBOARD STYLES === */
         .dashboard-header {
-            background: var(--bg-card);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: var(--shadow-sm);
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .header-title {
-            font-size: 2rem;
-            color: var(--primary);
-        }
-        .header-actions {
-            display: flex;
-            gap: 1rem;
-        }
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-        .btn-success:hover {
-            background: #059669;
-        }
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-        .btn-danger:hover {
-            background: #dc2626;
-        }
-        .btn-secondary {
-            background: var(--border);
-            color: var(--text-dark);
-        }
-        .btn-secondary:hover {
-            background: #d1d5db;
-        }
-        .btn-sm {
-            padding: 0.5rem 1rem;
-            font-size: 0.875rem;
-        }
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .stat-card {
             background: var(--bg-card);
             padding: 1.5rem;
             border-radius: 12px;
             box-shadow: var(--shadow-sm);
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column; /* Vertical en móviles */
+            gap: 1rem; /* Espacio entre elementos */
+        }
+
+        .header-title {
+            font-size: 1.6rem; /* Ajuste */
+            color: var(--primary);
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: flex-end; /* Alinea botones a la derecha */
+        }
+
+        .btn {
+            padding: 0.6rem 1rem; /* Ajuste */
+            font-size: 0.9rem; /* Ajuste */
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive */
+            gap: 1rem; /* Ajuste */
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem; /* Ajuste */
         }
+
         .stat-icon {
-            width: 60px;
-            height: 60px;
+            width: 50px; /* Ajuste */
+            height: 50px; /* Ajuste */
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 1.8rem; /* Ajuste */
         }
-        .stat-icon.products {
-            background: rgba(139, 115, 85, 0.1);
-        }
-        .stat-icon.categories {
-            background: rgba(212, 165, 116, 0.1);
-        }
-        .stat-icon.orders {
-            background: rgba(16, 185, 129, 0.1);
-        }
+
         .stat-info h3 {
-            font-size: 2rem;
+            font-size: 1.6rem; /* Ajuste */
             color: var(--primary);
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.2rem;
         }
+
         .stat-info p {
             color: var(--text-light);
-            font-size: 0.9rem;
+            font-size: 0.85rem; /* Ajuste */
         }
+
         .products-container {
             background: var(--bg-card);
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 12px;
             box-shadow: var(--shadow-sm);
         }
+
         .table-header {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
+            flex-direction: column; /* Vertical en móviles */
+            gap: 1rem; /* Espacio entre título y búsqueda */
+            margin-bottom: 1.5rem;
         }
+
         .table-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem; /* Ajuste */
             color: var(--primary);
         }
+
         .search-bar {
             display: flex;
             gap: 1rem;
             align-items: center;
         }
+
         .search-input {
             padding: 0.75rem 1rem;
             border: 2px solid var(--border);
             border-radius: 8px;
             font-size: 0.95rem;
-            width: 300px;
+            width: 100%; /* Ancho completo en móviles */
             transition: all 0.3s ease;
         }
+
         .search-input:focus {
             outline: none;
             border-color: var(--primary);
         }
+
         .products-table {
             width: 100%;
             border-collapse: collapse;
+            display: block; /* Permite scroll horizontal */
+            overflow-x: auto; /* Añade scroll horizontal */
+            white-space: nowrap; /* Mantiene el contenido en una línea */
         }
+
         .products-table thead {
             background: var(--bg-main);
         }
+
         .products-table th {
-            padding: 1rem;
+            padding: 0.8rem 1rem; /* Ajuste */
             text-align: left;
             font-weight: 600;
             color: var(--text-medium);
-            font-size: 0.9rem;
+            font-size: 0.85rem; /* Ajuste */
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
+
         .products-table td {
-            padding: 1rem;
+            padding: 0.8rem 1rem; /* Ajuste */
             border-bottom: 1px solid var(--border);
         }
+
         .products-table tbody tr {
             transition: all 0.3s ease;
         }
+
         .products-table tbody tr:hover {
             background: var(--bg-main);
         }
+
         .product-image-cell {
-            width: 80px;
-            height: 80px;
+            width: 60px; /* Ajuste */
+            height: 60px; /* Ajuste */
             border-radius: 8px;
             object-fit: cover;
         }
+
         .product-name-cell {
             font-weight: 600;
             color: var(--primary);
         }
+
         .category-badge {
             display: inline-block;
-            padding: 0.4rem 0.8rem;
+            padding: 0.3rem 0.7rem; /* Ajuste */
             background: var(--secondary);
             color: white;
             border-radius: 20px;
-            font-size: 0.85rem;
+            font-size: 0.8rem; /* Ajuste */
             font-weight: 500;
         }
+
         .price-cell {
-            font-size: 1.1rem;
+            font-size: 1rem; /* Ajuste */
             font-weight: 600;
             color: var(--accent);
         }
+
         .actions-cell {
             display: flex;
             gap: 0.5rem;
         }
+
         .icon-btn {
             background: none;
             border: none;
             cursor: pointer;
-            font-size: 1.3rem;
-            padding: 0.4rem;
+            font-size: 1.1rem; /* Ajuste */
+            padding: 0.3rem; /* Ajuste */
             transition: all 0.3s ease;
             border-radius: 6px;
         }
+
         .icon-btn:hover {
             transform: scale(1.1);
             background: var(--bg-main);
         }
+
         .modal-overlay {
             display: none;
             position: fixed;
@@ -433,12 +443,14 @@
             z-index: 200;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: 1rem; /* Ajuste */
             overflow-y: auto;
         }
+
         .modal-overlay.active {
             display: flex;
         }
+
         .modal {
             background: var(--bg-card);
             border-radius: 16px;
@@ -448,7 +460,9 @@
             overflow-y: auto;
             box-shadow: var(--shadow-lg);
             animation: modalSlideIn 0.3s ease;
+            margin: 1rem; /* Ajuste */
         }
+
         @keyframes modalSlideIn {
             from {
                 opacity: 0;
@@ -459,39 +473,78 @@
                 transform: translateY(0);
             }
         }
+
         .modal-header {
-            padding: 2rem;
+            padding: 1.5rem; /* Ajuste */
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         .modal-title {
-            font-size: 1.8rem;
+            font-size: 1.5rem; /* Ajuste */
             color: var(--primary);
         }
+
         .close-modal {
             background: none;
             border: none;
-            font-size: 2rem;
+            font-size: 1.8rem; /* Ajuste */
             cursor: pointer;
             color: var(--text-light);
             transition: all 0.3s ease;
         }
+
         .close-modal:hover {
             color: var(--danger);
             transform: rotate(90deg);
         }
+
         .modal-body {
-            padding: 2rem;
+            padding: 1.5rem; /* Ajuste */
         }
+
+        .form-group {
+            margin-bottom: 1.2rem; /* Ajuste */
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.1);
+        }
+
         .form-textarea {
             resize: vertical;
             min-height: 100px;
         }
+
         .image-upload-container {
             margin-top: 1rem;
         }
+
         .image-upload-btn {
             width: 100%;
             padding: 1rem;
@@ -506,16 +559,19 @@
             align-items: center;
             gap: 0.5rem;
         }
+
         .image-upload-btn:hover {
             border-color: var(--primary);
             background: rgba(139, 115, 85, 0.05);
         }
+
         .image-upload-btn input[type="file"] {
             display: none;
         }
+
         .image-preview {
             width: 100%;
-            height: 200px;
+            height: 150px; /* Ajuste */
             border: 2px dashed var(--border);
             border-radius: 8px;
             display: flex;
@@ -526,49 +582,57 @@
             background: var(--bg-main);
             position: relative;
         }
+
         .image-preview img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
+
         .image-preview-placeholder {
             text-align: center;
             color: var(--text-light);
         }
+
         .remove-image-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 8px; /* Ajuste */
+            right: 8px; /* Ajuste */
             background: var(--danger);
             color: white;
             border: none;
-            width: 30px;
-            height: 30px;
+            width: 24px; /* Ajuste */
+            height: 24px; /* Ajuste */
             border-radius: 50%;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 0.9rem; /* Ajuste */
             display: none;
         }
+
         .image-preview:hover .remove-image-btn {
             display: block;
         }
+
         .modal-footer {
-            padding: 1.5rem 2rem;
+            padding: 1rem 1.5rem; /* Ajuste */
             border-top: 1px solid var(--border);
             display: flex;
             justify-content: flex-end;
             gap: 1rem;
         }
+
         .empty-state {
             text-align: center;
-            padding: 4rem 2rem;
+            padding: 3rem 1.5rem; /* Ajuste */
             color: var(--text-light);
         }
+
         .empty-icon {
-            font-size: 4rem;
+            font-size: 3rem; /* Ajuste */
             opacity: 0.3;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
         }
+
         .loading-spinner {
             display: inline-block;
             width: 20px;
@@ -578,9 +642,11 @@
             border-top-color: white;
             animation: spin 1s linear infinite;
         }
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
         .toast {
             position: fixed;
             top: 2rem;
@@ -593,13 +659,17 @@
             z-index: 300;
             animation: slideInRight 0.3s ease;
             display: none;
+            font-size: 0.9rem; /* Ajuste */
         }
+
         .toast.show {
             display: block;
         }
+
         .toast.error {
             background: var(--danger);
         }
+
         @keyframes slideInRight {
             from {
                 transform: translateX(400px);
@@ -610,13 +680,29 @@
                 opacity: 1;
             }
         }
+
+        /* Botones flotantes */
         .mobile-menu-btn {
-            display: none;
-        }
-        .theme-toggle {
+            display: none; /* Visible solo en móvil */
             position: fixed;
             bottom: 2rem;
             left: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            z-index: 99;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
             width: 50px;
             height: 50px;
             border-radius: 50%;
@@ -629,96 +715,181 @@
             justify-content: center;
             box-shadow: var(--shadow-lg);
             z-index: 101;
-            transition: all 0.3s ease;
-            display: none; /* Oculto por defecto */
+            display: none; /* Visible solo tras login */
         }
+
         .theme-toggle:hover {
             transform: scale(1.1) rotate(180deg);
         }
-        @media (max-width: 1024px) {
+
+        /* Media Queries para Responsividad */
+        @media (min-width: 1024px) {
             .sidebar {
-                transform: translateX(-100%);
-                transition: transform 0.3s ease;
+                position: sticky; /* Fijo en desktop */
+                left: 0;
+                top: 0;
             }
-            .sidebar.active {
-                transform: translateX(0);
+            .main-content {
+                margin-left: 260px; /* Ajusta espacio para el sidebar fijo */
+            }
+            .mobile-menu-btn {
+                display: none; /* Oculta el botón de menú en desktop */
+            }
+        }
+
+        @media (max-width: 1023px) {
+            .dashboard-container {
+                flex-direction: column; /* Vertical en móviles */
+            }
+            .sidebar {
+                position: fixed; /* Fijo en móvil */
+                height: 100vh;
+                z-index: 100;
             }
             .main-content {
                 margin-left: 0;
+                padding: 1rem;
+                margin-top: 0; /* Ajuste */
             }
             .mobile-menu-btn {
-                display: block !important;
-                position: fixed;
-                bottom: 2rem;
-                right: 2rem;
-                width: 60px;
-                height: 60px;
-                border-radius: 50%;
-                background: var(--primary);
-                color: white;
-                border: none;
-                font-size: 1.5rem;
-                cursor: pointer;
-                box-shadow: var(--shadow-lg);
-                z-index: 99;
-                display: none; /* Oculto por defecto */
+                display: block; /* Muestra el botón de menú en móvil */
             }
-        }
-        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr; /* Una columna en móviles */
+            }
             .search-bar {
-                flex-direction: column;
+                flex-direction: column; /* Vertical en móviles */
                 align-items: stretch;
             }
             .search-input {
                 width: 100%;
             }
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+            .header-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+            .btn {
+                padding: 0.6rem 0.8rem; /* Ajuste */
+                font-size: 0.85rem; /* Ajuste */
+            }
+            .modal {
+                max-height: 95vh; /* Ajuste */
+            }
+            .modal-header {
+                padding: 1.2rem; /* Ajuste */
+            }
+            .modal-body {
+                padding: 1.2rem; /* Ajuste */
+            }
+            .modal-footer {
+                padding: 0.8rem 1.2rem; /* Ajuste */
+            }
+            .modal-title {
+                font-size: 1.4rem; /* Ajuste */
+            }
+            .form-input,
+            .form-select,
+            .form-textarea {
+                font-size: 1rem; /* Ajuste */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .login-box {
+                padding: 1.5rem; /* Ajuste */
+            }
+            .login-logo h1 {
+                font-size: 1.4rem; /* Ajuste */
+            }
+            .stats-grid {
+                grid-template-columns: 1fr; /* Asegura una columna */
+            }
+            .stat-card {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .stat-info {
+                text-align: right;
+            }
             .products-table {
-                font-size: 0.85rem;
+                font-size: 0.8rem; /* Reduce tamaño de texto */
             }
             .products-table th,
             .products-table td {
-                padding: 0.75rem 0.5rem;
+                padding: 0.6rem 0.5rem; /* Ajuste */
             }
-            .stats-grid {
-                grid-template-columns: 1fr;
+            .product-image-cell {
+                width: 50px; /* Ajuste */
+                height: 50px; /* Ajuste */
             }
-            .dashboard-header {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: flex-start;
+            .icon-btn {
+                font-size: 1rem; /* Ajuste */
+                padding: 0.2rem; /* Ajuste */
+            }
+            .modal {
+                margin: 0.5rem; /* Ajuste */
+            }
+            .modal-header {
+                padding: 1rem; /* Ajuste */
+            }
+            .modal-body {
+                padding: 1rem; /* Ajuste */
+            }
+            .modal-footer {
+                padding: 0.7rem 1rem; /* Ajuste */
+                flex-direction: column; /* Botones verticales */
+                align-items: stretch;
+            }
+            .btn {
+                width: 100%;
+                justify-content: center;
             }
         }
-        .config-section {
-            background: var(--bg-card);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: var(--shadow-sm);
-            margin-bottom: 2rem;
+
+        @media (max-width: 480px) {
+            .login-logo h1 {
+                font-size: 1.3rem; /* Ajuste */
+            }
+            .login-logo p {
+                font-size: 0.85rem; /* Ajuste */
+            }
+            .header-title {
+                font-size: 1.4rem; /* Ajuste */
+            }
+            .table-title {
+                font-size: 1.2rem; /* Ajuste */
+            }
+            .stat-info h3 {
+                font-size: 1.4rem; /* Ajuste */
+            }
+            .stat-info p {
+                font-size: 0.8rem; /* Ajuste */
+            }
+            .form-input,
+            .form-select,
+            .form-textarea {
+                padding: 0.6rem 0.8rem; /* Ajuste */
+            }
+            .btn {
+                padding: 0.5rem 0.8rem; /* Ajuste */
+            }
+            .modal-title {
+                font-size: 1.3rem; /* Ajuste */
+            }
+            .close-modal {
+                font-size: 1.5rem; /* Ajuste */
+            }
         }
-        .config-title {
-            font-size: 1.3rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        .config-info {
-            background: var(--bg-main);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-        }
-        .status-indicator {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 0.5rem;
-        }
-        .status-indicator.connected {
-            background: var(--success);
-        }
-        .status-indicator.disconnected {
-            background: var(--danger);
+
+        /* Ocultar elementos antes del login */
+        .sidebar, .main-content, .theme-toggle, .mobile-menu-btn {
+            display: none;
         }
     </style>
 </head>
@@ -745,101 +916,102 @@
         </div>
     </div>
 
-    <!-- Dashboard (oculto inicialmente) -->
-    <div class="toast" id="toast"></div>
-    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
-    <button class="theme-toggle" id="themeToggle">☀️</button>
-    <aside class="sidebar" id="sidebar">
-        <div class="logo-dashboard">
-            <h1>🧀 Quesería & Raíces</h1>
-            <p>Panel de Administración</p>
-        </div>
-        <nav>
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="#" class="nav-link active" data-section="products">
-                        <span class="nav-icon">📦</span>
-                        <span>Productos</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="../index.html" class="nav-link"> <!-- Ajusta la ruta si es necesario -->
-                        <span class="nav-icon">🌐</span>
-                        <span>Ver Sitio Web</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </aside>
-    <main class="main-content" id="mainContent">
-        <!-- Products Section -->
-        <div id="productsSection">
-            <div class="dashboard-header">
-                <h1 class="header-title">Gestión de Productos</h1>
-                <div class="header-actions">
-                    <button class="btn btn-success" id="addProductBtn">
-                        ➕ Agregar Producto
-                    </button>
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="logo-dashboard">
+                <h1>🧀 Quesería & Raíces</h1>
+                <p>Panel de Administración</p>
+            </div>
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-section="products">
+                            <span class="nav-icon">📦</span>
+                            <span>Productos</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../index.html" class="nav-link"> <!-- Ajusta la ruta si es necesario -->
+                            <span class="nav-icon">🌐</span>
+                            <span>Ver Sitio Web</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content" id="mainContent">
+            <!-- Products Section -->
+            <div id="productsSection">
+                <div class="dashboard-header">
+                    <h1 class="header-title">Gestión de Productos</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-success" id="addProductBtn">
+                            ➕ Agregar Producto
+                        </button>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon products">📦</div>
+                        <div class="stat-info">
+                            <h3 id="totalProducts">0</h3>
+                            <p>Total de Productos</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon categories">🏷️</div>
+                        <div class="stat-info">
+                            <h3 id="totalCategories">0</h3>
+                            <p>Categorías</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orders">🛒</div>
+                        <div class="stat-info">
+                            <h3 id="totalOrders">0</h3>
+                            <p>Pedidos este mes</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="products-container">
+                    <div class="table-header">
+                        <h2 class="table-title">Lista de Productos</h2>
+                        <div class="search-bar">
+                            <input type="text" class="search-input" id="searchInput" placeholder="🔍 Buscar productos...">
+                            <select class="form-select" id="categoryFilter" style="min-width: 150px;">
+                                <option value="todos">Todas las categorías</option>
+                            </select>
+                        </div>
+                    </div>
+                    <table class="products-table" id="productsTable">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th>Precio</th>
+                                <th>Badge</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <tr>
+                                <td colspan="6">
+                                    <div class="empty-state">
+                                        <div class="empty-icon">⏳</div>
+                                        <p>Cargando productos...</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon products">📦</div>
-                    <div class="stat-info">
-                        <h3 id="totalProducts">0</h3>
-                        <p>Total de Productos</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon categories">🏷️</div>
-                    <div class="stat-info">
-                        <h3 id="totalCategories">0</h3>
-                        <p>Categorías</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon orders">🛒</div>
-                    <div class="stat-info">
-                        <h3 id="totalOrders">0</h3>
-                        <p>Pedidos este mes</p>
-                    </div>
-                </div>
-            </div>
-            <div class="products-container">
-                <div class="table-header">
-                    <h2 class="table-title">Lista de Productos</h2>
-                    <div class="search-bar">
-                        <input type="text" class="search-input" id="searchInput" placeholder="🔍 Buscar productos...">
-                        <select class="form-select" id="categoryFilter" style="width: 200px;">
-                            <option value="todos">Todas las categorías</option>
-                        </select>
-                    </div>
-                </div>
-                <table class="products-table" id="productsTable">
-                    <thead>
-                        <tr>
-                            <th>Imagen</th>
-                            <th>Nombre</th>
-                            <th>Categoría</th>
-                            <th>Precio</th>
-                            <th>Badge</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="productsTableBody">
-                        <tr>
-                            <td colspan="6">
-                                <div class="empty-state">
-                                    <div class="empty-icon">⏳</div>
-                                    <p>Cargando productos...</p>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </main>
+        </main>
+    </div>
+
     <div class="modal-overlay" id="productModal">
         <div class="modal">
             <div class="modal-header">
@@ -900,6 +1072,11 @@
             </div>
         </div>
     </div>
+
+    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+    <button class="theme-toggle" id="themeToggle">☀️</button>
+    <div class="toast" id="toast"></div>
+
     <script>
         // Credenciales de acceso
         const CREDENTIALS = {
@@ -938,11 +1115,10 @@
         // Mostrar el dashboard y ocultar el login
         function showDashboard() {
             loginScreen.style.display = 'none';
-            mainContent.style.display = 'block';
             sidebar.style.display = 'block';
+            mainContent.style.display = 'block';
             themeToggle.style.display = 'block';
             mobileMenuBtn.style.display = 'block';
-            document.body.style.overflow = 'auto'; // Habilita scroll si es necesario
             loadDashboardContent(); // Iniciar la carga del contenido del dashboard
         }
 
@@ -1349,7 +1525,7 @@
             document.addEventListener('click', (e) => {
                 const sidebar = document.getElementById('sidebar');
                 const menuBtn = document.getElementById('mobileMenuBtn');
-                if (window.innerWidth <= 1024) {
+                if (window.innerWidth <= 1023) { // Cambiado a 1023
                     if (!sidebar.contains(e.target) && !menuBtn.contains(e.target) && sidebar.classList.contains('active')) {
                         sidebar.classList.remove('active');
                     }

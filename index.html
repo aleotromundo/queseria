@@ -1237,8 +1237,13 @@ body.dark-mode .share-btn svg {
             <p class="section-subtitle">Una selección cuidadosa de productos artesanales elaborados con pasión y dedicación para llevar lo mejor de la naturaleza a tu mesa</p>
         </div>
 
-        <!-- Barra de búsqueda de texto -->
-        <div style="max-width: 1200px; margin: 0 auto 2rem; padding: 0 1rem;">
+        <!-- Filtros de Categoría -->
+        <div class="filters">
+            <button class="filter-btn active" data-category="todos">Todos</button>
+        </div>
+
+        <!-- Barra de búsqueda de texto (movida debajo de los filtros) -->
+        <div style="max-width: 1200px; margin: 2rem auto; padding: 0 1rem;">
             <input type="text" id="searchInput" placeholder="Buscar productos..." style="
                 width: 100%;
                 padding: 1rem 1.5rem;
@@ -1251,12 +1256,6 @@ body.dark-mode .share-btn svg {
                 transition: all 0.3s ease;
             " oninput="filterProducts()">
         </div>
-
-        <!-- Filtros de Categoría -->
-        <div class="filters">
-            <button class="filter-btn active" data-category="todos">Todos</button>
-        </div>
-
         <div class="products-grid" id="productsGrid">
             <div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-light);">
                 <div style="font-size: 4rem; margin-bottom: 1rem;">⏳</div>
@@ -1333,7 +1332,7 @@ body.dark-mode .share-btn svg {
     </div>
     <div style="margin-top: 3rem; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; font-size: 1.2rem; color: var(--text-medium);">
         <p>📧 <a href="mailto:info@queseriayalmacenv&c.com" style="color: var(--accent-primary); text-decoration: none;">queseriav&c@gmail.com</a></p>
-        <p>📱 <a href="https://wa.me/+59899015691" target="_blank" style="color: var(--accent-primary); text-decoration: none;">099015691</a></p>
+        <p>📱 <a href="https://wa.me/+598 99 015 691" target="_blank" style="color: var(--accent-primary); text-decoration: none;">099015691</a></p>
         <p>📍 <span style="color: var(--text-dark);">De lunes a viernes tomamos pedidos y hacemos envíos a domicilio los fines de semana nos encontras en ferias, Costa de Oro, Uruguay</span></p>
         <p></p>
     </div>

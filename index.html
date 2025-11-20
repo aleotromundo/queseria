@@ -1601,7 +1601,7 @@ function renderProducts(category = 'todos') {
                 <h3 class="product-name">${product.name}</h3>
                 <p class="product-description">${product.description}</p>
                 <div class="product-footer">
-                    <div class="product-price">${product.price}</div>
+                    <div class="product-price">$U ${product.price}</div> <!-- Aquí se agrega $U -->
                     <div class="product-actions">
                         <!-- Botón de compartir por WhatsApp con el SVG oficial -->
                         <button class="share-btn" onclick="shareProduct(${product.id}, 'whatsapp')" title="Compartir en WhatsApp">

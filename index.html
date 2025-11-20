@@ -1251,7 +1251,7 @@
     </div>
     <div style="display: flex; flex-direction: column; gap: 2.5rem; align-items: center; font-size: 1.1rem; color: var(--text-medium); line-height: 1.8;">
         <p>
-            En <strong>Quesería & Raíces</strong>, cada producto nace del amor por lo hecho a mano y del respeto por los ciclos naturales. 
+            En <strong>Quesería y Almacén V&C</strong>, cada producto nace del amor por lo hecho a mano y del respeto por los ciclos naturales. 
             Desde 1995, en pleno corazón del campo uruguayo, mantenemos vivas las recetas tradicionales transmitidas de generación en generación.
         </p>
         <p>
@@ -1733,7 +1733,7 @@ function shareProduct(productId, platform) {
             const address = document.getElementById('addressInput').value;
             const payment = document.querySelector('input[name="payment"]:checked').value;
 
-            let message = '🛒 *Nuevo Pedido - Quesería & Raíces*\n\n';
+            let message = '🛒 *Nuevo Pedido - Quesería y Almacén V&C*\n\n';
             
             cart.forEach(item => {
                 message += `• ${item.quantity}x ${item.name} - ${item.price * item.quantity}\n`;
@@ -1778,7 +1778,7 @@ function shareProduct(productId, platform) {
 
         // Initialize
         window.addEventListener('DOMContentLoaded', async () => {
-            console.log('🧀 Quesería & Raíces - Inicializando...');
+            console.log('🧀 Quesería y Almacén V&C - Inicializando...');
             
             // Inicializar Supabase
             const supabaseConnected = initSupabase();
@@ -1862,7 +1862,7 @@ html {
     font-size: 0.95rem;
     z-index: 1;
 ">
-    <p>© 2025 Quesería & Raíces. Todos los derechos reservados.</p>
+    <p>© 2025 Quesería y Almacén V&C. Todos los derechos reservados.</p>
 </footer>
 </body>
 </html>

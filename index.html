@@ -21,7 +21,7 @@
             --accent-gold: #C9A962;
             --text-dark: #2c2416;
             --text-medium: #5a4d3f;
-            --text-light: #8a7d6f;
+            --text-light: ##ffffff;
             --white: #ffffff;
             --shadow-sm: 0 2px 8px rgba(139, 115, 85, 0.08);
             --shadow-md: 0 4px 16px rgba(139, 115, 85, 0.12);
@@ -36,8 +36,8 @@
             --accent-gold: #E6C177;
             --text-dark: #f5f1eb;
             --text-medium: #d4cfc5;
-            --text-light: #a39a8d;
-            --white: #2c2520;
+            --text-light: #000000;
+            --white: #000000;
             --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
             --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
             --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
@@ -1099,6 +1099,10 @@
                 font-size: 1rem;
             }
         }
+/* Asegura que el icono de compartir en WhatsApp sea blanco en modo oscuro */
+body.dark-mode .share-btn svg {
+    fill: white !important; /* Fuerza el color blanco */
+}
     </style>
 </head>
 <body class="dark-mode">
@@ -1243,32 +1247,64 @@
             </div>
         </div>
     </section>
-<!-- Sección Nosotros -->
-<section id="nosotros" style="padding: 6rem 5%; text-align: center; background: var(--bg-primary); max-width: 1200px; margin: 0 auto;">
-    <div class="section-header">
-        <h2 class="section-title">Sobre Nosotros</h2>
-        <p class="section-subtitle">Raíces profundas, sabores auténticos</p>
-    </div>
-    <div style="display: flex; flex-direction: column; gap: 2.5rem; align-items: center; font-size: 1.1rem; color: var(--text-medium); line-height: 1.8;">
-        <p>
-            En <strong>Quesería y Almacén V&C</strong>, cada producto nace del amor por lo hecho a mano y del respeto por los ciclos naturales. 
-            Desde 1995, en pleno corazón del campo uruguayo, mantenemos vivas las recetas tradicionales transmitidas de generación en generación.
-        </p>
-        <p>
-            Nuestros quesos se elaboran con leche de vacas alimentadas con pastura libre, sin hormonas ni antibióticos. 
-            Las semillas y granos que ofrecemos son orgánicos, cosechados en pequeñas fincas familiares comprometidas con la agricultura sostenible.
-        </p>
-        <p>
-            No buscamos ser grandes, sino auténticos. Cada lote es cuidado con paciencia: maduraciones lentas, procesos naturales y control manual, 
-            porque creemos que lo bueno lleva tiempo.
-        </p>
-        <p style="font-style: italic; color: var(--accent-primary);">
-            “Lo natural no se apresura, solo florece cuando está listo.”
-        </p>
-        <div style="margin-top: 2rem; font-size: 1rem; color: var(--text-light);">
-            <p>📍 Hecho con raíces en el suelo uruguayo<br>
-            🧀 Desde 1995, produciendo con pasión<br>
-            🌱 Comprometidos con la tierra y tus hábitos saludables</p>
+<!-- Sección Nosotros con video de fondo -->
+<section id="nosotros" style="padding: 6rem 5%; max-width: 1200px; margin: 0 auto; position: relative; overflow: hidden; background: var(--bg-primary);">
+    <!-- Video de fondo -->
+    <video autoplay muted loop playsinline preload="auto" style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 1;
+    ">
+        <source src="nosotros.mp4" type="video/mp4">
+        <!-- Opcional: Texto alternativo si el video no se carga -->
+        Tu navegador no soporta el video.
+    </video>
+
+    <!-- Overlay semi-transparente para mejorar la lectura (opcional, puedes ajustar la opacidad) -->
+    <div style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.3); /* Overlay negro semi-transparente */
+        z-index: 2;
+    "></div>
+
+    <!-- Contenido de la sección con efecto Glassmorphism -->
+    <div style="
+        position: relative;
+        z-index: 3; /* Siempre debe estar por encima del video y del overlay */
+        padding: 3rem; /* Espaciado interno */
+        background: rgba(255, 255, 255, 0.15); /* Fondo blanco muy transparente */
+        backdrop-filter: blur(10px); /* Efecto de desenfoque */
+        -webkit-backdrop-filter: blur(10px); /* Compatibilidad con Safari */
+        border-radius: 20px; /* Bordes redondeados */
+        border: 1px solid rgba(255, 255, 255, 0.18); /* Borde sutil para el efecto glass */
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1); /* Sombra sutil */
+        color: var(--white); /* Asegura que el texto sea blanco */
+        max-width: 900px; /* Limita el ancho del contenido */
+        margin: 0 auto; /* Centra el contenedor de texto */
+    ">
+        <div class="section-header">
+            <h2 class="section-title" style="color: inherit;">Sobre Nosotros</h2> <!-- Título hereda el color blanco -->
+            <p class="section-subtitle" style="color: inherit; margin-bottom: 1.5rem;"> <!-- Párrafos heredan el color blanco -->
+                En <strong>Quesería y Almacén V&C</strong>, cada producto nace del amor por lo hecho a mano y del respeto por los ciclos naturales.
+                Desde 1995, en pleno corazón del campo uruguayo, mantenemos vivas las recetas tradicionales transmitidas de generación en generación.
+            </p>
+            <p style="color: inherit; margin-bottom: 1.5rem;"> <!-- Párrafos heredan el color blanco -->
+                Nuestros quesos se elaboran con leche de vacas alimentadas con pastura libre, sin hormonas ni antibióticos.
+                Las semillas y granos que ofrecemos son orgánicos, cosechados en pequeñas fincas familiares comprometidas con la agricultura sostenible.
+            </p>
+            <div style="margin-top: 2rem; font-size: 1rem; color: var(--text-light);"> <!-- Texto inferior con color más claro -->
+                <p>📍 Hecho con raíces en el suelo uruguayo<br>
+                🧀 Desde 1995, produciendo con pasión<br>
+                🌱 Comprometidos con la tierra y tus hábitos saludables</p>
+            </div>
         </div>
     </div>
 </section>

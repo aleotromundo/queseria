@@ -2063,36 +2063,25 @@ html {
     /* o */
     image-rendering: pixelated; /* Solo si quieres un efecto "pixelado" intencional */
 }
-<style>
-@media (max-width: 1023px) {
+@media (max-width: 768px) {
     #productos .section-header::before {
         background-image: url('https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/IMG-20251120-WA0066.jpg');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        opacity: 0.7;
-        content: '';
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
+        opacity: 0.7; /* Ajusta opacidad si es necesario */
     }
 
+    /* Asegurar que el contenedor tenga altura visible en móviles */
     #productos .section-header {
         min-height: 220px;
         padding: 2.5rem 5%;
-        width: calc(100vw - 2rem);
+        width: 100vw;
         margin-left: 0;
         transform: none;
         border-radius: 0;
-        position: relative;
-        overflow: hidden;
     }
 }
-</style>
 </style>
 
 <a href="https://wa.me/+59899015691" target="_blank" class="whatsapp-float" title="Escribir por WhatsApp">

@@ -2063,6 +2063,16 @@ html {
     /* o */
     image-rendering: pixelated; /* Solo si quieres un efecto "pixelado" intencional */
 }
+@media (max-width: 768px) {
+    #productos .section-header {
+        min-height: 220px; /* Asegura espacio suficiente en móviles */
+        padding: 2.5rem 5%; /* Ajusta el padding para móviles */
+        width: 100vw;
+        margin-left: 0;
+        transform: none;
+        border-radius: 0;
+    }
+}
 </style>
 
 <a href="https://wa.me/+59899015691" target="_blank" class="whatsapp-float" title="Escribir por WhatsApp">

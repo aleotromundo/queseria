@@ -1110,17 +1110,6 @@ body.dark-mode .share-btn svg {
     <!-- Particles Canvas -->
     <canvas id="particles-canvas"></canvas>
 
-<!-- Audio de fondo -->
-<audio id="backgroundMusic" loop>
-    <source src="jingle.mp3" type="audio/mpeg">
-    Tu navegador no soporta el elemento de audio.
-</audio>
-
-<!-- Control de música flotante -->
-<button id="musicToggle" class="music-toggle" title="Reproducir/Pausar música">
-    🔇
-</button>
-
     <!-- Header -->
     <header id="header">
         <div class="header-container">
@@ -1904,54 +1893,8 @@ function shareProduct(productId, platform) {
             updateCart();
             
             console.log('✅ Aplicación inicializada');
-// Inicializar música
-initBackgroundMusic();
         });
-// Control de música de fondo
-function initBackgroundMusic() {
-    const audio = document.getElementById('backgroundMusic');
-    const toggleBtn = document.getElementById('musicToggle');
-    let isPlaying = false;
 
-    // Intentar reproducir automáticamente (puede ser bloqueado por el navegador)
-    audio.volume = 0.3; // Volumen al 30%
-    
-    // Función para alternar reproducción
-    toggleBtn.addEventListener('click', () => {
-        if (isPlaying) {
-            audio.pause();
-            toggleBtn.textContent = '🔇';
-            toggleBtn.classList.remove('playing');
-        } else {
-            audio.play().catch(err => {
-                console.log('No se pudo reproducir la música:', err);
-            });
-            toggleBtn.textContent = '🔊';
-            toggleBtn.classList.add('playing');
-        }
-        isPlaying = !isPlaying;
-    });
-
-    // Intentar reproducir automáticamente cuando el usuario interactúa por primera vez
-    const startMusic = () => {
-        if (!isPlaying) {
-            audio.play().then(() => {
-                isPlaying = true;
-                toggleBtn.textContent = '🔊';
-                toggleBtn.classList.add('playing');
-            }).catch(err => {
-                console.log('Reproducción automática bloqueada. Usa el botón para reproducir.');
-            });
-        }
-        // Remover listeners después del primer intento
-        document.removeEventListener('click', startMusic);
-        document.removeEventListener('scroll', startMusic);
-    };
-
-    // Intentar iniciar con la primera interacción del usuario
-    document.addEventListener('click', startMusic, { once: true });
-    document.addEventListener('scroll', startMusic, { once: true });
-}
         // Pause carousel on hover
         document.querySelector('.carousel-container').addEventListener('mouseenter', () => {
             clearInterval(autoplayInterval);
@@ -1985,44 +1928,6 @@ function initBackgroundMusic() {
         transform: scale(1.1);
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     }
-/* Botón de control de música */
-.music-toggle {
-    position: fixed;
-    bottom: 95px;
-    right: 25px;
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-    border-radius: 50%;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 28px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.music-toggle:hover {
-    transform: scale(1.1);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-}
-
-.music-toggle.playing {
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% {
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    }
-    50% {
-        box-shadow: 0 4px 24px rgba(201, 169, 98, 0.6);
-    }
-}
 /* Desplazamiento suave para los enlaces de anclaje */
 html {
     scroll-behavior: smooth;

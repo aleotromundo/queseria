@@ -17,12 +17,12 @@
         :root {
             --bg-primary: #ffaf107a;
             --bg-secondary: #f1d990c7;
-            --accent-primary: #8B7355;
+            --accent-primary: #4a3d2d;
             --accent-secondary: #D4A574;
             --accent-gold: #C9A962;
-            --text-dark: #2c2416;
-            --text-medium: #5a4d3f;
-            --text-light: ##ffffff;
+            --text-dark: #030202;
+            --text-medium: #080807;
+            --text-light: #ffffff;
             --white: #ffffff;
             --shadow-sm: 0 2px 8px rgba(139, 115, 85, 0.08);
             --shadow-md: 0 4px 16px rgba(139, 115, 85, 0.12);
@@ -36,7 +36,7 @@
             --accent-secondary: #8B7355;
             --accent-gold: #E6C177;
             --text-dark: #f5f1eb;
-            --text-medium: #d4cfc5;
+            --text-medium: #faf7f2;
             --text-light: #000000;
             --white: #000000;
             --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -1234,7 +1234,13 @@ body.dark-mode .share-btn svg {
     <section class="products-section" id="productos">
         <div class="section-header">
             <h2 class="section-title">Nuestros Productos</h2>
-            <p class="section-subtitle">Una selección cuidadosa de productos artesanales elaborados con pasión y dedicación para llevar lo mejor de la naturaleza a tu mesa</p>
+            <div class="section-subtitle">
+    <div style="margin-bottom: 0.8rem;">
+        Una selección cuidadosa de productos artesanales elaborados con pasión y dedicación
+    </div>
+        para llevar lo mejor de la naturaleza a tu mesa
+    </div>
+</div>
         </div>
 
         <!-- Filtros de Categoría -->
@@ -1925,6 +1931,42 @@ function shareProduct(productId, platform) {
 /* Desplazamiento suave para los enlaces de anclaje */
 html {
     scroll-behavior: smooth;
+}
+/* Fondo semitransparente para el encabezado de productos */
+#productos .section-header {
+    position: relative;
+    overflow: hidden;
+    padding: 6rem 5%; /* Espacio lateral proporcional */
+    width: 88.8vw; /* Ocupa todo el ancho de la ventana */
+    max-width: none; /* Elimina límites de ancho */
+    margin-left: 50%; /* Centra el contenedor visualmente */
+    transform: translateX(-50%); /* Ajusta para que esté centrado */
+    border-radius: 15px;
+    text-align: center; /* Asegura que el texto dentro esté centrado */
+}
+
+#productos .section-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/menu%20productos.png');
+    background-size: cover;        /* ✅ Cubre todo el contenedor sin vacíos */
+    background-position: center;   /* Centra la imagen */
+    background-repeat: no-repeat;  /* Evita repeticiones indeseadas */
+    opacity: 0.6;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: 15px;
+    transition: transform 0.6s ease; /* Suaviza zoom si agregas efecto */
+}
+#productos .section-header::before {
+    /* ... las otras propiedades ... */
+    image-rendering: crisp-edges; /* Mejora la nitidez */
+    /* o */
+    image-rendering: pixelated; /* Solo si quieres un efecto "pixelado" intencional */
 }
 </style>
 

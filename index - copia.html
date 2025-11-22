@@ -1903,6 +1903,33 @@ function shareProduct(productId, platform) {
         document.querySelector('.carousel-container').addEventListener('mouseleave', () => {
             autoplayInterval = setInterval(nextSlide, 6000);
         });
+// Inicializar música
+const bgMusic = document.getElementById('bgMusic');
+const toggleMuteBtn = document.getElementById('toggleMute');
+const volumeControl = document.getElementById('volumeControl');
+const volumeValue = document.getElementById('volumeValue');
+
+// Intentar reproducir música al hacer clic en cualquier parte (necesario para algunos navegadores)
+document.addEventListener('click', function() {
+    if (bgMusic.paused) {
+        bgMusic.play().catch(e => console.log("Autoplay bloqueado:", e));
+    }
+}, { once: true }); // Solo se dispara una vez
+
+// Toggle mute/unmute
+toggleMuteBtn.addEventListener('click', () => {
+    bgMusic.muted = !bgMusic.muted;
+    toggleMuteBtn.textContent = bgMusic.muted ? '🔇' : '🔊';
+});
+
+// Control de volumen
+volumeControl.addEventListener('input', () => {
+    bgMusic.volume = volumeControl.value;
+    volumeValue.textContent = Math.round(bgMusic.volume * 100) + '%';
+});
+
+// Actualiza el valor inicial del volumen
+volumeValue.textContent = Math.round(bgMusic.volume * 100) + '%';
     </script>
 <!-- Botón flotante de WhatsApp con SVG oficial -->
 <style>
@@ -1952,7 +1979,7 @@ html {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/menu%20productos_resultado.webp');
+    background-image: url('https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/menu%20productos.png');
     background-size: cover;        /* ✅ Cubre todo el contenedor sin vacíos */
     background-position: center;   /* Centra la imagen */
     background-repeat: no-repeat;  /* Evita repeticiones indeseadas */
@@ -1988,5 +2015,45 @@ html {
 ">
     <p>© 2025 Quesería y Almacén V&C. Todos los derechos reservados.</p>
 </footer>
+<!-- Control de Música Discreto -->
+<div id="musicControl" style="
+    position: fixed;
+    bottom: 90px;
+    right: 25px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 8px 12px;
+    border-radius: 50px;
+    z-index: 999;
+    backdrop-filter: blur(5px);
+    transition: opacity 0.3s ease;
+    opacity: 0.6;
+">
+    <button id="toggleMute" style="
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 4px;
+    ">🔇</button>
+    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.3" style="
+        width: 60px;
+        -webkit-appearance: none;
+        height: 4px;
+        background: #aaa;
+        border-radius: 5px;
+        outline: none;
+    ">
+    <span id="volumeValue" style="color: white; font-size: 0.9rem;">30%</span>
+</div>
+
+<!-- Elemento de audio oculto -->
+<audio id="bgMusic" loop preload="auto">
+    <source src="jingle.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio.
+</audio>
 </body>
 </html>

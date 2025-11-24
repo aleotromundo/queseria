@@ -27,6 +27,7 @@
             --shadow-sm: 0 2px 8px rgba(139, 115, 85, 0.08);
             --shadow-md: 0 4px 16px rgba(139, 115, 85, 0.12);
             --shadow-lg: 0 8px 32px rgba(139, 115, 85, 0.16);
+ 	    --carousel-text-color: white;
         }
 
         body.dark-mode {
@@ -42,6 +43,7 @@
             --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
             --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
             --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+	    --carousel-text-color: black;
         }
 
         body {
@@ -378,7 +380,7 @@
             position: relative;
             z-index: 2;
             text-align: center;
-            color: white;
+            color: var(--carousel-text-color);
             max-width: 800px;
             padding: 2rem;
             animation: slideUp 0.8s ease;

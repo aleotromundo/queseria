@@ -1763,7 +1763,7 @@ function shareProduct(productId, platform) {
     const product = products.find(p => p.id === productId);
     // Cambia 'https://tu-sitio-web.com' por la URL real de tu página
     const url = encodeURIComponent(window.location.origin + window.location.pathname);
-    const message = `¡Mirá este producto de Quesería y Raíces! ${product.name} - ${product.price}%0A%0A${url}`;
+    const message = `¡Mirá este producto de Quesería y Almacén VyC! ${product.name} - ${product.price}%0A%0A${url}`;
     if (platform === 'whatsapp') {
         window.open(`https://wa.me/?text=${message}`, '_blank');
     } else if (platform === 'instagram') {

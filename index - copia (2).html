@@ -1210,7 +1210,7 @@ body.dark-mode .share-btn svg {
                         <span class="slide-label">🧀 Premium</span>
                         <h1 class="slide-title">Quesos Artesanales</h1>
                         <p class="slide-description">Elaborados con leche de pastoreo y madurados con técnicas tradicionales para un sabor único</p>
-                        <a href="#productos" class="btn-hero" onclick="filterByCategoryAndScroll('quesos, conservas y condimentos')">Ver Quesos</a>
+                        <a href="#productos" class="btn-hero">Ver Quesos</a>
                     </div>
                 </div>
 
@@ -1646,31 +1646,6 @@ function filterProducts() {
     const activeCategory = document.querySelector('.filter-btn.active').dataset.category;
     // Renderiza productos aplicando ambos filtros
     renderProducts(activeCategory, searchTerm);
-}
-function filterByCategoryAndScroll(categorySlug) {
-    // 1. Activar el botón de filtro correspondiente
-    const filterBtn = document.querySelector(`.filter-btn[data-category="${categorySlug}"]`);
-    if (filterBtn) {
-        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-        filterBtn.classList.add('active');
-    }
-
-    // 2. Aplicar el filtro (esto llama a renderProducts internamente)
-    currentSearchTerm = ''; // Limpiar búsqueda al filtrar por categoría
-    renderProducts(categorySlug, '');
-
-    // 3. Desplazarse suavemente a la sección de productos
-    const productosSection = document.getElementById('productos');
-    if (productosSection) {
-        const headerOffset = document.getElementById('header')?.offsetHeight || 80;
-        const elementPosition = productosSection.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-        window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-        });
-    }
 }
 
 // Versión actualizada de renderProducts que acepta un término de búsqueda

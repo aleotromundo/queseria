@@ -131,10 +131,17 @@
             transform: translateY(-2px);
         }
 
-        .logo-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+.logo-icon-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+    object-fit: contain; /* Asegura que la imagen se ajuste sin deformarse */
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); /* Fondo por si la imagen no carga */
+}
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -1140,12 +1147,12 @@ body.dark-mode .share-btn svg {
     <header id="header">
         <div class="header-container">
             <div class="logo-container" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-                <div class="logo-icon">🧀</div>
-                <div class="logo-text">
-                    <div class="logo-title">Quesería y Almacén V&C</div>
-                    <div class="logo-subtitle">Productos Naturales Artesanales</div>
-                </div>
-            </div>
+    <img src="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp" alt="Logo Quesería y Almacén V&C" class="logo-icon-image">
+    <div class="logo-text">
+        <div class="logo-title">Quesería y Almacén V&C</div>
+        <div class="logo-subtitle">Productos Naturales Artesanales</div>
+    </div>
+</div>
 
             <nav class="desktop-nav">
                 <a href="#inicio">Inicio</a>

@@ -1348,7 +1348,7 @@ body.dark-mode .share-btn svg {
         <div class="section-header">
             <h2 class="section-title" style="color: inherit;">Sobre Nosotros</h2> <!-- Título hereda el color blanco -->
             <p class="section-subtitle" style="color: inherit; margin-bottom: 1.5rem;"> <!-- Párrafos heredan el color blanco -->
-                En <strong>Quesería y Almacén V&C</strong>, cada producto nace del amor por lo hecho a mano y del respeto por los ciclos naturales.
+                En <strong>Quesería y Almacén Natural V&C</strong>, cada producto nace del amor por lo hecho a mano y del respeto por los ciclos naturales.
                 Desde 1995, en pleno corazón del campo uruguayo, mantenemos vivas las recetas tradicionales transmitidas de generación en generación.
             </p>
             <p style="color: inherit; margin-bottom: 1.5rem;"> <!-- Párrafos heredan el color blanco -->
@@ -1811,7 +1811,7 @@ function shareProduct(productId, platform) {
     const product = products.find(p => p.id === productId);
     // Cambia 'https://tu-sitio-web.com' por la URL real de tu página
     const url = encodeURIComponent(window.location.origin + window.location.pathname);
-    const message = `¡Mirá este producto de Quesería y Almacén VyC! ${product.name} - ${product.price}%0A%0A${url}`;
+    const message = `¡Mirá este producto de Quesería y Almacén Natural VyC! ${product.name} - ${product.price}%0A%0A${url}`;
     if (platform === 'whatsapp') {
         window.open(`https://wa.me/?text=${message}`, '_blank');
     } else if (platform === 'instagram') {
@@ -1880,7 +1880,7 @@ function shareProduct(productId, platform) {
             const address = document.getElementById('addressInput').value;
             const payment = document.querySelector('input[name="payment"]:checked').value;
 
-            let message = '🛒 *Nuevo Pedido - Quesería y Almacén V&C*\n\n';
+            let message = '🛒 *Nuevo Pedido - Quesería y Almacén Natural V&C*\n\n';
             
             cart.forEach(item => {
                 message += `• ${item.quantity}x ${item.name} - ${item.price * item.quantity}\n`;
@@ -1925,7 +1925,7 @@ function shareProduct(productId, platform) {
 
         // Initialize
         window.addEventListener('DOMContentLoaded', async () => {
-            console.log('🧀 Quesería y Almacén V&C - Inicializando...');
+            console.log('🧀 Quesería y Almacén Natural V&C - Inicializando...');
             
             // Inicializar Supabase
             const supabaseConnected = initSupabase();
@@ -2148,7 +2148,7 @@ html {
     font-size: 0.95rem;
     z-index: 1;
 ">
-    <p>© 2025 Quesería y Almacén V&C. Todos los derechos reservados.</p>
+    <p>© 2025 Quesería y Almacén Natural V&C. Todos los derechos reservados.</p>
 </footer>
 </body>
 </html>

@@ -3,10 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Almacén Natural V&C</title>
+    <title>Quesería y Almacén Natural V&C</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧀</text></svg>">
+<!-- Meta Tags para SEO y Redes Sociales -->
+<meta property="og:title" content="Quesería y Almacén Natural V&C">
+<meta property="og:description" content="Productos artesanales Uruguayos: Quesos, miel, semillas orgánicas, harinas, frutos secos y mucho pero mucho mas 100% Natural. "El sabor de lo hacho en casa con Tradición y Calidad" 🚚🧀🍯">
+<meta property="og:image" content="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp">
+<meta property="og:url" content="https://queseriayalmacenvyc.vercel.app">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Quesería y Almacén Natural V&C">
+<meta name="twitter:description" content="Productos artesanales Uruguayos: Quesos, miel, semillas orgánicas, harinas, frutos secos y mucho pero mucho mas 100% Natural. Tradición y Calidad. 🧀🍯">
+<meta name="twitter:image" content="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp">
+
     <style>
         * {
             margin: 0;
@@ -22,11 +35,12 @@
             --accent-gold: #C9A962;
             --text-dark: #030202;
             --text-medium: #080807;
-            --text-light: #ffffff;
+            --text-light: #000000;
             --white: #ffffff;
             --shadow-sm: 0 2px 8px rgba(139, 115, 85, 0.08);
             --shadow-md: 0 4px 16px rgba(139, 115, 85, 0.12);
             --shadow-lg: 0 8px 32px rgba(139, 115, 85, 0.16);
+ 	    --carousel-text-color: white;
         }
 
         body.dark-mode {
@@ -37,11 +51,12 @@
             --accent-gold: #E6C177;
             --text-dark: #f5f1eb;
             --text-medium: #faf7f2;
-            --text-light: #000000;
+            --text-light: #ffffff;
             --white: #000000;
             --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
             --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
             --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+	    --carousel-text-color: black;
         }
 
         body {
@@ -116,10 +131,17 @@
             transform: translateY(-2px);
         }
 
-        .logo-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+.logo-icon-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+    object-fit: contain; /* Asegura que la imagen se ajuste sin deformarse */
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); /* Fondo por si la imagen no carga */
+}
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -378,7 +400,7 @@
             position: relative;
             z-index: 2;
             text-align: center;
-            color: white;
+            color: var(--carousel-text-color);
             max-width: 800px;
             padding: 2rem;
             animation: slideUp 0.8s ease;
@@ -419,14 +441,14 @@
             font-size: 1.3rem;
             margin-bottom: 2rem;
             opacity: 0.95;
-            font-weight: 300;
+            font-weight: 500;
         }
 
         .btn-hero {
             display: inline-block;
             padding: 1rem 3rem;
             background: white;
-            color: var(--accent-primary);
+            color: black;
             text-decoration: none;
             border-radius: 50px;
             font-weight: 600;
@@ -1110,16 +1132,27 @@ body.dark-mode .share-btn svg {
     <!-- Particles Canvas -->
     <canvas id="particles-canvas"></canvas>
 
+<!-- Audio de fondo -->
+<audio id="backgroundMusic" loop>
+    <source src="jingle.mp3" type="audio/mpeg">
+    Tu navegador no soporta el elemento de audio.
+</audio>
+
+<!-- Control de música flotante -->
+<button id="musicToggle" class="music-toggle" title="Reproducir/Pausar música">
+    🔇
+</button>
+
     <!-- Header -->
     <header id="header">
         <div class="header-container">
             <div class="logo-container" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-                <div class="logo-icon">🧀</div>
-                <div class="logo-text">
-                    <div class="logo-title">Quesería y Almacén V&C</div>
-                    <div class="logo-subtitle">Productos Naturales Artesanales</div>
-                </div>
-            </div>
+    <img src="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp" alt="Logo Quesería y Almacén Natural V&C" class="logo-icon-image">
+    <div class="logo-text">
+        <div class="logo-title">Quesería y Almacén Natural V&C</div>
+        <div class="logo-subtitle">Productos Naturales Artesanales</div>
+    </div>
+</div>
 
             <nav class="desktop-nav">
                 <a href="#inicio">Inicio</a>
@@ -1159,10 +1192,10 @@ body.dark-mode .share-btn svg {
             <div class="carousel-track" id="carouselTrack">
                 <!-- Slide 1 -->
                 <div class="carousel-slide">
-                    <img src="https://images.unsplash.com/photo-1452195100486-9cc805987862?w=1600&h=900&fit=crop" alt="Productos Artesanales" class="slide-image">
+                    <img src="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/product-images/imagenes%20webp/Gemini_Generated_Image_rjeu8grjeu8grjeu_resultado.webp" alt="Productos Artesanales" class="slide-image">
                     <div class="slide-overlay"></div>
                     <div class="slide-content">
-                        <span class="slide-label">✨ Desde 1995</span>
+                        <span class="slide-label">✨ El sabor de lo hecho en casa</span>
                         <h1 class="slide-title">Tradición y Calidad</h1>
                         <p class="slide-description">Productos artesanales elaborados con amor y dedicación, manteniendo las tradiciones de nuestros antepasados</p>
                         <a href="#productos" class="btn-hero">Explorar Productos</a>
@@ -1177,7 +1210,7 @@ body.dark-mode .share-btn svg {
                         <span class="slide-label">🧀 Premium</span>
                         <h1 class="slide-title">Quesos Artesanales</h1>
                         <p class="slide-description">Elaborados con leche de pastoreo y madurados con técnicas tradicionales para un sabor único</p>
-                        <a href="#productos" class="btn-hero">Ver Quesos</a>
+                        <a href="#productos" class="btn-hero" onclick="filterByCategoryAndScroll('quesos, conservas y condimentos')">Ver Quesos</a>
                     </div>
                 </div>
 
@@ -1195,7 +1228,7 @@ body.dark-mode .share-btn svg {
 
                 <!-- Slide 4 -->
                 <div class="carousel-slide">
-                    <img src="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/product-images/miel.webp" alt="Miel Pura" class="slide-image">
+                    <img src="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/product-images/imagenes%20webp/Gemini_Generated_Image_wgn4p2wgn4p2wgn4_resultado.webp" alt="Miel Pura" class="slide-image">
                     <div class="slide-overlay"></div>
                     <div class="slide-content">
                         <span class="slide-label">🍯 Cosecha Propia</span>
@@ -1315,7 +1348,7 @@ body.dark-mode .share-btn svg {
         <div class="section-header">
             <h2 class="section-title" style="color: inherit;">Sobre Nosotros</h2> <!-- Título hereda el color blanco -->
             <p class="section-subtitle" style="color: inherit; margin-bottom: 1.5rem;"> <!-- Párrafos heredan el color blanco -->
-                En <strong>Quesería y Almacén V&C</strong>, cada producto nace del amor por lo hecho a mano y del respeto por los ciclos naturales.
+                En <strong>Quesería y Almacén Natural V&C</strong>, cada producto nace del amor por lo hecho a mano y del respeto por los ciclos naturales.
                 Desde 1995, en pleno corazón del campo uruguayo, mantenemos vivas las recetas tradicionales transmitidas de generación en generación.
             </p>
             <p style="color: inherit; margin-bottom: 1.5rem;"> <!-- Párrafos heredan el color blanco -->
@@ -1337,9 +1370,10 @@ body.dark-mode .share-btn svg {
         <p class="section-subtitle">¡Escribinos para más información o para coordinar tu pedido!</p>
     </div>
     <div style="margin-top: 3rem; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; font-size: 1.2rem; color: var(--text-medium);">
-        <p>📧 <a href="mailto:info@queseriayalmacenv&c.com" style="color: var(--accent-primary); text-decoration: none;">queseriav&c@gmail.com</a></p>
-        <p>📱 <a href="https://wa.me/+598 99 015 691" target="_blank" style="color: var(--accent-primary); text-decoration: none;">099015691</a></p>
-        <p>📍 <span style="color: var(--text-dark);">De lunes a viernes tomamos pedidos y hacemos envíos a domicilio los fines de semana nos encontras en ferias, Costa de Oro, Uruguay</span></p>
+                <p>📱 <a href="https://wa.me/+598 99 015 691" target="_blank" style="color: var(--accent-primary); text-decoration: none;">099015691</a></p>
+        <p>📍 <span style="color: var(--text-dark);">Nos podes encontrar los jueves en la Feria de Salinas; 
+sabados en la Feria del Pinar (Autódromo) y los domingos en la Feria de Pinamar</span></p>
+<p>🚚 <span style="color: var(--text-dark);">También contamos con envíos a domicilio</span></p>
         <p></p>
     </div>
 </section>
@@ -1613,6 +1647,31 @@ function filterProducts() {
     // Renderiza productos aplicando ambos filtros
     renderProducts(activeCategory, searchTerm);
 }
+function filterByCategoryAndScroll(categorySlug) {
+    // 1. Activar el botón de filtro correspondiente
+    const filterBtn = document.querySelector(`.filter-btn[data-category="${categorySlug}"]`);
+    if (filterBtn) {
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        filterBtn.classList.add('active');
+    }
+
+    // 2. Aplicar el filtro (esto llama a renderProducts internamente)
+    currentSearchTerm = ''; // Limpiar búsqueda al filtrar por categoría
+    renderProducts(categorySlug, '');
+
+    // 3. Desplazarse suavemente a la sección de productos
+    const productosSection = document.getElementById('productos');
+    if (productosSection) {
+        const headerOffset = document.getElementById('header')?.offsetHeight || 80;
+        const elementPosition = productosSection.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    }
+}
 
 // Versión actualizada de renderProducts que acepta un término de búsqueda
 function renderProducts(category = 'todos', searchTerm = '') {
@@ -1752,7 +1811,7 @@ function shareProduct(productId, platform) {
     const product = products.find(p => p.id === productId);
     // Cambia 'https://tu-sitio-web.com' por la URL real de tu página
     const url = encodeURIComponent(window.location.origin + window.location.pathname);
-    const message = `¡Mirá este producto de Quesería y Raíces! ${product.name} - ${product.price}%0A%0A${url}`;
+    const message = `¡Mirá este producto de Quesería y Almacén Natural VyC! ${product.name} - ${product.price}%0A%0A${url}`;
     if (platform === 'whatsapp') {
         window.open(`https://wa.me/?text=${message}`, '_blank');
     } else if (platform === 'instagram') {
@@ -1821,7 +1880,7 @@ function shareProduct(productId, platform) {
             const address = document.getElementById('addressInput').value;
             const payment = document.querySelector('input[name="payment"]:checked').value;
 
-            let message = '🛒 *Nuevo Pedido - Quesería y Almacén V&C*\n\n';
+            let message = '🛒 *Nuevo Pedido - Quesería y Almacén Natural V&C*\n\n';
             
             cart.forEach(item => {
                 message += `• ${item.quantity}x ${item.name} - ${item.price * item.quantity}\n`;
@@ -1866,7 +1925,7 @@ function shareProduct(productId, platform) {
 
         // Initialize
         window.addEventListener('DOMContentLoaded', async () => {
-            console.log('🧀 Quesería y Almacén V&C - Inicializando...');
+            console.log('🧀 Quesería y Almacén Natural V&C - Inicializando...');
             
             // Inicializar Supabase
             const supabaseConnected = initSupabase();
@@ -1893,8 +1952,98 @@ function shareProduct(productId, platform) {
             updateCart();
             
             console.log('✅ Aplicación inicializada');
+// Inicializar música
+initBackgroundMusic();
         });
+// Control de música de fondo
+function initBackgroundMusic() {
+    const audio = document.getElementById('backgroundMusic');
+    const toggleBtn = document.getElementById('musicToggle');
+    let isPlaying = false;
+    let musicStarted = false;
 
+    // Intentar reproducir automáticamente (puede ser bloqueado por el navegador)
+    audio.volume = 0.3; // Volumen al 30%
+    
+    // Función para alternar reproducción
+    toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (isPlaying) {
+            audio.pause();
+            toggleBtn.textContent = '🔇';
+            toggleBtn.classList.remove('playing');
+            isPlaying = false;
+        } else {
+            audio.play().then(() => {
+                toggleBtn.textContent = '🔊';
+                toggleBtn.classList.add('playing');
+                isPlaying = true;
+                musicStarted = true;
+            }).catch(err => {
+                console.log('No se pudo reproducir la música:', err);
+                alert('Por favor activa el sonido tocando el botón 🔊');
+            });
+        }
+    });
+
+    // Función para iniciar la música
+    const startMusic = () => {
+        if (!musicStarted) {
+            audio.play().then(() => {
+                isPlaying = true;
+                musicStarted = true;
+                toggleBtn.textContent = '🔊';
+                toggleBtn.classList.add('playing');
+                console.log('✅ Música iniciada correctamente');
+                // Remover todos los listeners después de iniciar
+                removeAllListeners();
+            }).catch(err => {
+                console.log('⚠️ Reproducción automática bloqueada:', err);
+            });
+        }
+    };
+
+    // Función para remover todos los event listeners
+    const removeAllListeners = () => {
+        window.removeEventListener('scroll', startMusic);
+        window.removeEventListener('touchstart', startMusic);
+        window.removeEventListener('touchmove', startMusic);
+        document.removeEventListener('click', startMusic);
+        document.body.removeEventListener('touchend', startMusic);
+    };
+
+    // Intentar reproducir inmediatamente al cargar
+    audio.play().then(() => {
+        isPlaying = true;
+        musicStarted = true;
+        toggleBtn.textContent = '🔊';
+        toggleBtn.classList.add('playing');
+        console.log('✅ Música iniciada automáticamente');
+    }).catch(() => {
+        console.log('⚠️ Reproducción bloqueada, esperando interacción del usuario');
+        
+        // En móviles, mostrar indicador visual
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            toggleBtn.style.animation = 'pulse 2s infinite';
+            console.log('📱 Dispositivo móvil detectado - pulsa para activar música');
+        }
+        
+        // Escuchar múltiples eventos de interacción
+        window.addEventListener('scroll', startMusic, { passive: true });
+        window.addEventListener('touchstart', startMusic, { passive: true });
+        window.addEventListener('touchmove', startMusic, { passive: true, once: true });
+        document.addEventListener('click', startMusic);
+        document.body.addEventListener('touchend', startMusic, { passive: true, once: true });
+        
+        // Timeout de seguridad para limpiar listeners después de 30 segundos
+        setTimeout(() => {
+            if (!musicStarted) {
+                removeAllListeners();
+                console.log('⏱️ Timeout: listeners removidos');
+            }
+        }, 30000);
+    });
+}
         // Pause carousel on hover
         document.querySelector('.carousel-container').addEventListener('mouseenter', () => {
             clearInterval(autoplayInterval);
@@ -1903,33 +2052,6 @@ function shareProduct(productId, platform) {
         document.querySelector('.carousel-container').addEventListener('mouseleave', () => {
             autoplayInterval = setInterval(nextSlide, 6000);
         });
-// Inicializar música
-const bgMusic = document.getElementById('bgMusic');
-const toggleMuteBtn = document.getElementById('toggleMute');
-const volumeControl = document.getElementById('volumeControl');
-const volumeValue = document.getElementById('volumeValue');
-
-// Intentar reproducir música al hacer clic en cualquier parte (necesario para algunos navegadores)
-document.addEventListener('click', function() {
-    if (bgMusic.paused) {
-        bgMusic.play().catch(e => console.log("Autoplay bloqueado:", e));
-    }
-}, { once: true }); // Solo se dispara una vez
-
-// Toggle mute/unmute
-toggleMuteBtn.addEventListener('click', () => {
-    bgMusic.muted = !bgMusic.muted;
-    toggleMuteBtn.textContent = bgMusic.muted ? '🔇' : '🔊';
-});
-
-// Control de volumen
-volumeControl.addEventListener('input', () => {
-    bgMusic.volume = volumeControl.value;
-    volumeValue.textContent = Math.round(bgMusic.volume * 100) + '%';
-});
-
-// Actualiza el valor inicial del volumen
-volumeValue.textContent = Math.round(bgMusic.volume * 100) + '%';
     </script>
 <!-- Botón flotante de WhatsApp con SVG oficial -->
 <style>
@@ -1955,6 +2077,46 @@ volumeValue.textContent = Math.round(bgMusic.volume * 100) + '%';
         transform: scale(1.1);
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     }
+/* Botón de control de música */
+.music-toggle {
+    position: fixed;
+    bottom: 95px;
+    right: 25px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 28px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.music-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.music-toggle.playing {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 4px 24px rgba(201, 169, 98, 0.6);
+        transform: scale(1.05);
+    }
+}
 /* Desplazamiento suave para los enlaces de anclaje */
 html {
     scroll-behavior: smooth;
@@ -1979,7 +2141,7 @@ html {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/menu%20productos.png');
+    background-image: url('https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/menu%20productos_resultado.webp');
     background-size: cover;        /* ✅ Cubre todo el contenedor sin vacíos */
     background-position: center;   /* Centra la imagen */
     background-repeat: no-repeat;  /* Evita repeticiones indeseadas */
@@ -1994,6 +2156,25 @@ html {
     image-rendering: crisp-edges; /* Mejora la nitidez */
     /* o */
     image-rendering: pixelated; /* Solo si quieres un efecto "pixelado" intencional */
+}
+@media (max-width: 1024px) {
+    #productos .section-header::before {
+        background-image: url('https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/IMG-20251120-WA0066.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0.3; /* Ajusta opacidad si es necesario */
+    }
+
+    /* Asegurar que el contenedor tenga altura visible en móviles */
+    #productos .section-header {
+        min-height: 220px;
+        padding: 2.5rem 5%;
+        width: 100vw;
+        margin-left: 0;
+        transform: none;
+        border-radius: 0;
+    }
 }
 </style>
 
@@ -2013,47 +2194,7 @@ html {
     font-size: 0.95rem;
     z-index: 1;
 ">
-    <p>© 2025 Quesería y Almacén V&C. Todos los derechos reservados.</p>
+    <p>© 2025 Quesería y Almacén Natural V&C. Todos los derechos reservados.</p>
 </footer>
-<!-- Control de Música Discreto -->
-<div id="musicControl" style="
-    position: fixed;
-    bottom: 90px;
-    right: 25px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 8px 12px;
-    border-radius: 50px;
-    z-index: 999;
-    backdrop-filter: blur(5px);
-    transition: opacity 0.3s ease;
-    opacity: 0.6;
-">
-    <button id="toggleMute" style="
-        background: none;
-        border: none;
-        color: white;
-        font-size: 1.2rem;
-        cursor: pointer;
-        padding: 4px;
-    ">🔇</button>
-    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.3" style="
-        width: 60px;
-        -webkit-appearance: none;
-        height: 4px;
-        background: #aaa;
-        border-radius: 5px;
-        outline: none;
-    ">
-    <span id="volumeValue" style="color: white; font-size: 0.9rem;">30%</span>
-</div>
-
-<!-- Elemento de audio oculto -->
-<audio id="bgMusic" loop preload="auto">
-    <source src="jingle.mp3" type="audio/mpeg">
-    Tu navegador no soporta audio.
-</audio>
 </body>
 </html>

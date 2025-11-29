@@ -1980,25 +1980,48 @@ function initBackgroundMusic() {
         isPlaying = !isPlaying;
     });
 
-    // Intentar reproducir automáticamente cuando el usuario interactúa por primera vez
+    // Función para iniciar la música
     const startMusic = () => {
         if (!isPlaying) {
             audio.play().then(() => {
                 isPlaying = true;
                 toggleBtn.textContent = '🔊';
                 toggleBtn.classList.add('playing');
+                console.log('✅ Música iniciada correctamente');
             }).catch(err => {
-                console.log('Reproducción automática bloqueada. Usa el botón para reproducir.');
+                console.log('⚠️ Reproducción automática bloqueada:', err);
             });
         }
-        // Remover listeners después del primer intento
-        document.removeEventListener('click', startMusic);
-        document.removeEventListener('scroll', startMusic);
     };
 
-    // Intentar iniciar con la primera interacción del usuario
-    document.addEventListener('click', startMusic, { once: true });
-    document.addEventListener('scroll', startMusic, { once: true });
+    // Intentar reproducir inmediatamente al cargar
+    audio.play().then(() => {
+        isPlaying = true;
+        toggleBtn.textContent = '🔊';
+        toggleBtn.classList.add('playing');
+        console.log('✅ Música iniciada automáticamente');
+    }).catch(() => {
+        console.log('⚠️ Reproducción bloqueada, esperando interacción del usuario');
+        
+        // Si falla, intentar con scroll o clic
+        let musicStarted = false;
+        
+        const tryStartMusic = () => {
+            if (!musicStarted) {
+                startMusic();
+                musicStarted = true;
+                // Remover listeners después del primer intento exitoso
+                window.removeEventListener('scroll', tryStartMusic);
+                document.removeEventListener('click', tryStartMusic);
+                document.removeEventListener('touchstart', tryStartMusic);
+            }
+        };
+
+        // Escuchar múltiples eventos de interacción
+        window.addEventListener('scroll', tryStartMusic, { once: false });
+        document.addEventListener('click', tryStartMusic, { once: false });
+        document.addEventListener('touchstart', tryStartMusic, { once: false });
+    });
 }
         // Pause carousel on hover
         document.querySelector('.carousel-container').addEventListener('mouseenter', () => {

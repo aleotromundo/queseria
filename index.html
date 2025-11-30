@@ -1256,14 +1256,14 @@ body.dark-mode .search-container.fixed {
     100% { transform: rotate(360deg); }
 }
 
-/* Botón lupa flotante (reemplaza la barra fija en móvil vertical) */
+/* Botón lupa flotante (aparece desde la izquierda) */
 .search-float-btn {
     display: none;
     position: fixed;
-    top: 150px;
-    right: 20px;
-    width: 56px;
-    height: 56px;
+    top: 140px;
+    left: 15px;
+    width: 50px;
+    height: 50px;
     background: linear-gradient(135deg, var(--accent-primary), var(--accent-gold));
     border-radius: 50%;
     border: none;
@@ -1273,18 +1273,13 @@ body.dark-mode .search-container.fixed {
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    animation: slideInRight 0.3s ease;
+    opacity: 0;
+    transform: translateX(-80px);
 }
 
-@keyframes slideInRight {
-    from {
-        opacity: 0;
-        transform: translateX(100px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+.search-float-btn.active {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 .search-float-btn:active {
@@ -1292,8 +1287,8 @@ body.dark-mode .search-container.fixed {
 }
 
 .search-float-btn svg {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     fill: white;
 }
 
@@ -1304,17 +1299,22 @@ body.dark-mode .search-float-btn {
 .search-close-btn {
     display: none;
     position: absolute;
-    right: 10px;
+    right: 8px;
     top: 50%;
     transform: translateY(-50%);
     background: none;
     border: none;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     color: var(--text-dark);
     cursor: pointer;
     padding: 0.3rem;
     line-height: 1;
     z-index: 10;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Responsive para móviles VERTICALES */
@@ -1331,8 +1331,8 @@ body.dark-mode .search-float-btn {
     
     .search-container input {
         display: block !important;
-        padding: 0.9rem 1.2rem;
-        font-size: 0.95rem;
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
         width: 100%;
     }
     
@@ -1341,27 +1341,38 @@ body.dark-mode .search-float-btn {
         display: none !important;
     }
     
-    .search-float-btn.active {
+    .search-float-btn {
         display: flex !important;
     }
     
-    /* Barra expandida desde la lupa */
+    /* Barra expandida desde la lupa (se despliega desde la izquierda) */
     .search-container.expanded {
         display: block !important;
         position: fixed;
-        top: 80px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 90%;
-        max-width: 400px;
+        top: 140px;
+        left: 75px;
+        width: calc(100% - 90px);
+        max-width: 280px;
         z-index: 1000;
-        padding: 0.5rem;
+        padding: 0;
         margin: 0;
         background: rgba(255, 255, 255, 0.98);
         backdrop-filter: blur(10px);
         border-radius: 25px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        animation: slideDown 0.3s ease;
+        animation: slideInFromLeft 0.3s ease;
+        transform-origin: left center;
+    }
+    
+    @keyframes slideInFromLeft {
+        from {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        to {
+            opacity: 1;
+            transform: scaleX(1);
+        }
     }
     
     body.dark-mode .search-container.expanded {
@@ -1369,8 +1380,16 @@ body.dark-mode .search-float-btn {
     }
     
     .search-container.expanded input {
-        padding: 0.8rem 2.5rem 0.8rem 1rem;
+        padding: 0.7rem 2.2rem 0.7rem 1rem;
         border-color: var(--accent-gold);
+        font-size: 0.85rem;
+        border: none;
+        background: transparent;
+    }
+    
+    .search-container.expanded input:focus {
+        outline: none;
+        box-shadow: none;
     }
     
     .search-container.expanded .search-close-btn {
@@ -1424,6 +1443,10 @@ body.dark-mode .search-float-btn {
     .search-container input {
         padding: 0.8rem 1rem;
         font-size: 0.9rem;
+    }
+    
+    .search-container.expanded {
+        max-width: 250px;
     }
 }
     </style>
@@ -2415,9 +2438,10 @@ window.addEventListener('scroll', () => {
     if (!searchContainer) {
         searchContainer = document.querySelector('.search-container');
         searchFloatBtn = document.getElementById('searchFloatBtn');
-        if (searchContainer) {
+        if (searchContainer && !searchContainer.classList.contains('expanded')) {
             const rect = searchContainer.getBoundingClientRect();
             searchOriginalOffset = rect.top + window.scrollY;
+            console.log('📏 Offset de búsqueda:', searchOriginalOffset);
         }
     }
 
@@ -2429,10 +2453,10 @@ window.addEventListener('scroll', () => {
             if (isMobilePortrait) {
                 // MÓVIL VERTICAL: mostrar lupa flotante en vez de barra fija
                 if (!searchContainer.classList.contains('expanded')) {
-                    searchContainer.classList.remove('fixed');
-                    searchContainer.classList.add('fixed'); // Marcar como "pasada"
-                    if (searchFloatBtn) {
+                    searchContainer.classList.add('fixed');
+                    if (searchFloatBtn && !searchFloatBtn.classList.contains('active')) {
                         searchFloatBtn.classList.add('active');
+                        console.log('🔍 Lupa activada');
                     }
                 }
             } else {
@@ -2467,27 +2491,43 @@ function initSearchFloatButton() {
     const searchInput = document.getElementById('searchInput');
     const closeBtn = document.getElementById('searchCloseBtn');
     
-    if (!floatBtn || !searchContainer) return;
+    if (!floatBtn || !searchContainer) {
+        console.error('❌ No se encontraron los elementos de búsqueda');
+        return;
+    }
+    
+    console.log('✅ Botón de búsqueda inicializado');
     
     // Abrir barra al tocar lupa
-    floatBtn.addEventListener('click', () => {
+    floatBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        console.log('🔍 Lupa clickeada');
         searchContainer.classList.add('expanded');
         searchContainer.classList.remove('fixed');
-        floatBtn.classList.remove('active');
-        setTimeout(() => searchInput.focus(), 300);
+        floatBtn.style.opacity = '0';
+        floatBtn.style.pointerEvents = 'none';
+        setTimeout(() => {
+            searchInput.focus();
+        }, 300);
     });
     
     // Cerrar barra
-    closeBtn.addEventListener('click', () => {
+    closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        console.log('❌ Cerrando búsqueda');
         searchContainer.classList.remove('expanded');
-        // Volver a mostrar lupa si ya pasamos el scroll
-        if (window.scrollY >= searchOriginalOffset - 100 && 
-            window.innerWidth <= 768 && 
-            window.matchMedia("(orientation: portrait)").matches) {
-            floatBtn.classList.add('active');
-        }
         searchInput.value = '';
         filterProducts();
+        
+        // Volver a mostrar lupa si ya pasamos el scroll
+        setTimeout(() => {
+            if (window.scrollY >= searchOriginalOffset - 100 && 
+                window.innerWidth <= 768 && 
+                window.matchMedia("(orientation: portrait)").matches) {
+                floatBtn.style.opacity = '1';
+                floatBtn.style.pointerEvents = 'auto';
+            }
+        }, 300);
     });
     
     // Cerrar al hacer clic fuera
@@ -2495,8 +2535,14 @@ function initSearchFloatButton() {
         if (searchContainer.classList.contains('expanded') &&
             !searchContainer.contains(e.target) &&
             !floatBtn.contains(e.target)) {
+            console.log('👆 Click fuera, cerrando búsqueda');
             closeBtn.click();
         }
+    });
+    
+    // Prevenir que el click en el input cierre la barra
+    searchInput.addEventListener('click', (e) => {
+        e.stopPropagation();
     });
 }
 window.addEventListener('DOMContentLoaded', async () => {

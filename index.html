@@ -645,19 +645,41 @@ body.dark-mode .slide-description {
         }
 
         .product-image-container {
-            position: relative;
-            width: 100%;
-            height: 280px;
-            overflow: hidden;
-            background: var(--bg-secondary);
-        }
+    position: relative;
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    background: var(--bg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        .product-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
+.product-image-container::before {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: 3px solid var(--bg-secondary);
+    border-top: 3px solid var(--accent-gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    z-index: 1;
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    position: relative;
+    z-index: 2;
+    background: var(--bg-secondary);
+}
+
+.product-image-container:has(.product-image[src])::before {
+    display: none; /* Ocultar spinner cuando la imagen carga */
+}
 
         .product-card:hover .product-image {
             transform: scale(1.08);
@@ -1238,21 +1260,29 @@ body.dark-mode .search-container.fixed {
 @media (max-width: 768px) {
     /* Barra en posición normal (NO fija) */
     .search-container {
+        display: block !important; /* Forzar visibilidad */
         width: 100%;
         padding: 0 1rem;
         margin: 1.5rem auto;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
     
     .search-container input {
+        display: block !important; /* Forzar visibilidad del input */
         padding: 0.9rem 1.2rem;
         font-size: 0.95rem;
+        width: 100%;
     }
     
     /* Barra cuando está fija */
     .search-container.fixed {
-        top: 80px; /* Ajustado para header móvil */
-        width: 92%;
+        display: block !important;
+        top: 70px; /* Ajustado para header móvil */
+        width: 90%;
         padding: 0.5rem 0.8rem;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
     
     .search-container.fixed input {
@@ -1262,6 +1292,11 @@ body.dark-mode .search-container.fixed {
 }
 
 @media (max-width: 480px) {
+    .search-container {
+        display: block !important;
+        padding: 0 0.8rem;
+    }
+    
     .search-container input {
         padding: 0.8rem 1rem;
         font-size: 0.9rem;
@@ -1269,7 +1304,7 @@ body.dark-mode .search-container.fixed {
     
     .search-container.fixed {
         width: 95%;
-        top: 75px;
+        top: 70px;
     }
 }
     </style>
@@ -1750,10 +1785,21 @@ function initCarousel() {
     slides.forEach((_, index) => {
         const dot = document.createElement('div');
         dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
-        dot.addEventListener('click', () => goToSlide(index));
+        dot.addEventListener('click', () => {
+            goToSlide(index);
+            // Reiniciar autoplay después de interacción manual
+            if (autoplayInterval) {
+                clearInterval(autoplayInterval);
+            }
+            autoplayInterval = setInterval(nextSlide, 6000);
+        });
         controls.appendChild(dot);
     });
 
+    // Iniciar autoplay
+    if (autoplayInterval) {
+        clearInterval(autoplayInterval);
+    }
     autoplayInterval = setInterval(nextSlide, 6000);
 }
 
@@ -1787,6 +1833,7 @@ function filterProducts() {
 function filterByCategoryAndScroll(categorySlug) {
     // Marcar que estamos navegando
     isNavigating = true;
+    console.log('🚫 Navegación a productos - carga pausada');
     
     // 1. Activar el botón de filtro correspondiente
     const filterBtn = document.querySelector(`.filter-btn[data-category="${categorySlug}"]`);
@@ -1812,10 +1859,28 @@ function filterByCategoryAndScroll(categorySlug) {
             behavior: 'smooth'
         });
         
-        // Desactivar flag después del scroll
+        // Listener para cuando termine el scroll
+        const onScrollEnd = () => {
+            setTimeout(() => {
+                isNavigating = false;
+                console.log('✅ Navegación a productos completada');
+            }, 500);
+            window.removeEventListener('scrollend', onScrollEnd);
+        };
+        
+        if ('onscrollend' in window) {
+            window.addEventListener('scrollend', onScrollEnd, { once: true });
+        } else {
+            setTimeout(() => {
+                isNavigating = false;
+            }, 2000);
+        }
+        
         setTimeout(() => {
-            isNavigating = false;
-        }, 1000);
+            if (isNavigating) {
+                isNavigating = false;
+            }
+        }, 3000);
     } else {
         isNavigating = false;
     }
@@ -1897,7 +1962,7 @@ function createProductCard(product) {
 
 // Función para cargar más productos
 function loadMoreProducts() {
-    if (isLoadingProducts || currentProductIndex >= currentFilteredProducts.length) return;
+    if (isLoadingProducts || isNavigating || currentProductIndex >= currentFilteredProducts.length) return;
 
     isLoadingProducts = true;
     const indicator = document.getElementById('loadingIndicator');
@@ -1937,29 +2002,28 @@ function loadMoreProducts() {
 
 // Detectar scroll para carga infinita
 function handleInfiniteScroll() {
-    // No cargar productos si estamos navegando o fuera de la sección productos
-    if (isNavigating) return;
+    // No cargar si estamos navegando
+    if (isNavigating || isLoadingProducts) return;
     
     const grid = document.getElementById('productsGrid');
     if (!grid) return;
 
-    // Solo cargar si estamos cerca de la sección de productos
+    // Solo cargar si estamos en la sección de productos
     const productsSection = document.getElementById('productos');
     if (!productsSection) return;
     
-    const productsSectionTop = productsSection.getBoundingClientRect().top;
-    const productsSectionBottom = productsSection.getBoundingClientRect().bottom;
+    const rect = productsSection.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
     
-    // Solo cargar si la sección de productos está visible en el viewport
-    if (productsSectionTop > window.innerHeight || productsSectionBottom < 0) {
-        return; // Estamos fuera de la sección de productos
-    }
+    // Verificar si estamos realmente EN la sección productos (no solo pasando)
+    const isInProductsSection = rect.top < windowHeight && rect.bottom > 0;
+    
+    if (!isInProductsSection) return;
 
     const gridBottom = grid.getBoundingClientRect().bottom;
-    const viewportHeight = window.innerHeight;
 
-    // Cargar más cuando falten 300px para llegar al final
-    if (gridBottom - viewportHeight < 300 && gridBottom > 0) {
+    // Cargar más cuando falten 400px para llegar al final
+    if (gridBottom - windowHeight < 400 && gridBottom > 0) {
         loadMoreProducts();
     }
 }
@@ -2075,8 +2139,9 @@ document.querySelectorAll('.menu-link, .desktop-nav a, a[href^="#"]').forEach(li
         if (href && href.startsWith('#')) {
             e.preventDefault();
             
-            // Marcar que estamos navegando
+            // Marcar que estamos navegando INMEDIATAMENTE
             isNavigating = true;
+            console.log('🚫 Navegación bloqueada - carga de productos pausada');
             
             // Cerrar menú móvil si está abierto
             document.getElementById('sideMenu').classList.remove('active');
@@ -2096,10 +2161,33 @@ document.querySelectorAll('.menu-link, .desktop-nav a, a[href^="#"]').forEach(li
                     behavior: 'smooth'
                 });
                 
-                // Desactivar flag después de 1.5 segundos
+                // Listener para cuando termine el scroll
+                const onScrollEnd = () => {
+                    setTimeout(() => {
+                        isNavigating = false;
+                        console.log('✅ Navegación completada - carga de productos reactivada');
+                    }, 500); // Medio segundo extra después de terminar
+                    window.removeEventListener('scrollend', onScrollEnd);
+                };
+                
+                // Usar scrollend si está disponible
+                if ('onscrollend' in window) {
+                    window.addEventListener('scrollend', onScrollEnd, { once: true });
+                } else {
+                    // Fallback para navegadores que no soportan scrollend
+                    setTimeout(() => {
+                        isNavigating = false;
+                        console.log('✅ Navegación completada (fallback) - carga de productos reactivada');
+                    }, 2000);
+                }
+                
+                // Timeout de seguridad por si algo falla
                 setTimeout(() => {
-                    isNavigating = false;
-                }, 1500);
+                    if (isNavigating) {
+                        isNavigating = false;
+                        console.log('⏱️ Timeout de seguridad - carga reactivada');
+                    }
+                }, 3000);
             } else {
                 isNavigating = false;
             }
@@ -2330,13 +2418,39 @@ function initBackgroundMusic() {
     });
 }
 
-// Pause carousel on hover
-document.querySelector('.carousel-container').addEventListener('mouseenter', () => {
-    clearInterval(autoplayInterval);
-});
+// Pause carousel on hover con mejor manejo
+const carouselContainer = document.querySelector('.carousel-container');
 
-document.querySelector('.carousel-container').addEventListener('mouseleave', () => {
-    autoplayInterval = setInterval(nextSlide, 6000);
+if (carouselContainer) {
+    carouselContainer.addEventListener('mouseenter', () => {
+        if (autoplayInterval) {
+            clearInterval(autoplayInterval);
+            autoplayInterval = null;
+        }
+    });
+
+    carouselContainer.addEventListener('mouseleave', () => {
+        if (!autoplayInterval) {
+            autoplayInterval = setInterval(nextSlide, 6000);
+        }
+    });
+}
+
+// Asegurar que el autoplay siempre esté activo (recuperación automática)
+setInterval(() => {
+    // Si no hay autoplay activo y no estamos con hover en el carrusel
+    if (!autoplayInterval && carouselContainer && !carouselContainer.matches(':hover')) {
+        autoplayInterval = setInterval(nextSlide, 6000);
+        console.log('🔄 Autoplay del carrusel reactivado');
+    }
+}, 10000); // Verificar cada 10 segundos
+
+// Prevenir que otros eventos detengan el carrusel
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && !autoplayInterval) {
+        autoplayInterval = setInterval(nextSlide, 6000);
+        console.log('👁️ Autoplay reactivado al volver a la pestaña');
+    }
 });
     </script>
 <!-- Botón flotante de WhatsApp con SVG oficial -->

@@ -428,11 +428,8 @@
     text-transform: uppercase;
     margin-bottom: 1.5rem;
     border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white !important;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
-}
-
-body.dark-mode .slide-label {
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9);
 }
 
 .slide-title {
@@ -440,11 +437,8 @@ body.dark-mode .slide-label {
     font-weight: 700;
     margin-bottom: 1rem;
     line-height: 1.2;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
-}
-
-body.dark-mode .slide-title {
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9);
+    color: white !important;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.95);
 }
 
 .slide-description {
@@ -452,11 +446,27 @@ body.dark-mode .slide-title {
     margin-bottom: 2rem;
     opacity: 0.95;
     font-weight: 500;
+    color: white !important;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
 }
 
+/* Eliminar reglas de modo oscuro que ya no son necesarias */
+body.dark-mode .slide-label,
+body.dark-mode .slide-title,
 body.dark-mode .slide-description {
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9);
+    color: white !important;
+}
+
+body.dark-mode .slide-label {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+body.dark-mode .slide-title {
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.95);
+}
+
+body.dark-mode .slide-description {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
 }
 
 .btn-hero {
@@ -1160,7 +1170,7 @@ body.dark-mode .share-btn svg {
     color: var(--text-dark);
     box-shadow: var(--shadow-sm);
     transition: all 0.3s ease;
-    outline: none; /* Quitar outline al hacer focus */
+    outline: none;
 }
 
 .search-container input:focus {
@@ -1173,10 +1183,10 @@ body.dark-mode .share-btn svg {
     top: 90px;
     left: 50%;
     transform: translateX(-50%);
-    width: 70%; /* Más pequeña */
-    max-width: 800px; /* Reducido de 1200px */
+    width: 70%;
+    max-width: 800px;
     z-index: 999;
-    padding: 0.6rem 1rem; /* Padding reducido */
+    padding: 0.6rem 1rem;
     margin: 0;
     background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(10px);
@@ -1190,11 +1200,11 @@ body.dark-mode .search-container.fixed {
 }
 
 .search-container.fixed input {
-    padding: 0.7rem 1.2rem; /* Input más pequeño cuando está fijo */
+    padding: 0.7rem 1.2rem;
     font-size: 0.95rem;
     border-color: var(--accent-gold) !important;
-    box-shadow: none !important; /* Quitar sombra extra */
-    background: transparent; /* Fondo transparente */
+    box-shadow: none !important;
+    background: transparent;
 }
 
 @keyframes slideDown {
@@ -1224,16 +1234,42 @@ body.dark-mode .search-container.fixed {
     100% { transform: rotate(360deg); }
 }
 
+/* Responsive para móviles */
 @media (max-width: 768px) {
+    /* Barra en posición normal (NO fija) */
+    .search-container {
+        width: 100%;
+        padding: 0 1rem;
+        margin: 1.5rem auto;
+    }
+    
+    .search-container input {
+        padding: 0.9rem 1.2rem;
+        font-size: 0.95rem;
+    }
+    
+    /* Barra cuando está fija */
     .search-container.fixed {
-        top: 70px;
-        width: 90%;
+        top: 80px; /* Ajustado para header móvil */
+        width: 92%;
         padding: 0.5rem 0.8rem;
     }
     
     .search-container.fixed input {
-        padding: 0.6rem 1rem;
+        padding: 0.65rem 1rem;
         font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-container input {
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .search-container.fixed {
+        width: 95%;
+        top: 75px;
     }
 }
     </style>

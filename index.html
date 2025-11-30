@@ -1292,7 +1292,7 @@ body.dark-mode .search-container.fixed {
     <!-- Header -->
     <header id="header">
         <div class="header-container">
-            <div class="logo-container" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            <div class="logo-container" onclick="isNavigating = true; window.scrollTo({top: 0, behavior: 'smooth'}); setTimeout(() => isNavigating = false, 1000);">
     <img src="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp" alt="Logo Quesería y Almacén Natural V&C" class="logo-icon-image">
     <div class="logo-text">
         <div class="logo-title">Quesería y Almacén Natural V&C</div>
@@ -1784,16 +1784,22 @@ function filterProducts() {
 }
 
 function filterByCategoryAndScroll(categorySlug) {
+    // Marcar que estamos navegando
+    isNavigating = true;
+    
+    // 1. Activar el botón de filtro correspondiente
     const filterBtn = document.querySelector(`.filter-btn[data-category="${categorySlug}"]`);
     if (filterBtn) {
         document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
         filterBtn.classList.add('active');
     }
 
+    // 2. Aplicar el filtro (esto llama a renderProducts internamente)
     currentSearchTerm = '';
     currentProductIndex = 0;
     renderProducts(categorySlug, '');
 
+    // 3. Desplazarse suavemente a la sección de productos
     const productosSection = document.getElementById('productos');
     if (productosSection) {
         const headerOffset = document.getElementById('header')?.offsetHeight || 80;
@@ -1804,6 +1810,13 @@ function filterByCategoryAndScroll(categorySlug) {
             top: offsetPosition,
             behavior: 'smooth'
         });
+        
+        // Desactivar flag después del scroll
+        setTimeout(() => {
+            isNavigating = false;
+        }, 1000);
+    } else {
+        isNavigating = false;
     }
 }
 
@@ -1922,7 +1935,12 @@ function loadMoreProducts() {
 }
 
 // Detectar scroll para carga infinita
+let isNavigating = false;
+
 function handleInfiniteScroll() {
+    // No cargar productos si estamos navegando a una sección
+    if (isNavigating) return;
+    
     const grid = document.getElementById('productsGrid');
     if (!grid) return;
 
@@ -2037,10 +2055,44 @@ document.getElementById('menuToggle').addEventListener('click', function() {
     document.getElementById('sideMenu').classList.toggle('active');
 });
 
-document.querySelectorAll('.menu-link').forEach(link => {
-    link.addEventListener('click', () => {
-        document.getElementById('sideMenu').classList.remove('active');
-        document.getElementById('menuToggle').classList.remove('active');
+// Mejorar los links del menú para evitar carga infinita durante navegación
+document.querySelectorAll('.menu-link, .desktop-nav a, a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        
+        // Si es un anchor link
+        if (href && href.startsWith('#')) {
+            e.preventDefault();
+            
+            // Marcar que estamos navegando
+            isNavigating = true;
+            
+            // Cerrar menú móvil si está abierto
+            document.getElementById('sideMenu').classList.remove('active');
+            document.getElementById('menuToggle').classList.remove('active');
+            
+            // Obtener la sección destino
+            const targetId = href.substring(1);
+            const targetSection = document.getElementById(targetId);
+            
+            if (targetSection) {
+                const headerOffset = document.getElementById('header')?.offsetHeight || 80;
+                const elementPosition = targetSection.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+                
+                // Desactivar flag después de que termine el scroll
+                setTimeout(() => {
+                    isNavigating = false;
+                }, 1000);
+            } else {
+                isNavigating = false;
+            }
+        }
     });
 });
 

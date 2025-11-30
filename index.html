@@ -1256,7 +1256,7 @@ body.dark-mode .search-container.fixed {
     100% { transform: rotate(360deg); }
 }
 
-/* Botón lupa flotante (solo móvil vertical) */
+/* Botón lupa flotante (reemplaza la barra fija en móvil vertical) */
 .search-float-btn {
     display: none;
     position: fixed;
@@ -1273,6 +1273,18 @@ body.dark-mode .search-container.fixed {
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
+    animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .search-float-btn:active {
@@ -1302,22 +1314,42 @@ body.dark-mode .search-float-btn {
     cursor: pointer;
     padding: 0.3rem;
     line-height: 1;
+    z-index: 10;
 }
 
 /* Responsive para móviles VERTICALES */
 @media (max-width: 768px) and (orientation: portrait) {
+    /* Barra normal visible */
     .search-container {
+        display: block !important;
+        width: 100%;
+        padding: 0 1rem;
+        margin: 1.5rem auto;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    .search-container input {
+        display: block !important;
+        padding: 0.9rem 1.2rem;
+        font-size: 0.95rem;
+        width: 100%;
+    }
+    
+    /* CUANDO PASA EL SCROLL: ocultar barra y mostrar lupa */
+    .search-container.fixed {
         display: none !important;
     }
     
-    .search-float-btn {
+    .search-float-btn.active {
         display: flex !important;
     }
     
+    /* Barra expandida desde la lupa */
     .search-container.expanded {
         display: block !important;
         position: fixed;
-        top: 70px;
+        top: 80px;
         left: 50%;
         transform: translateX(-50%);
         width: 90%;
@@ -1341,12 +1373,12 @@ body.dark-mode .search-float-btn {
         border-color: var(--accent-gold);
     }
     
-    .search-close-btn {
+    .search-container.expanded .search-close-btn {
         display: flex !important;
     }
 }
 
-/* Móviles HORIZONTALES */
+/* Móviles HORIZONTALES - comportamiento normal */
 @media (max-width: 768px) and (orientation: landscape) {
     .search-container {
         display: block !important;
@@ -1383,7 +1415,7 @@ body.dark-mode .search-float-btn {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 480px) and (orientation: portrait) {
     .search-container {
         display: block !important;
         padding: 0 0.8rem;
@@ -1392,11 +1424,6 @@ body.dark-mode .search-float-btn {
     .search-container input {
         padding: 0.8rem 1rem;
         font-size: 0.9rem;
-    }
-    
-    .search-container.fixed {
-        width: 95%;
-        top: 70px;
     }
 }
     </style>
@@ -1554,14 +1581,14 @@ body.dark-mode .search-float-btn {
             <button class="filter-btn active" data-category="todos">Todos</button>
         </div>
 
-        <!-- Botón lupa flotante (solo móvil vertical) -->
+        <!-- Botón lupa flotante (aparece al hacer scroll en móvil vertical) -->
 <button class="search-float-btn" id="searchFloatBtn" aria-label="Buscar productos">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
     </svg>
 </button>
 
-<!-- Barra de búsqueda (se expande en móvil vertical) -->
+<!-- Barra de búsqueda de texto -->
 <div class="search-container" id="searchContainer">
     <input type="text" id="searchInput" placeholder="Buscar productos..." oninput="filterProducts()">
     <button class="search-close-btn" id="searchCloseBtn">✕</button>
@@ -2370,9 +2397,10 @@ document.getElementById('checkoutModal').addEventListener('click', (e) => {
     }
 });
 
-// Header scroll effect y barra de búsqueda fija
+// Header scroll effect y barra de búsqueda fija / lupa flotante
 let searchOriginalOffset = 0;
 let searchContainer = null;
+let searchFloatBtn = null;
 
 window.addEventListener('scroll', () => {
     const header = document.getElementById('header');
@@ -2383,9 +2411,10 @@ window.addEventListener('scroll', () => {
         header.classList.remove('scrolled');
     }
 
-    // Barra de búsqueda fija solo después de pasar su posición original
+    // Inicializar referencias
     if (!searchContainer) {
         searchContainer = document.querySelector('.search-container');
+        searchFloatBtn = document.getElementById('searchFloatBtn');
         if (searchContainer) {
             const rect = searchContainer.getBoundingClientRect();
             searchOriginalOffset = rect.top + window.scrollY;
@@ -2393,12 +2422,34 @@ window.addEventListener('scroll', () => {
     }
 
     if (searchContainer && searchOriginalOffset > 0) {
+        // Detectar si es móvil vertical
+        const isMobilePortrait = window.innerWidth <= 768 && window.matchMedia("(orientation: portrait)").matches;
+        
         if (window.scrollY >= searchOriginalOffset - 100) {
-            if (!searchContainer.classList.contains('fixed')) {
-                searchContainer.classList.add('fixed');
+            if (isMobilePortrait) {
+                // MÓVIL VERTICAL: mostrar lupa flotante en vez de barra fija
+                if (!searchContainer.classList.contains('expanded')) {
+                    searchContainer.classList.remove('fixed');
+                    searchContainer.classList.add('fixed'); // Marcar como "pasada"
+                    if (searchFloatBtn) {
+                        searchFloatBtn.classList.add('active');
+                    }
+                }
+            } else {
+                // ESCRITORIO Y MÓVIL HORIZONTAL: barra fija normal
+                if (!searchContainer.classList.contains('fixed')) {
+                    searchContainer.classList.add('fixed');
+                }
+                if (searchFloatBtn) {
+                    searchFloatBtn.classList.remove('active');
+                }
             }
         } else {
+            // Volver a estado normal
             searchContainer.classList.remove('fixed');
+            if (searchFloatBtn) {
+                searchFloatBtn.classList.remove('active');
+            }
         }
     }
 
@@ -2418,19 +2469,28 @@ function initSearchFloatButton() {
     
     if (!floatBtn || !searchContainer) return;
     
+    // Abrir barra al tocar lupa
     floatBtn.addEventListener('click', () => {
         searchContainer.classList.add('expanded');
-        floatBtn.style.display = 'none';
+        searchContainer.classList.remove('fixed');
+        floatBtn.classList.remove('active');
         setTimeout(() => searchInput.focus(), 300);
     });
     
+    // Cerrar barra
     closeBtn.addEventListener('click', () => {
         searchContainer.classList.remove('expanded');
-        floatBtn.style.display = 'flex';
+        // Volver a mostrar lupa si ya pasamos el scroll
+        if (window.scrollY >= searchOriginalOffset - 100 && 
+            window.innerWidth <= 768 && 
+            window.matchMedia("(orientation: portrait)").matches) {
+            floatBtn.classList.add('active');
+        }
         searchInput.value = '';
         filterProducts();
     });
     
+    // Cerrar al hacer clic fuera
     document.addEventListener('click', (e) => {
         if (searchContainer.classList.contains('expanded') &&
             !searchContainer.contains(e.target) &&
@@ -2463,7 +2523,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     renderProducts();
     updateCart();
     initBackgroundMusic();
-    initSearchFloatButton();
+    nitSearchFloatButton();
+    
     console.log('✅ Aplicación inicializada');
 });
 

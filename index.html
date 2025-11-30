@@ -1687,6 +1687,7 @@ const PRODUCTS_PER_PAGE = 10;
 let isLoadingProducts = false;
 let currentSearchTerm = '';
 let currentFilteredProducts = [];
+let isNavigating = false; // AGREGAR ESTA LÍNEA
 
 // Particles Animation
 function initParticles() {
@@ -1935,20 +1936,30 @@ function loadMoreProducts() {
 }
 
 // Detectar scroll para carga infinita
-let isNavigating = false;
-
 function handleInfiniteScroll() {
-    // No cargar productos si estamos navegando a una sección
+    // No cargar productos si estamos navegando o fuera de la sección productos
     if (isNavigating) return;
     
     const grid = document.getElementById('productsGrid');
     if (!grid) return;
 
+    // Solo cargar si estamos cerca de la sección de productos
+    const productsSection = document.getElementById('productos');
+    if (!productsSection) return;
+    
+    const productsSectionTop = productsSection.getBoundingClientRect().top;
+    const productsSectionBottom = productsSection.getBoundingClientRect().bottom;
+    
+    // Solo cargar si la sección de productos está visible en el viewport
+    if (productsSectionTop > window.innerHeight || productsSectionBottom < 0) {
+        return; // Estamos fuera de la sección de productos
+    }
+
     const gridBottom = grid.getBoundingClientRect().bottom;
     const viewportHeight = window.innerHeight;
 
     // Cargar más cuando falten 300px para llegar al final
-    if (gridBottom - viewportHeight < 300) {
+    if (gridBottom - viewportHeight < 300 && gridBottom > 0) {
         loadMoreProducts();
     }
 }
@@ -2085,10 +2096,10 @@ document.querySelectorAll('.menu-link, .desktop-nav a, a[href^="#"]').forEach(li
                     behavior: 'smooth'
                 });
                 
-                // Desactivar flag después de que termine el scroll
+                // Desactivar flag después de 1.5 segundos
                 setTimeout(() => {
                     isNavigating = false;
-                }, 1000);
+                }, 1500);
             } else {
                 isNavigating = false;
             }
@@ -2188,14 +2199,12 @@ window.addEventListener('scroll', () => {
     if (!searchContainer) {
         searchContainer = document.querySelector('.search-container');
         if (searchContainer) {
-            // Calcular la posición real de la barra
             const rect = searchContainer.getBoundingClientRect();
             searchOriginalOffset = rect.top + window.scrollY;
         }
     }
 
     if (searchContainer && searchOriginalOffset > 0) {
-        // Activar fixed cuando el scroll pase la posición original
         if (window.scrollY >= searchOriginalOffset - 100) {
             if (!searchContainer.classList.contains('fixed')) {
                 searchContainer.classList.add('fixed');
@@ -2205,8 +2214,10 @@ window.addEventListener('scroll', () => {
         }
     }
 
-    // Carga infinita
-    handleInfiniteScroll();
+    // Carga infinita solo si NO estamos navegando
+    if (!isNavigating) {
+        handleInfiniteScroll();
+    }
 });
 
 // Initialize

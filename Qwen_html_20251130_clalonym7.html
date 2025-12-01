@@ -13,20 +13,17 @@
 <meta property="og:image" content="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp">
 <meta property="og:url" content="https://queseriayalmacenvyc.vercel.app">
 <meta property="og:type" content="website">
-
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Quesería y Almacén Natural V&C">
 <meta name="twitter:description" content="Productos artesanales Uruguayos: Quesos, miel, semillas orgánicas, harinas, frutos secos y mucho pero mucho mas 100% Natural. Tradición y Calidad. 🧀🍯">
 <meta name="twitter:image" content="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp">
-
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         :root {
             --bg-primary: #ffaf107a;
             --bg-secondary: #f1d990c7;
@@ -42,7 +39,6 @@
             --shadow-lg: 0 8px 32px rgba(139, 115, 85, 0.16);
  	    --carousel-text-color: white;
         }
-
         body.dark-mode {
             --bg-primary: #1a1612;
             --bg-secondary: #2c2520;
@@ -58,7 +54,6 @@
             --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
 	    --carousel-text-color: black;
         }
-
         body {
             font-family: 'Lato', sans-serif;
             background: var(--bg-primary);
@@ -67,12 +62,10 @@
             overflow-x: hidden;
             transition: all 0.4s ease;
         }
-
         h1, h2, h3, h4 {
             font-family: 'Playfair Display', serif;
             font-weight: 600;
         }
-
         /* Particles Background */
         #particles-canvas {
             position: fixed;
@@ -84,7 +77,6 @@
             pointer-events: none;
             opacity: 0.4;
         }
-
         /* Header Mejorado */
         header {
             position: fixed;
@@ -100,17 +92,14 @@
             border-bottom: 1px solid rgba(139, 115, 85, 0.1);
             transition: all 0.3s ease;
         }
-
         body.dark-mode header {
             background: rgba(26, 22, 18, 0.95);
             border-bottom-color: rgba(212, 165, 116, 0.2);
         }
-
         header.scrolled {
             padding: 0.8rem 5%;
             box-shadow: var(--shadow-md);
         }
-
         .header-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -118,7 +107,6 @@
             justify-content: space-between;
             align-items: center;
         }
-
         .logo-container {
             display: flex;
             align-items: center;
@@ -126,11 +114,9 @@
             cursor: pointer;
             transition: transform 0.3s ease;
         }
-
         .logo-container:hover {
             transform: translateY(-2px);
         }
-
 .logo-icon-image {
     width: 50px;
     height: 50px;
@@ -149,12 +135,10 @@
             font-size: 1.8rem;
             box-shadow: var(--shadow-sm);
         }
-
         .logo-text {
             display: flex;
             flex-direction: column;
         }
-
         .logo-title {
             font-family: 'Playfair Display', serif;
             font-size: 1.5rem;
@@ -162,26 +146,22 @@
             color: var(--accent-primary);
             line-height: 1.2;
         }
-
         .logo-subtitle {
             font-size: 0.75rem;
             color: #9a8989;
             letter-spacing: 2px;
             text-transform: uppercase;
         }
-
         /* Desktop Navigation */
         .desktop-nav {
             display: none;
         }
-
         @media (min-width: 1024px) {
             .desktop-nav {
                 display: flex;
                 gap: 2.5rem;
                 list-style: none;
             }
-
             .desktop-nav a {
                 color: var(--text-dark);
                 text-decoration: none;
@@ -191,7 +171,6 @@
                 transition: color 0.3s ease;
                 padding: 0.5rem 0;
             }
-
             .desktop-nav a::after {
                 content: '';
                 position: absolute;
@@ -202,26 +181,21 @@
                 background: var(--accent-gold);
                 transition: width 0.3s ease;
             }
-
             .desktop-nav a:hover {
                 color: var(--accent-primary);
             }
-
             .desktop-nav a:hover::after {
                 width: 100%;
             }
-
             .menu-toggle {
                 display: none !important;
             }
         }
-
         .header-actions {
             display: flex;
             align-items: center;
             gap: 1.5rem;
         }
-
         .icon-btn {
             background: none;
             border: none;
@@ -232,12 +206,10 @@
             position: relative;
             padding: 0.5rem;
         }
-
         .icon-btn:hover {
             transform: scale(1.1);
             color: var(--accent-primary);
         }
-
         .cart-badge {
             position: absolute;
             top: 0;
@@ -254,7 +226,6 @@
             font-weight: bold;
             box-shadow: var(--shadow-sm);
         }
-
         .theme-toggle {
             width: 40px;
             height: 40px;
@@ -269,12 +240,10 @@
             transition: all 0.3s ease;
             box-shadow: var(--shadow-sm);
         }
-
         .theme-toggle:hover {
             transform: rotate(180deg) scale(1.1);
             box-shadow: var(--shadow-md);
         }
-
         .menu-toggle {
             background: none;
             border: none;
@@ -284,7 +253,6 @@
             gap: 5px;
             padding: 0.5rem;
         }
-
         .menu-toggle span {
             width: 28px;
             height: 3px;
@@ -292,19 +260,15 @@
             border-radius: 2px;
             transition: all 0.3s ease;
         }
-
         .menu-toggle.active span:nth-child(1) {
             transform: rotate(45deg) translateY(8px);
         }
-
         .menu-toggle.active span:nth-child(2) {
             opacity: 0;
         }
-
         .menu-toggle.active span:nth-child(3) {
             transform: rotate(-45deg) translateY(-8px);
         }
-
         /* Side Menu */
         .side-menu {
             position: fixed;
@@ -320,19 +284,15 @@
             box-shadow: var(--shadow-lg);
             overflow-y: auto;
         }
-
         .side-menu.active {
             left: 0;
         }
-
         .side-menu ul {
             list-style: none;
         }
-
         .side-menu li {
             margin: 2rem 0;
         }
-
         .side-menu a {
             color: var(--text-dark);
             text-decoration: none;
@@ -342,12 +302,10 @@
             display: block;
             padding: 0.5rem 0;
         }
-
         .side-menu a:hover {
             color: var(--accent-primary);
             padding-left: 1rem;
         }
-
         /* Hero Section con Carousel */
 .hero-section {
     margin-top: 90px;
@@ -356,18 +314,15 @@
     overflow: hidden;
     z-index: 1;
 }
-
 .carousel-container {
     height: 100%;
     position: relative;
 }
-
 .carousel-track {
     display: flex;
     height: 100%;
     transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 .carousel-slide {
     min-width: 100%;
     height: 100%;
@@ -376,7 +331,6 @@
     align-items: center;
     justify-content: center;
 }
-
 .slide-image {
     position: absolute;
     top: 0;
@@ -386,7 +340,6 @@
     object-fit: cover;
     filter: brightness(0.85);
 }
-
 .slide-overlay {
     position: absolute;
     top: 0;
@@ -395,7 +348,6 @@
     height: 100%;
     background: linear-gradient(135deg, rgba(139, 115, 85, 0.2), rgba(212, 165, 116, 0.15));
 }
-
 .slide-content {
     position: relative;
     z-index: 2;
@@ -405,7 +357,6 @@
     padding: 2rem;
     animation: slideUp 0.8s ease;
 }
-
 @keyframes slideUp {
     from {
         opacity: 0;
@@ -416,7 +367,6 @@
         transform: translateY(0);
     }
 }
-
 .slide-label {
     display: inline-block;
     padding: 0.5rem 1.5rem;
@@ -431,7 +381,6 @@
     color: white !important;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
 }
-
 .slide-title {
     font-size: 3.5rem;
     font-weight: 700;
@@ -440,7 +389,6 @@
     color: white !important;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.95);
 }
-
 .slide-description {
     font-size: 1.3rem;
     margin-bottom: 2rem;
@@ -449,26 +397,21 @@
     color: white !important;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
 }
-
 /* Eliminar reglas de modo oscuro que ya no son necesarias */
 body.dark-mode .slide-label,
 body.dark-mode .slide-title,
 body.dark-mode .slide-description {
     color: white !important;
 }
-
 body.dark-mode .slide-label {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
 }
-
 body.dark-mode .slide-title {
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.95);
 }
-
 body.dark-mode .slide-description {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
 }
-
 .btn-hero {
     display: inline-block;
     padding: 1rem 3rem;
@@ -482,14 +425,12 @@ body.dark-mode .slide-description {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     text-shadow: none;
 }
-
 .btn-hero:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
     background: var(--accent-gold);
     color: white;
 }
-
 .carousel-controls {
     position: absolute;
     bottom: 30px;
@@ -499,7 +440,6 @@ body.dark-mode .slide-description {
     gap: 12px;
     z-index: 3;
 }
-
 .carousel-dot {
     width: 12px;
     height: 12px;
@@ -509,13 +449,11 @@ body.dark-mode .slide-description {
     transition: all 0.3s ease;
     border: 2px solid transparent;
 }
-
 .carousel-dot.active {
     background: white;
     transform: scale(1.3);
     border-color: var(--accent-gold);
 }
-
         /* Features Section */
         .features-section {
             padding: 5rem 5%;
@@ -523,7 +461,6 @@ body.dark-mode .slide-description {
             position: relative;
             z-index: 1;
         }
-
         .features-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -531,7 +468,6 @@ body.dark-mode .slide-description {
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 3rem;
         }
-
         .feature-card {
             text-align: center;
             padding: 2rem;
@@ -540,53 +476,44 @@ body.dark-mode .slide-description {
             box-shadow: var(--shadow-sm);
             transition: all 0.3s ease;
         }
-
         .feature-card:hover {
             transform: translateY(-8px);
             box-shadow: var(--shadow-lg);
         }
-
         .feature-icon {
             font-size: 3.5rem;
             margin-bottom: 1.5rem;
         }
-
         .feature-title {
             font-size: 1.5rem;
             color: var(--accent-primary);
             margin-bottom: 1rem;
         }
-
         .feature-text {
             color: var(--text-medium);
             line-height: 1.7;
         }
-
         /* Products Section */
         .products-section {
             padding: 5rem 5%;
             position: relative;
             z-index: 1;
         }
-
         .section-header {
             text-align: center;
             max-width: 700px;
             margin: 0 auto 4rem;
         }
-
         .section-title {
             font-size: 3rem;
             color: var(--accent-primary);
             margin-bottom: 1rem;
         }
-
         .section-subtitle {
             font-size: 1.2rem;
             color: var(--text-medium);
             line-height: 1.8;
         }
-
         /* Filters */
         .filters {
             display: flex;
@@ -599,7 +526,6 @@ body.dark-mode .slide-description {
             border-radius: 20px;
             box-shadow: var(--shadow-sm);
         }
-
         .filter-btn {
             padding: 0.8rem 2rem;
             background: transparent;
@@ -611,7 +537,6 @@ body.dark-mode .slide-description {
             font-size: 1rem;
             transition: all 0.3s ease;
         }
-
         .filter-btn:hover,
         .filter-btn.active {
             background: var(--accent-primary);
@@ -619,7 +544,6 @@ body.dark-mode .slide-description {
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
-
         /* Products Grid */
         .products-grid {
             display: grid;
@@ -628,7 +552,6 @@ body.dark-mode .slide-description {
             max-width: 1400px;
             margin: 0 auto;
         }
-
         .product-card {
             background: var(--white);
             border-radius: 20px;
@@ -638,12 +561,10 @@ body.dark-mode .slide-description {
             display: flex;
             flex-direction: column;
         }
-
         .product-card:hover {
             transform: translateY(-10px);
             box-shadow: var(--shadow-lg);
         }
-
         .product-image-container {
     position: relative;
     width: 100%;
@@ -654,7 +575,6 @@ body.dark-mode .slide-description {
     align-items: center;
     justify-content: center;
 }
-
 .product-image-container::before {
     content: '';
     position: absolute;
@@ -666,7 +586,6 @@ body.dark-mode .slide-description {
     animation: spin 0.8s linear infinite;
     z-index: 1;
 }
-
 .product-image {
     width: 100%;
     height: 100%;
@@ -676,40 +595,30 @@ body.dark-mode .slide-description {
     z-index: 2;
     background: var(--bg-secondary);
 }
-
 .product-image-container:has(.product-image[src])::before {
     display: none; /* Ocultar spinner cuando la imagen carga */
 }
-
         .product-card:hover .product-image {
             transform: scale(1.08);
         }
-
         .product-badge {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    padding: 0.5rem 1rem;
-    background: var(--accent-gold);
-    color: white;
-    border-radius: 25px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    box-shadow: var(--shadow-sm);
-    z-index: 10;
-}
-
-body.dark-mode .product-badge {
-    color: black;
-}
-
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 0.5rem 1rem;
+            background: var(--accent-gold);
+            color: white;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+        }
         .product-info {
             padding: 2rem;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
         }
-
         .product-category {
             color: var(--text-light);
             font-size: 0.85rem;
@@ -717,39 +626,33 @@ body.dark-mode .product-badge {
             letter-spacing: 1px;
             margin-bottom: 0.5rem;
         }
-
         .product-name {
             font-size: 1.6rem;
             color: var(--accent-primary);
             margin-bottom: 1rem;
         }
-
         .product-description {
             color: var(--text-medium);
             line-height: 1.7;
             margin-bottom: 1.5rem;
             flex-grow: 1;
         }
-
         .product-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-top: auto;
         }
-
         .product-price {
             font-size: 2rem;
             font-weight: 700;
             color: var(--accent-primary);
         }
-
         .product-actions {
             display: flex;
             gap: 0.8rem;
             align-items: center;
         }
-
         .share-btn {
             background: none;
             border: none;
@@ -759,12 +662,10 @@ body.dark-mode .product-badge {
             transition: all 0.3s ease;
             opacity: 0.6;
         }
-
         .share-btn:hover {
             transform: scale(1.2);
             opacity: 1;
         }
-
         .add-to-cart-btn {
             padding: 0.8rem 1.8rem;
             background: transparent;
@@ -775,14 +676,12 @@ body.dark-mode .product-badge {
             font-weight: 600;
             transition: all 0.3s ease;
         }
-
         .add-to-cart-btn:hover {
             background: var(--accent-gold);
             color: white;
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
-
         /* Cart Panel */
         .cart-panel {
             position: fixed;
@@ -798,11 +697,9 @@ body.dark-mode .product-badge {
             display: flex;
             flex-direction: column;
         }
-
         .cart-panel.active {
             right: 0;
         }
-
         .cart-header {
             padding: 2rem;
             border-bottom: 2px solid var(--bg-secondary);
@@ -810,12 +707,10 @@ body.dark-mode .product-badge {
             justify-content: space-between;
             align-items: center;
         }
-
         .cart-title {
             font-size: 1.8rem;
             color: var(--accent-primary);
         }
-
         .close-cart-btn {
             background: none;
             border: none;
@@ -824,18 +719,15 @@ body.dark-mode .product-badge {
             color: var(--text-dark);
             transition: all 0.3s ease;
         }
-
         .close-cart-btn:hover {
             transform: rotate(90deg);
             color: var(--accent-primary);
         }
-
         .cart-items-container {
             flex-grow: 1;
             overflow-y: auto;
             padding: 2rem;
         }
-
         .cart-item {
             display: flex;
             gap: 1.5rem;
@@ -845,39 +737,32 @@ body.dark-mode .product-badge {
             border-radius: 15px;
             transition: all 0.3s ease;
         }
-
         .cart-item:hover {
             box-shadow: var(--shadow-sm);
         }
-
         .cart-item-image {
             width: 90px;
             height: 90px;
             object-fit: cover;
             border-radius: 12px;
         }
-
         .cart-item-details {
             flex-grow: 1;
         }
-
         .cart-item-name {
             font-weight: 600;
             color: var(--accent-primary);
             margin-bottom: 0.5rem;
         }
-
         .cart-item-price {
             color: var(--text-medium);
             margin-bottom: 1rem;
         }
-
         .cart-item-controls {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
-
         .qty-btn {
             width: 32px;
             height: 32px;
@@ -889,18 +774,15 @@ body.dark-mode .product-badge {
             font-weight: bold;
             transition: all 0.3s ease;
         }
-
         .qty-btn:hover {
             background: var(--accent-secondary);
             transform: scale(1.1);
         }
-
         .qty-display {
             min-width: 30px;
             text-align: center;
             font-weight: 600;
         }
-
         .remove-btn {
             margin-left: auto;
             background: #d32f2f;
@@ -912,16 +794,13 @@ body.dark-mode .product-badge {
             font-size: 0.85rem;
             transition: all 0.3s ease;
         }
-
         .remove-btn:hover {
             background: #b71c1c;
         }
-
         .cart-footer {
             padding: 2rem;
             border-top: 2px solid var(--bg-secondary);
         }
-
         .cart-total {
             display: flex;
             justify-content: space-between;
@@ -930,15 +809,12 @@ body.dark-mode .product-badge {
             font-size: 1.5rem;
             font-weight: 700;
         }
-
         .total-label {
             color: var(--text-dark);
         }
-
         .total-amount {
             color: var(--accent-gold);
         }
-
         .checkout-btn {
             width: 100%;
             padding: 1.2rem;
@@ -952,28 +828,23 @@ body.dark-mode .product-badge {
             transition: all 0.3s ease;
             box-shadow: var(--shadow-md);
         }
-
         .checkout-btn:hover {
             transform: translateY(-3px);
             box-shadow: var(--shadow-lg);
         }
-
         .empty-cart {
             text-align: center;
             padding: 4rem 2rem;
             color: var(--text-light);
         }
-
         .empty-cart-icon {
             font-size: 5rem;
             opacity: 0.3;
             margin-bottom: 1.5rem;
         }
-
         .empty-cart-text {
             font-size: 1.2rem;
         }
-
         /* Modal */
         .modal-overlay {
             display: none;
@@ -989,11 +860,9 @@ body.dark-mode .product-badge {
             justify-content: center;
             padding: 2rem;
         }
-
         .modal-overlay.active {
             display: flex;
         }
-
         .modal-content {
             background: var(--white);
             border-radius: 25px;
@@ -1003,7 +872,6 @@ body.dark-mode .product-badge {
             box-shadow: var(--shadow-lg);
             animation: modalSlideUp 0.4s ease;
         }
-
         @keyframes modalSlideUp {
             from {
                 opacity: 0;
@@ -1014,25 +882,21 @@ body.dark-mode .product-badge {
                 transform: translateY(0);
             }
         }
-
         .modal-title {
             font-size: 2rem;
             color: var(--accent-primary);
             margin-bottom: 2rem;
             text-align: center;
         }
-
         .form-group {
             margin-bottom: 1.8rem;
         }
-
         .form-label {
             display: block;
             margin-bottom: 0.7rem;
             font-weight: 600;
             color: var(--text-dark);
         }
-
         .form-input {
             width: 100%;
             padding: 1rem;
@@ -1043,18 +907,15 @@ body.dark-mode .product-badge {
             color: var(--text-dark);
             transition: all 0.3s ease;
         }
-
         .form-input:focus {
             outline: none;
             border-color: var(--accent-primary);
             box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.1);
         }
-
         .radio-group {
             display: flex;
             gap: 2rem;
         }
-
         .radio-label {
             display: flex;
             align-items: center;
@@ -1062,7 +923,6 @@ body.dark-mode .product-badge {
             cursor: pointer;
             font-weight: 500;
         }
-
         .location-btn {
             width: 100%;
             padding: 1rem;
@@ -1075,18 +935,15 @@ body.dark-mode .product-badge {
             transition: all 0.3s ease;
             margin-top: 0.8rem;
         }
-
         .location-btn:hover {
             background: var(--accent-secondary);
             transform: translateY(-2px);
         }
-
         .modal-actions {
             display: flex;
             gap: 1rem;
             margin-top: 2.5rem;
         }
-
         .btn-secondary {
             flex: 1;
             padding: 1rem;
@@ -1098,12 +955,10 @@ body.dark-mode .product-badge {
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
         .btn-secondary:hover {
             border-color: var(--accent-primary);
             color: var(--accent-primary);
         }
-
         .btn-primary {
             flex: 1;
             padding: 1rem;
@@ -1115,61 +970,49 @@ body.dark-mode .product-badge {
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
         .btn-primary:hover {
             background: var(--accent-primary);
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
-
         /* Responsive */
         @media (max-width: 768px) {
             .slide-title {
                 font-size: 2.2rem;
             }
-
             .slide-description {
                 font-size: 1.1rem;
             }
-
             .section-title {
                 font-size: 2.2rem;
             }
-
             .products-grid {
                 grid-template-columns: 1fr;
                 gap: 2rem;
             }
-
             .cart-panel {
                 width: 100%;
                 right: -100%;
             }
-
             .modal-content {
                 padding: 2rem;
             }
-
             .features-container {
                 gap: 2rem;
             }
-
             header {
                 padding: 1rem 4%;
             }
         }
-
         @media (max-width: 480px) {
             .logo-title {
                 font-size: 1.2rem;
             }
-
             .logo-icon {
                 width: 40px;
                 height: 40px;
                 font-size: 1.4rem;
             }
-
             .btn-hero {
                 padding: 0.8rem 2rem;
                 font-size: 1rem;
@@ -1186,7 +1029,6 @@ body.dark-mode .share-btn svg {
     padding: 0 1rem;
     transition: all 0.3s ease;
 }
-
 .search-container input {
     width: 100%;
     padding: 1rem 1.5rem;
@@ -1199,12 +1041,10 @@ body.dark-mode .share-btn svg {
     transition: all 0.3s ease;
     outline: none;
 }
-
 .search-container input:focus {
     border-color: var(--accent-gold);
     box-shadow: 0 2px 12px rgba(201, 169, 98, 0.3);
 }
-
 .search-container.fixed {
     position: fixed;
     top: 90px;
@@ -1221,11 +1061,9 @@ body.dark-mode .share-btn svg {
     box-shadow: 0 4px 16px rgba(201, 169, 98, 0.3);
     animation: slideDown 0.3s ease;
 }
-
 body.dark-mode .search-container.fixed {
     background: rgba(26, 22, 18, 0.98);
 }
-
 .search-container.fixed input {
     padding: 0.7rem 1.2rem;
     font-size: 0.95rem;
@@ -1233,7 +1071,6 @@ body.dark-mode .search-container.fixed {
     box-shadow: none !important;
     background: transparent;
 }
-
 @keyframes slideDown {
     from {
         opacity: 0;
@@ -1244,7 +1081,6 @@ body.dark-mode .search-container.fixed {
         transform: translateX(-50%) translateY(0);
     }
 }
-
 /* Spinner de carga */
 .spinner {
     border: 3px solid var(--bg-secondary);
@@ -1255,12 +1091,10 @@ body.dark-mode .search-container.fixed {
     animation: spin 0.8s linear infinite;
     margin: 0 auto;
 }
-
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-
 /* Botón lupa flotante (aparece desde la izquierda) */
 .search-float-btn {
     display: none;
@@ -1281,26 +1115,21 @@ body.dark-mode .search-container.fixed {
     opacity: 0;
     transform: translateX(-80px);
 }
-
 .search-float-btn.active {
     opacity: 1;
     transform: translateX(0);
 }
-
 .search-float-btn:active {
     transform: scale(0.95);
 }
-
 .search-float-btn svg {
     width: 22px;
     height: 22px;
     fill: white;
 }
-
 body.dark-mode .search-float-btn {
     background: linear-gradient(135deg, var(--accent-gold), var(--accent-secondary));
 }
-
 .search-close-btn {
     display: none;
     position: absolute;
@@ -1321,7 +1150,6 @@ body.dark-mode .search-float-btn {
     align-items: center;
     justify-content: center;
 }
-
 /* Responsive para móviles VERTICALES */
 @media (max-width: 768px) and (orientation: portrait) {
     /* Barra normal visible */
@@ -1333,31 +1161,28 @@ body.dark-mode .search-float-btn {
         visibility: visible !important;
         opacity: 1 !important;
     }
-    
     .search-container input {
         display: block !important;
         padding: 0.8rem 1rem;
         font-size: 0.9rem;
         width: 100%;
     }
-    
     /* CUANDO PASA EL SCROLL: ocultar barra y mostrar lupa */
     .search-container.fixed {
         display: none !important;
     }
-    
     .search-float-btn {
         display: flex !important;
     }
-    
-    /* Barra expandida desde la lupa (se despliega desde la izquierda) */
+    /* Barra expandida desde la lupa */
     .search-container.expanded {
         display: block !important;
         position: fixed;
-        top: calc(140px + 1rem); /* 👈 Ajustado: altura del header + margen extra */
-        left: 75px;
-        width: calc(100% - 90px);
-        max-width: 280px;
+        top: 90px;
+        left: 15px;
+        right: 15px;
+        width: auto;
+        max-width: none;
         z-index: 1000;
         padding: 0;
         margin: 0;
@@ -1366,9 +1191,7 @@ body.dark-mode .search-float-btn {
         border-radius: 25px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         animation: slideInFromLeft 0.3s ease;
-        transform-origin: left center;
     }
-    
     @keyframes slideInFromLeft {
         from {
             opacity: 0;
@@ -1379,29 +1202,22 @@ body.dark-mode .search-float-btn {
             transform: scaleX(1);
         }
     }
-    
     body.dark-mode .search-container.expanded {
         background: rgba(26, 22, 18, 0.98);
     }
-    
     .search-container.expanded input {
-        padding: 0.7rem 2.2rem 0.7rem 1rem;
-        border-color: var(--accent-gold);
-        font-size: 0.85rem;
+        width: 100%;
+        padding: 0.9rem 2.5rem 0.9rem 1.2rem;
         border: none;
         background: transparent;
+        color: var(--text-dark);
+        font-size: 1rem;
     }
-    
-    .search-container.expanded input:focus {
-        outline: none;
-        box-shadow: none;
-    }
-    
     .search-container.expanded .search-close-btn {
         display: flex !important;
+        right: 12px;
     }
 }
-
 /* Móviles HORIZONTALES - comportamiento normal */
 @media (max-width: 768px) and (orientation: landscape) {
     .search-container {
@@ -1412,14 +1228,12 @@ body.dark-mode .search-float-btn {
         visibility: visible !important;
         opacity: 1 !important;
     }
-    
     .search-container input {
         display: block !important;
         padding: 0.9rem 1.2rem;
         font-size: 0.95rem;
         width: 100%;
     }
-    
     .search-container.fixed {
         display: block !important;
         top: 70px;
@@ -1428,30 +1242,22 @@ body.dark-mode .search-float-btn {
         visibility: visible !important;
         opacity: 1 !important;
     }
-    
     .search-container.fixed input {
         padding: 0.65rem 1rem;
         font-size: 0.9rem;
     }
-    
     .search-float-btn {
         display: none !important;
     }
 }
-
 @media (max-width: 480px) and (orientation: portrait) {
     .search-container {
         display: block !important;
         padding: 0 0.8rem;
     }
-    
     .search-container input {
         padding: 0.8rem 1rem;
         font-size: 0.9rem;
-    }
-    
-    .search-container.expanded {
-        max-width: 250px;
     }
 }
     </style>
@@ -1459,18 +1265,15 @@ body.dark-mode .search-float-btn {
 <body class="dark-mode">
     <!-- Particles Canvas -->
     <canvas id="particles-canvas"></canvas>
-
 <!-- Audio de fondo -->
 <audio id="backgroundMusic" loop>
     <source src="jingle.mp3" type="audio/mpeg">
     Tu navegador no soporta el elemento de audio.
 </audio>
-
 <!-- Control de música flotante -->
 <button id="musicToggle" class="music-toggle" title="Reproducir/Pausar música">
     🔇
 </button>
-
     <!-- Header -->
     <header id="header">
         <div class="header-container">
@@ -1481,14 +1284,12 @@ body.dark-mode .search-float-btn {
         <div class="logo-subtitle">Productos Naturales Artesanales</div>
     </div>
 </div>
-
             <nav class="desktop-nav">
                 <a href="#inicio">Inicio</a>
                 <a href="#productos">Productos</a>
                 <a href="#nosotros">Nosotros</a>
                 <a href="#contacto">Contacto</a>
             </nav>
-
             <div class="header-actions">
                 <button class="icon-btn" id="cartBtn">
                     🛒
@@ -1503,7 +1304,6 @@ body.dark-mode .search-float-btn {
             </div>
         </div>
     </header>
-
     <!-- Side Menu -->
     <nav class="side-menu" id="sideMenu">
         <ul>
@@ -1513,7 +1313,6 @@ body.dark-mode .search-float-btn {
             <li><a href="#contacto" class="menu-link">Contacto</a></li>
         </ul>
     </nav>
-
     <!-- Hero Carousel -->
     <section class="hero-section" id="inicio">
         <div class="carousel-container">
@@ -1529,7 +1328,6 @@ body.dark-mode .search-float-btn {
                         <a href="#productos" class="btn-hero">Explorar Productos</a>
                     </div>
                 </div>
-
                 <!-- Slide 2 -->
                 <div class="carousel-slide">
                     <img src="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/product-images/1763654949808-z3vrur.jpg" alt="Quesos Artesanales" class="slide-image">
@@ -1541,7 +1339,6 @@ body.dark-mode .search-float-btn {
                         <a href="#productos" class="btn-hero" onclick="filterByCategoryAndScroll('quesos, conservas y condimentos')">Ver Quesos</a>
                     </div>
                 </div>
-
                 <!-- Slide 3 -->
                 <div class="carousel-slide">
                     <img src="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/product-images/bowl.png" alt="Semillas Orgánicas" class="slide-image">
@@ -1553,7 +1350,6 @@ body.dark-mode .search-float-btn {
                         <a href="#productos" class="btn-hero">Descubrir Más</a>
                     </div>
                 </div>
-
                 <!-- Slide 4 -->
                 <div class="carousel-slide">
                     <img src="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/product-images/imagenes%20webp/Gemini_Generated_Image_wgn4p2wgn4p2wgn4_resultado.webp" alt="Miel Pura" class="slide-image">
@@ -1569,7 +1365,6 @@ body.dark-mode .search-float-btn {
             <div class="carousel-controls" id="carouselControls"></div>
         </div>
     </section>
-
     <!-- Features Section -->
     <section class="features-section">
         <div class="features-container">
@@ -1590,7 +1385,6 @@ body.dark-mode .search-float-btn {
             </div>
         </div>
     </section>
-
     <!-- Products Section -->
     <section class="products-section" id="productos">
         <div class="section-header">
@@ -1603,19 +1397,16 @@ body.dark-mode .search-float-btn {
     </div>
 </div>
         </div>
-
         <!-- Filtros de Categoría -->
         <div class="filters">
             <button class="filter-btn active" data-category="todos">Todos</button>
         </div>
-
         <!-- Botón lupa flotante (aparece al hacer scroll en móvil vertical) -->
 <button class="search-float-btn" id="searchFloatBtn" aria-label="Buscar productos">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
     </svg>
 </button>
-
 <!-- Barra de búsqueda de texto -->
 <div class="search-container" id="searchContainer">
     <input type="text" id="searchInput" placeholder="Buscar productos..." oninput="filterProducts()">
@@ -1644,7 +1435,6 @@ body.dark-mode .search-float-btn {
         <!-- Opcional: Texto alternativo si el video no se carga -->
         Tu navegador no soporta el video.
     </video>
-
     <!-- Overlay semi-transparente para mejorar la lectura (opcional, puedes ajustar la opacidad) -->
     <div style="
         position: absolute;
@@ -1655,7 +1445,6 @@ body.dark-mode .search-float-btn {
         background: rgba(0, 0, 0, 0.3); /* Overlay negro semi-transparente */
         z-index: 2;
     "></div>
-
     <!-- Contenido de la sección con efecto Glassmorphism -->
     <div style="
         position: relative;
@@ -1725,7 +1514,6 @@ sabados en la Feria del Pinar (Autódromo) y los domingos en la Feria de Pinamar
             </button>
         </div>
     </aside>
-
     <!-- Checkout Modal -->
     <div class="modal-overlay" id="checkoutModal">
         <div class="modal-content">
@@ -1756,14 +1544,11 @@ sabados en la Feria del Pinar (Autódromo) y los domingos en la Feria de Pinamar
             </form>
         </div>
     </div>
-
     <script>
         // Supabase Configuration - CREDENCIALES PRECONFIGURADAS
         const SUPABASE_URL = 'https://mytpwjkvtezixhggyxht.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im15dHB3amt2dGV6aXhoZ2d5eGh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM1MTE1ODcsImV4cCI6MjA3OTA4NzU4N30.oMxZljrtvgM_3CZjOvMDcfJz8uB7T4N9JvQAphmp3HM';
-        
         let supabase = null;
-
         // Initialize Supabase
         function initSupabase() {
             try {
@@ -1775,23 +1560,19 @@ sabados en la Feria del Pinar (Autódromo) y los domingos en la Feria de Pinamar
                 return false;
             }
         }
-
         // Load products from Supabase
 async function loadProductsFromSupabase() {
     if (!supabase) {
         console.warn('Supabase no configurado, usando productos de ejemplo');
         return false;
     }
-
     try {
         const { data, error } = await supabase
             .from('products')
             .select('*')
             .eq('is_active', true)
             .order('created_at', { ascending: false });
-
         if (error) throw error;
-
         if (data && data.length > 0) {
             products = data.map(product => ({
                 id: product.id,
@@ -1802,56 +1583,44 @@ async function loadProductsFromSupabase() {
                 badge: product.badge || 'Nuevo',
                 image: product.image_url
             }));
-
             console.log(`✅ ${products.length} productos cargados desde Supabase`);
             return true;
         }
-
         return false;
     } catch (error) {
         console.error('Error cargando productos desde Supabase:', error);
         return false;
     }
 }
-
 // Load categories from Supabase
 async function loadCategoriesFromSupabase() {
     if (!supabase) return false;
-
     try {
         const { data, error } = await supabase
             .from('categories')
             .select('*')
             .order('name');
-
         if (error) throw error;
-
         if (data && data.length > 0) {
             updateFiltersWithCategories(data);
             console.log(`✅ ${data.length} categorías cargadas desde Supabase`);
             return true;
         }
-
         return false;
     } catch (error) {
         console.error('Error cargando categorías:', error);
         return false;
     }
 }
-
 // Update filters with dynamic categories
 function updateFiltersWithCategories(categories) {
     const filtersContainer = document.querySelector('.filters');
-    
     let filtersHTML = '<button class="filter-btn active" data-category="todos">Todos</button>';
-    
     categories.forEach(cat => {
         const displayName = cat.name.charAt(0).toUpperCase() + cat.name.slice(1);
         filtersHTML += `<button class="filter-btn" data-category="${cat.slug}">${displayName}</button>`;
     });
-    
     filtersContainer.innerHTML = filtersHTML;
-    
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -1861,16 +1630,13 @@ function updateFiltersWithCategories(categories) {
         });
     });
 }
-
 // Products array
 let products = [];
-
 // Application State
 let cart = [];
 let currentSlide = 0;
 let autoplayInterval;
 let userLocation = null;
-
 // Variables para carga infinita
 let currentProductIndex = 0;
 const PRODUCTS_PER_PAGE = 10;
@@ -1878,18 +1644,14 @@ let isLoadingProducts = false;
 let currentSearchTerm = '';
 let currentFilteredProducts = [];
 let isNavigating = false; // AGREGAR ESTA LÍNEA
-
 // Particles Animation
 function initParticles() {
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
-    
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-
     const particles = [];
     const particleCount = window.innerWidth > 768 ? 60 : 30;
-
     for (let i = 0; i < particleCount; i++) {
         particles.push({
             x: Math.random() * canvas.width,
@@ -1900,43 +1662,33 @@ function initParticles() {
             opacity: Math.random() * 0.5 + 0.2
         });
     }
-
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
         const isDark = document.body.classList.contains('dark-mode');
         const color = isDark ? '212, 165, 116' : '139, 115, 85';
-
         particles.forEach(p => {
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
             ctx.fillStyle = `rgba(${color}, ${p.opacity})`;
             ctx.fill();
-
             p.x += p.speedX;
             p.y += p.speedY;
-
             if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
             if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
         });
-
         requestAnimationFrame(animate);
     }
-
     animate();
-
     window.addEventListener('resize', () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     });
 }
-
 // Carousel
 function initCarousel() {
     const track = document.getElementById('carouselTrack');
     const controls = document.getElementById('carouselControls');
     const slides = document.querySelectorAll('.carousel-slide');
-
     slides.forEach((_, index) => {
         const dot = document.createElement('div');
         dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
@@ -1950,32 +1702,26 @@ function initCarousel() {
         });
         controls.appendChild(dot);
     });
-
     // Iniciar autoplay
     if (autoplayInterval) {
         clearInterval(autoplayInterval);
     }
     autoplayInterval = setInterval(nextSlide, 6000);
 }
-
 function goToSlide(index) {
     const track = document.getElementById('carouselTrack');
     const dots = document.querySelectorAll('.carousel-dot');
-
     currentSlide = index;
     track.style.transform = `translateX(-${currentSlide * 100}%)`;
-
     dots.forEach((dot, i) => {
         dot.classList.toggle('active', i === currentSlide);
     });
 }
-
 function nextSlide() {
     const slides = document.querySelectorAll('.carousel-slide');
     currentSlide = (currentSlide + 1) % slides.length;
     goToSlide(currentSlide);
 }
-
 // Función para manejar la entrada del usuario en la barra de búsqueda
 function filterProducts() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -1983,61 +1729,32 @@ function filterProducts() {
     const activeCategory = document.querySelector('.filter-btn.active').dataset.category;
     currentProductIndex = 0;
     renderProducts(activeCategory, searchTerm);
-    
-    // Scroll automático a la sección de productos al escribir
-    if (searchTerm.length > 0) {
-        isNavigating = true;
-        const productosSection = document.getElementById('productos');
-        const productsGrid = document.getElementById('productsGrid');
-        
-        if (productosSection && productsGrid) {
-            const headerOffset = document.getElementById('header')?.offsetHeight || 80;
-            const searchBarHeight = 100; // Espacio adicional para ver la barra de búsqueda
-            const elementPosition = productsGrid.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset - searchBarHeight;
-
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
-            
-            // Reactivar carga después del scroll
-            setTimeout(() => {
-                isNavigating = false;
-            }, 800);
-        }
-    }
+    // ⚠️ ELIMINADO: scroll automático al escribir → ya no salta la página
 }
-
 function filterByCategoryAndScroll(categorySlug) {
     // Marcar que estamos navegando
     isNavigating = true;
     console.log('🚫 Navegación a productos - carga pausada');
-    
     // 1. Activar el botón de filtro correspondiente
     const filterBtn = document.querySelector(`.filter-btn[data-category="${categorySlug}"]`);
     if (filterBtn) {
         document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
         filterBtn.classList.add('active');
     }
-
     // 2. Aplicar el filtro (esto llama a renderProducts internamente)
     currentSearchTerm = '';
     currentProductIndex = 0;
     renderProducts(categorySlug, '');
-
     // 3. Desplazarse suavemente a la sección de productos
     const productosSection = document.getElementById('productos');
     if (productosSection) {
         const headerOffset = document.getElementById('header')?.offsetHeight || 80;
         const elementPosition = productosSection.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
         window.scrollTo({
             top: offsetPosition,
             behavior: 'smooth'
         });
-        
         // Listener para cuando termine el scroll
         const onScrollEnd = () => {
             setTimeout(() => {
@@ -2046,7 +1763,6 @@ function filterByCategoryAndScroll(categorySlug) {
             }, 500);
             window.removeEventListener('scrollend', onScrollEnd);
         };
-        
         if ('onscrollend' in window) {
             window.addEventListener('scrollend', onScrollEnd, { once: true });
         } else {
@@ -2054,7 +1770,6 @@ function filterByCategoryAndScroll(categorySlug) {
                 isNavigating = false;
             }, 2000);
         }
-        
         setTimeout(() => {
             if (isNavigating) {
                 isNavigating = false;
@@ -2064,16 +1779,13 @@ function filterByCategoryAndScroll(categorySlug) {
         isNavigating = false;
     }
 }
-
 // Función para renderizar productos con carga inicial
 function renderProducts(category = 'todos', searchTerm = '') {
     const grid = document.getElementById('productsGrid');
     let filtered = products;
-
     if (category !== 'todos') {
         filtered = filtered.filter(p => p.category === category);
     }
-
     if (searchTerm) {
         filtered = filtered.filter(p =>
             p.name.toLowerCase().includes(searchTerm) ||
@@ -2081,9 +1793,7 @@ function renderProducts(category = 'todos', searchTerm = '') {
             p.category.toLowerCase().includes(searchTerm)
         );
     }
-
     currentFilteredProducts = filtered;
-
     if (filtered.length === 0) {
         grid.innerHTML = `
             <div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-light);">
@@ -2093,13 +1803,10 @@ function renderProducts(category = 'todos', searchTerm = '') {
         `;
         return;
     }
-
     // Mostrar solo los primeros 10 productos
     const productsToShow = filtered.slice(0, PRODUCTS_PER_PAGE);
     currentProductIndex = PRODUCTS_PER_PAGE;
-
     grid.innerHTML = productsToShow.map(product => createProductCard(product)).join('');
-    
     // Agregar indicador de carga al final si hay más productos
     if (currentProductIndex < filtered.length) {
         grid.innerHTML += `
@@ -2110,7 +1817,6 @@ function renderProducts(category = 'todos', searchTerm = '') {
         `;
     }
 }
-
 // Función para crear tarjeta de producto
 function createProductCard(product) {
     return `
@@ -2138,15 +1844,12 @@ function createProductCard(product) {
         </div>
     `;
 }
-
 // Función para cargar más productos
 function loadMoreProducts() {
     if (isLoadingProducts || isNavigating || currentProductIndex >= currentFilteredProducts.length) return;
-
     isLoadingProducts = true;
     const indicator = document.getElementById('loadingIndicator');
     if (indicator) indicator.style.display = 'block';
-
     // Simular delay de carga
     setTimeout(() => {
         const grid = document.getElementById('productsGrid');
@@ -2154,17 +1857,13 @@ function loadMoreProducts() {
             currentProductIndex,
             currentProductIndex + PRODUCTS_PER_PAGE
         );
-
         // Remover indicador temporal
         if (indicator) indicator.remove();
-
         // Agregar nuevos productos
         nextProducts.forEach(product => {
             grid.insertAdjacentHTML('beforeend', createProductCard(product));
         });
-
         currentProductIndex += PRODUCTS_PER_PAGE;
-
         // Agregar indicador de nuevo si hay más productos
         if (currentProductIndex < currentFilteredProducts.length) {
             grid.insertAdjacentHTML('beforeend', `
@@ -2174,54 +1873,41 @@ function loadMoreProducts() {
                 </div>
             `);
         }
-
         isLoadingProducts = false;
     }, 500);
 }
-
 // Detectar scroll para carga infinita
 function handleInfiniteScroll() {
     // No cargar si estamos navegando
     if (isNavigating || isLoadingProducts) return;
-    
     const grid = document.getElementById('productsGrid');
     if (!grid) return;
-
     // Solo cargar si estamos en la sección de productos
     const productsSection = document.getElementById('productos');
     if (!productsSection) return;
-    
     const rect = productsSection.getBoundingClientRect();
     const windowHeight = window.innerHeight;
-    
     // Verificar si estamos realmente EN la sección productos (no solo pasando)
     const isInProductsSection = rect.top < windowHeight && rect.bottom > 0;
-    
     if (!isInProductsSection) return;
-
     const gridBottom = grid.getBoundingClientRect().bottom;
-
     // Cargar más cuando falten 400px para llegar al final
     if (gridBottom - windowHeight < 400 && gridBottom > 0) {
         loadMoreProducts();
     }
 }
-
 // Cart Functions
 function addToCart(productId) {
     const product = products.find(p => p.id === productId);
     const existingItem = cart.find(item => item.id === productId);
-
     if (existingItem) {
         existingItem.quantity++;
     } else {
         cart.push({ ...product, quantity: 1 });
     }
-
     updateCart();
     animateCartIcon();
 }
-
 function animateCartIcon() {
     const cartBtn = document.getElementById('cartBtn');
     cartBtn.style.transform = 'scale(1.2)';
@@ -2229,15 +1915,12 @@ function animateCartIcon() {
         cartBtn.style.transform = 'scale(1)';
     }, 300);
 }
-
 function updateCart() {
     const container = document.getElementById('cartItemsContainer');
     const badge = document.getElementById('cartBadge');
     const total = document.getElementById('totalAmount');
-
     const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
     const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
     if (cart.length === 0) {
         container.innerHTML = `
             <div class="empty-cart">
@@ -2249,7 +1932,6 @@ function updateCart() {
     } else {
         badge.style.display = 'flex';
         badge.textContent = itemCount;
-        
         container.innerHTML = cart.map(item => `
             <div class="cart-item">
                 <img src="${item.image}" alt="${item.name}" class="cart-item-image">
@@ -2266,10 +1948,8 @@ function updateCart() {
             </div>
         `).join('');
     }
-
     total.textContent = `${totalAmount}`;
 }
-
 function updateQuantity(productId, change) {
     const item = cart.find(i => i.id === productId);
     if (item) {
@@ -2281,12 +1961,10 @@ function updateQuantity(productId, change) {
         }
     }
 }
-
 function removeFromCart(productId) {
     cart = cart.filter(item => item.id !== productId);
     updateCart();
 }
-
 function shareProduct(productId, platform) {
     const product = products.find(p => p.id === productId);
     const url = encodeURIComponent(window.location.origin + window.location.pathname);
@@ -2297,49 +1975,39 @@ function shareProduct(productId, platform) {
         alert('Para compartir en Instagram, tomá captura y publicá en tus historias 📸');
     }
 }
-
 // UI Controls
 document.getElementById('themeToggle').addEventListener('click', function() {
     document.body.classList.toggle('dark-mode');
     this.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
 });
-
 document.getElementById('menuToggle').addEventListener('click', function() {
     this.classList.toggle('active');
     document.getElementById('sideMenu').classList.toggle('active');
 });
-
 // Mejorar los links del menú para evitar carga infinita durante navegación
 document.querySelectorAll('.menu-link, .desktop-nav a, a[href^="#"]').forEach(link => {
     link.addEventListener('click', (e) => {
         const href = link.getAttribute('href');
-        
         // Si es un anchor link
         if (href && href.startsWith('#')) {
             e.preventDefault();
-            
             // Marcar que estamos navegando INMEDIATAMENTE
             isNavigating = true;
             console.log('🚫 Navegación bloqueada - carga de productos pausada');
-            
             // Cerrar menú móvil si está abierto
             document.getElementById('sideMenu').classList.remove('active');
             document.getElementById('menuToggle').classList.remove('active');
-            
             // Obtener la sección destino
             const targetId = href.substring(1);
             const targetSection = document.getElementById(targetId);
-            
             if (targetSection) {
                 const headerOffset = document.getElementById('header')?.offsetHeight || 80;
                 const elementPosition = targetSection.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
                 window.scrollTo({
                     top: offsetPosition,
                     behavior: 'smooth'
                 });
-                
                 // Listener para cuando termine el scroll
                 const onScrollEnd = () => {
                     setTimeout(() => {
@@ -2348,7 +2016,6 @@ document.querySelectorAll('.menu-link, .desktop-nav a, a[href^="#"]').forEach(li
                     }, 500); // Medio segundo extra después de terminar
                     window.removeEventListener('scrollend', onScrollEnd);
                 };
-                
                 // Usar scrollend si está disponible
                 if ('onscrollend' in window) {
                     window.addEventListener('scrollend', onScrollEnd, { once: true });
@@ -2359,7 +2026,6 @@ document.querySelectorAll('.menu-link, .desktop-nav a, a[href^="#"]').forEach(li
                         console.log('✅ Navegación completada (fallback) - carga de productos reactivada');
                     }, 2000);
                 }
-                
                 // Timeout de seguridad por si algo falla
                 setTimeout(() => {
                     if (isNavigating) {
@@ -2373,15 +2039,12 @@ document.querySelectorAll('.menu-link, .desktop-nav a, a[href^="#"]').forEach(li
         }
     });
 });
-
 document.getElementById('cartBtn').addEventListener('click', () => {
     document.getElementById('cartPanel').classList.add('active');
 });
-
 document.getElementById('closeCartBtn').addEventListener('click', () => {
     document.getElementById('cartPanel').classList.remove('active');
 });
-
 document.getElementById('checkoutBtn').addEventListener('click', () => {
     if (cart.length === 0) {
         alert('Tu carrito está vacío');
@@ -2389,7 +2052,6 @@ document.getElementById('checkoutBtn').addEventListener('click', () => {
     }
     document.getElementById('checkoutModal').classList.add('active');
 });
-
 document.getElementById('locationBtn').addEventListener('click', () => {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(position => {
@@ -2405,64 +2067,56 @@ document.getElementById('locationBtn').addEventListener('click', () => {
         alert('Tu navegador no soporta geolocalización.');
     }
 });
-
 document.getElementById('cancelBtn').addEventListener('click', () => {
     document.getElementById('checkoutModal').classList.remove('active');
 });
-
 document.getElementById('checkoutForm').addEventListener('submit', (e) => {
     e.preventDefault();
-
     const address = document.getElementById('addressInput').value;
     const payment = document.querySelector('input[name="payment"]:checked').value;
-
-    let message = '🛒 *Nuevo Pedido - Quesería y Almacén Natural V&C*\n\n';
-    
+    let message = '🛒 *Nuevo Pedido - Quesería y Almacén Natural V&C*
+';
     cart.forEach(item => {
-        message += `• ${item.quantity}x ${item.name} - ${item.price * item.quantity}\n`;
+        message += `• ${item.quantity}x ${item.name} - ${item.price * item.quantity}
+`;
     });
-
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    message += `\n*Total: ${total}*\n\n`;
-    message += `💳 Pago: ${payment}\n`;
-    message += `📍 Dirección: ${address}\n`;
-
+    message += `
+*Total: ${total}*
+`;
+    message += `💳 Pago: ${payment}
+`;
+    message += `📍 Dirección: ${address}
+`;
     if (userLocation) {
-        message += `🗺️ Ubicación: https://www.google.com/maps?q=${userLocation.lat},${userLocation.lng}\n`;
+        message += `🗺️ Ubicación: https://www.google.com/maps?q=${userLocation.lat},${userLocation.lng}
+`;
     }
-
     const phoneNumber = '+598 99 015 691';
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-
     window.open(whatsappUrl, '_blank');
-
     cart = [];
     updateCart();
     document.getElementById('checkoutModal').classList.remove('active');
     document.getElementById('cartPanel').classList.remove('active');
     document.getElementById('checkoutForm').reset();
 });
-
 document.getElementById('checkoutModal').addEventListener('click', (e) => {
     if (e.target.id === 'checkoutModal') {
         e.target.classList.remove('active');
     }
 });
-
 // Header scroll effect y barra de búsqueda fija / lupa flotante
 let searchOriginalOffset = 0;
 let searchContainer = null;
 let searchFloatBtn = null;
-
 window.addEventListener('scroll', () => {
     const header = document.getElementById('header');
-    
     if (window.scrollY > 50) {
         header.classList.add('scrolled');
     } else {
         header.classList.remove('scrolled');
     }
-
     // Inicializar referencias
     if (!searchContainer) {
         searchContainer = document.querySelector('.search-container');
@@ -2473,11 +2127,9 @@ window.addEventListener('scroll', () => {
             console.log('📏 Offset de búsqueda:', searchOriginalOffset);
         }
     }
-
     if (searchContainer && searchOriginalOffset > 0) {
         // Detectar si es móvil vertical
         const isMobilePortrait = window.innerWidth <= 768 && window.matchMedia("(orientation: portrait)").matches;
-        
         if (window.scrollY >= searchOriginalOffset - 100) {
             if (isMobilePortrait) {
                 // MÓVIL VERTICAL: mostrar lupa flotante en vez de barra fija
@@ -2505,28 +2157,22 @@ window.addEventListener('scroll', () => {
             }
         }
     }
-
     // Carga infinita solo si NO estamos navegando
     if (!isNavigating) {
         handleInfiniteScroll();
     }
 });
-
-// Initialize
 // Función para manejar el botón flotante de búsqueda
 function initSearchFloatButton() {
     const floatBtn = document.getElementById('searchFloatBtn');
     const searchContainer = document.getElementById('searchContainer');
     const searchInput = document.getElementById('searchInput');
     const closeBtn = document.getElementById('searchCloseBtn');
-    
     if (!floatBtn || !searchContainer) {
         console.error('❌ No se encontraron los elementos de búsqueda');
         return;
     }
-    
     console.log('✅ Botón de búsqueda inicializado');
-    
     // Abrir barra al tocar lupa
     floatBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -2539,15 +2185,13 @@ function initSearchFloatButton() {
             searchInput.focus();
         }, 300);
     });
-    
-    // Cerrar barra
+    // Cerrar barra SOLO con la X (y no borrar el texto)
     closeBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         console.log('❌ Cerrando búsqueda');
         searchContainer.classList.remove('expanded');
-        searchInput.value = '';
-        filterProducts();
-        
+        // 👉 NO borramos searchInput.value → se conserva
+        // 👉 NO llamamos a filterProducts() → se filtra solo al escribir
         // Volver a mostrar lupa si ya pasamos el scroll
         setTimeout(() => {
             if (window.scrollY >= searchOriginalOffset - 100 && 
@@ -2558,17 +2202,7 @@ function initSearchFloatButton() {
             }
         }, 300);
     });
-    
-    // Cerrar al hacer clic fuera
-    document.addEventListener('click', (e) => {
-        if (searchContainer.classList.contains('expanded') &&
-            !searchContainer.contains(e.target) &&
-            !floatBtn.contains(e.target)) {
-            console.log('👆 Click fuera, cerrando búsqueda');
-            closeBtn.click();
-        }
-    });
-    
+    // 👉 ELIMINAMOS el listener de "click outside"
     // Prevenir que el click en el input cierre la barra
     searchInput.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -2576,15 +2210,11 @@ function initSearchFloatButton() {
 }
 window.addEventListener('DOMContentLoaded', async () => {
     console.log('🧀 Quesería y Almacén Natural V&C - Inicializando...');
-    
     const supabaseConnected = initSupabase();
-    
     if (supabaseConnected) {
         console.log('✅ Supabase conectado');
-        
         await loadCategoriesFromSupabase();
         const productsLoaded = await loadProductsFromSupabase();
-        
         if (!productsLoaded) {
             console.warn('⚠️ No se pudieron cargar productos desde Supabase, usando productos de ejemplo');
         }
@@ -2592,26 +2222,21 @@ window.addEventListener('DOMContentLoaded', async () => {
         console.warn('⚠️ Supabase no configurado');
         console.warn('📦 Usando productos de ejemplo');
     }
-    
     initParticles();
     initCarousel();
     renderProducts();
     updateCart();
     initBackgroundMusic();
     initSearchFloatButton();
-    
     console.log('✅ Aplicación inicializada');
 });
-
 // Control de música de fondo
 function initBackgroundMusic() {
     const audio = document.getElementById('backgroundMusic');
     const toggleBtn = document.getElementById('musicToggle');
     let isPlaying = false;
     let musicStarted = false;
-
     audio.volume = 0.3;
-    
     toggleBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         if (isPlaying) {
@@ -2631,7 +2256,6 @@ function initBackgroundMusic() {
             });
         }
     });
-
     const startMusic = () => {
         if (!musicStarted) {
             audio.play().then(() => {
@@ -2646,7 +2270,6 @@ function initBackgroundMusic() {
             });
         }
     };
-
     const removeAllListeners = () => {
         window.removeEventListener('scroll', startMusic);
         window.removeEventListener('touchstart', startMusic);
@@ -2654,7 +2277,6 @@ function initBackgroundMusic() {
         document.removeEventListener('click', startMusic);
         document.body.removeEventListener('touchend', startMusic);
     };
-
     audio.play().then(() => {
         isPlaying = true;
         musicStarted = true;
@@ -2663,18 +2285,15 @@ function initBackgroundMusic() {
         console.log('✅ Música iniciada automáticamente');
     }).catch(() => {
         console.log('⚠️ Reproducción bloqueada, esperando interacción del usuario');
-        
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             toggleBtn.style.animation = 'pulse 2s infinite';
             console.log('📱 Dispositivo móvil detectado - pulsa para activar música');
         }
-        
         window.addEventListener('scroll', startMusic, { passive: true });
         window.addEventListener('touchstart', startMusic, { passive: true });
         window.addEventListener('touchmove', startMusic, { passive: true, once: true });
         document.addEventListener('click', startMusic);
         document.body.addEventListener('touchend', startMusic, { passive: true, once: true });
-        
         setTimeout(() => {
             if (!musicStarted) {
                 removeAllListeners();
@@ -2683,10 +2302,8 @@ function initBackgroundMusic() {
         }, 30000);
     });
 }
-
 // Pause carousel on hover con mejor manejo
 const carouselContainer = document.querySelector('.carousel-container');
-
 if (carouselContainer) {
     carouselContainer.addEventListener('mouseenter', () => {
         if (autoplayInterval) {
@@ -2694,14 +2311,12 @@ if (carouselContainer) {
             autoplayInterval = null;
         }
     });
-
     carouselContainer.addEventListener('mouseleave', () => {
         if (!autoplayInterval) {
             autoplayInterval = setInterval(nextSlide, 6000);
         }
     });
 }
-
 // Asegurar que el autoplay siempre esté activo (recuperación automática)
 setInterval(() => {
     // Si no hay autoplay activo y no estamos con hover en el carrusel
@@ -2710,7 +2325,6 @@ setInterval(() => {
         console.log('🔄 Autoplay del carrusel reactivado');
     }
 }, 10000); // Verificar cada 10 segundos
-
 // Prevenir que otros eventos detengan el carrusel
 document.addEventListener('visibilitychange', () => {
     if (!document.hidden && !autoplayInterval) {
@@ -2763,16 +2377,13 @@ document.addEventListener('visibilitychange', () => {
     transition: all 0.3s ease;
     cursor: pointer;
 }
-
 .music-toggle:hover {
     transform: scale(1.1);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
-
 .music-toggle.playing {
     animation: pulse 2s infinite;
 }
-
 @keyframes pulse {
     0%, 100% {
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
@@ -2799,7 +2410,6 @@ html {
     border-radius: 15px;
     text-align: center;
 }
-
 #productos .section-header::before {
     content: '';
     position: absolute;
@@ -2818,40 +2428,33 @@ html {
     transition: transform 0.6s ease;
     filter: brightness(0.7);
 }
-
 #productos .section-header::before {
     image-rendering: crisp-edges;
 }
-
 /* Texto blanco en modo claro */
 #productos .section-title {
     color: white !important;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.95);
 }
-
 #productos .section-subtitle {
     color: white !important;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
 }
-
 /* Texto blanco también en modo oscuro con sombras negras */
 body.dark-mode #productos .section-title {
     color: white !important;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.95);
 }
-
 body.dark-mode #productos .section-subtitle {
     color: white !important;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
 }
-
 /* Añadir un respaldo de color semi-transparente para mejor contraste */
 #productos .section-header .section-title,
 #productos .section-header .section-subtitle {
     position: relative;
     z-index: 1;
 }
-
 @media (max-width: 1024px) {
     #productos .section-header::before {
         background-image: url('https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/IMG-20251120-WA0066.jpg');
@@ -2861,7 +2464,6 @@ body.dark-mode #productos .section-subtitle {
         opacity: 1;
         filter: brightness(0.7);
     }
-
     #productos .section-header {
         min-height: 220px;
         padding: 2.5rem 5%;
@@ -2871,9 +2473,7 @@ body.dark-mode #productos .section-subtitle {
         border-radius: 0;
     }
 }
-
 </style>
-
 <a href="https://wa.me/+59899015691" target="_blank" class="whatsapp-float" title="Escribir por WhatsApp">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="30" height="30" fill="white" aria-hidden="true">
         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>

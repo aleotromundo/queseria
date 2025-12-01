@@ -1980,6 +1980,30 @@ function filterProducts() {
     const activeCategory = document.querySelector('.filter-btn.active').dataset.category;
     currentProductIndex = 0;
     renderProducts(activeCategory, searchTerm);
+    
+    // Scroll automático a la sección de productos al escribir
+    if (searchTerm.length > 0) {
+        isNavigating = true;
+        const productosSection = document.getElementById('productos');
+        const productsGrid = document.getElementById('productsGrid');
+        
+        if (productosSection && productsGrid) {
+            const headerOffset = document.getElementById('header')?.offsetHeight || 80;
+            const searchBarHeight = 100; // Espacio adicional para ver la barra de búsqueda
+            const elementPosition = productsGrid.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset - searchBarHeight;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+            
+            // Reactivar carga después del scroll
+            setTimeout(() => {
+                isNavigating = false;
+            }, 800);
+        }
+    }
 }
 
 function filterByCategoryAndScroll(categorySlug) {

@@ -1339,6 +1339,7 @@ body.dark-mode .search-float-btn {
     /* CUANDO PASA EL SCROLL: ocultar barra y mostrar lupa */
     .search-container.fixed {
         display: none !important;
+        visibility: hidden !important;
     }
     
     .search-float-btn {
@@ -1348,6 +1349,7 @@ body.dark-mode .search-float-btn {
     /* Barra expandida desde la lupa (se despliega desde la izquierda) */
     .search-container.expanded {
         display: block !important;
+        visibility: visible !important;
         position: fixed;
         top: 140px;
         left: 75px;
@@ -2569,7 +2571,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     renderProducts();
     updateCart();
     initBackgroundMusic();
-    nitSearchFloatButton();
+    initSearchFloatButton();
     
     console.log('✅ Aplicación inicializada');
 });

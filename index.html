@@ -32,7 +32,7 @@
             --bg-secondary: #f1d990c7;
             --accent-primary: #4a3d2d;
             --accent-secondary: #D4A574;
-            --accent-gold: #C9A962;
+            --accent-gold: #f0f0e9;
             --text-dark: #030202;
             --text-medium: #080807;
             --text-light: #000000;
@@ -1559,10 +1559,10 @@ body.dark-mode .search-float-btn {
                     <img src="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/product-images/imagenes%20webp/Gemini_Generated_Image_wgn4p2wgn4p2wgn4_resultado.webp" alt="Miel Pura" class="slide-image">
                     <div class="slide-overlay"></div>
                     <div class="slide-content">
-                        <span class="slide-label">🍯 Cosecha Propia</span>
+                        <span class="slide-label">🍯 Cosecha local </span>
                         <h1 class="slide-title">Miel Pura de Abeja</h1>
-                        <p class="slide-description">Directa de nuestras colmenas, sin procesar, conservando todas sus propiedades naturales</p>
-                        <a href="#productos" class="btn-hero">Probar Miel</a>
+                        <p class="slide-description">Sin procesar, conservando todas sus propiedades naturales</p>
+                        <a href="#productos" class="btn-hero">Explorar Productos</a>
                     </div>
                 </div>
             </div>
@@ -1628,9 +1628,28 @@ body.dark-mode .search-float-btn {
             </div>
         </div>
     </section>
-<!-- Sección Nosotros con video de fondo -->
-<section id="nosotros" style="padding: 6rem 5%; max-width: 1200px; margin: 0 auto; position: relative; overflow: hidden; background: var(--bg-primary);">
-    <!-- Video de fondo -->
+<!-- Sección Nosotros Mejorada (con tu logo real y tus textos originales) -->
+<!-- Sección Nosotros Mejorada (colores adaptativos + tu logo + tus textos) -->
+<section id="nosotros" style="
+    padding: 6rem 5%;
+    background: var(--bg-primary);
+    position: relative;
+    overflow: hidden;
+">
+    <!-- Fondo decorativo sutil -->
+    <div style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at top right, rgba(212, 165, 116, 0.06), transparent 40%),
+                    radial-gradient(circle at bottom left, rgba(139, 115, 85, 0.05), transparent 50%);
+        pointer-events: none;
+        z-index: 0;
+    "></div>
+
+    <!-- Video de fondo (opcional) -->
     <video autoplay muted loop playsinline preload="auto" style="
         position: absolute;
         top: 0;
@@ -1639,64 +1658,93 @@ body.dark-mode .search-float-btn {
         height: 100%;
         object-fit: cover;
         z-index: 1;
+        opacity: 0.5;
     ">
         <source src="nosotros.mp4" type="video/mp4">
-        <!-- Opcional: Texto alternativo si el video no se carga -->
-        Tu navegador no soporta el video.
     </video>
 
-    <!-- Overlay semi-transparente para mejorar la lectura (opcional, puedes ajustar la opacidad) -->
     <div style="
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.3); /* Overlay negro semi-transparente */
-        z-index: 2;
-    "></div>
-
-    <!-- Contenido de la sección con efecto Glassmorphism -->
-    <div style="
+        max-width: 900px;
+        margin: 0 auto;
         position: relative;
-        z-index: 3; /* Siempre debe estar por encima del video y del overlay */
-        padding: 3rem; /* Espaciado interno */
-        background: rgba(255, 255, 255, 0.15); /* Fondo blanco muy transparente */
-        backdrop-filter: blur(10px); /* Efecto de desenfoque */
-        -webkit-backdrop-filter: blur(10px); /* Compatibilidad con Safari */
-        border-radius: 20px; /* Bordes redondeados */
-        border: 1px solid rgba(255, 255, 255, 0.18); /* Borde sutil para el efecto glass */
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1); /* Sombra sutil */
-        color: var(--white); /* Asegura que el texto sea blanco */
-        max-width: 900px; /* Limita el ancho del contenido */
-        margin: 0 auto; /* Centra el contenedor de texto */
+        z-index: 3;
+        text-align: center;
+        background: rgba(10, 8, 6, 0.65);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 24px;
+        padding: 3.5rem 2.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: var(--shadow-lg);
     ">
-        <div class="section-header">
-            <h2 class="section-title" style="color: inherit;">Sobre Nosotros</h2> <!-- Título hereda el color blanco -->
-            <p class="section-subtitle" style="color: inherit; margin-bottom: 1.5rem;"> <!-- Párrafos heredan el color blanco -->
-                Somos un emprendimiento familiar dedicado a la
-producción de conservas caseras y mermeladas
-caseras de alta calidad. Elaboramos productos
-naturales, sin conservantes ni aditivos artificiales,
-utilizando ingredientes frescos y locales. Nuestra
-gama incluye quesos, conservas, facturas secas,
-mermeladas, y otros productos artesanales, todos
-elaborados con métodos tradicionales para
-garantizar un sabor auténtico y delicioso.
-<strong>Virginia y Carlos</strong>
+        <h2 class="section-title" style="
+            color: var(--accent-gold);
+            font-size: 2.8rem;
+            margin-bottom: 1.8rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+        ">Sobre Nosotros</h2>
 
-            </p>
-            <p style="color: inherit; margin-bottom: 1.5rem;"> <!-- Párrafos heredan el color blanco -->
-                Nuestros quesos se elaboran con leche de vacas alimentadas con pastura libre, sin hormonas ni antibióticos.
-                Las semillas y granos que ofrecemos son orgánicos, cosechados en pequeñas fincas familiares comprometidas con la agricultura sostenible.
-            </p>
-            <div style="margin-top: 2rem; font-size: 1rem; color: var(--text-light);"> <!-- Texto inferior con color más claro -->
-                <p>🧀 Hecho con raíces en el suelo uruguayo<br>
-                   🌱 Comprometidos con la tierra y tus hábitos saludables</p>
-            </div>
+        <!-- Tu logo -->
+        <div style="
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 1.8rem;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.45);
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        ">
+            <img src="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp"
+                 alt="Logo V&C"
+                 style="width: 100%; height: 100%; object-fit: contain;">
+        </div>
+
+        <!-- Tus textos originales, con colores adaptativos -->
+        <p style="
+            color: var(--accent-gold);
+            font-size: 1.15rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        ">
+            Somos un emprendimiento familiar dedicado a la producción de conservas caseras y mermeladas caseras de alta calidad. Elaboramos productos naturales, sin conservantes ni aditivos artificiales, utilizando ingredientes frescos y locales. Nuestra gama incluye quesos, conservas, facturas secas, mermeladas, y otros productos artesanales, todos elaborados con métodos tradicionales para garantizar un sabor auténtico y delicioso.
+            <strong style="color: var(--accent-gold);">Virginia y Carlos</strong>
+        </p>
+
+        <p style="
+            color: #b1b1b1;
+            font-size: 1.15rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        ">
+            Nuestros quesos se elaboran con leche de vacas alimentadas con pastura libre, sin hormonas ni antibióticos. Las semillas y granos que ofrecemos son orgánicos, cosechados en pequeñas fincas familiares comprometidas con la agricultura sostenible.
+        </p>
+
+        <!-- Frases finales -->
+        <div style="
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            font-size: 1rem;
+            color: var(--accent-gold);
+            font-weight: 600;
+        ">
+            <span>🧀 Hecho con raíces en el suelo uruguayo</span>
+            <span>🌱 Comprometidos con la tierra y tus hábitos saludables</span>
         </div>
     </div>
 </section>
+
 <!-- Sección Contacto Mejorada -->
 <section id="contacto" style="
     padding: 6rem 5%;
@@ -1731,7 +1779,7 @@ garantizar un sabor auténtico y delicioso.
         border: 1px solid rgba(255, 255, 255, 0.12);
         box-shadow: var(--shadow-lg);
     ">
-        <h2 class="section-title" style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.7); margin-bottom: 1rem;">Contacto</h2>
+        <h2 class="section-title" style="color: --text-light; text-shadow: 2px 2px 4px rgba(0,0,0,0.7); margin-bottom: 1rem;">Contacto</h2>
         <p class="section-subtitle" style="color: var(--text-light); opacity: 0.9; margin-bottom: 2.5rem; font-size: 1.15rem;">
             ¡Escribinos para más información o para coordinar tu pedido!
         </p>
@@ -1742,7 +1790,7 @@ garantizar un sabor auténtico y delicioso.
             <div style="display: flex; align-items: center; justify-content: center; gap: 1rem;">
                 <span style="font-size: 1.8rem;">📱</span>
                 <a href="https://wa.me/59899015691" target="_blank" style="
-                    color: var(--accent-gold);
+                    color: var(--text-light);
                     text-decoration: none;
                     font-weight: 600;
                     border-bottom: 2px solid var(--accent-gold);
@@ -1755,7 +1803,7 @@ garantizar un sabor auténtico y delicioso.
             <div style="display: flex; align-items: flex-start; justify-content: center; gap: 1rem;">
                 <span style="font-size: 1.8rem;">📍</span>
                 <div style="text-align: left; max-width: 500px; color: var(--text-light);">
-                    <strong style="color: var(--accent-gold);">Nos encontrás en ferias:</strong><br>
+                    <strong style="color: var(--text-light));">Nos encontrás en ferias:</strong><br>
                     • Jueves: Feria de Salinas<br>
                     • Sábados: Feria del Pinar (Autódromo)<br>
                     • Domingos: Feria de Pinamar
@@ -1765,7 +1813,7 @@ garantizar un sabor auténtico y delicioso.
             <!-- Envíos -->
             <div style="display: flex; align-items: center; justify-content: center; gap: 1rem;">
                 <span style="font-size: 1.8rem;">🚚</span>
-                <span style="color: var(--text-light);">Envíos a domicilio en todo Uruguay</span>
+                <span style="color: var(--text-light);">Envíos a domicilio!</span>
             </div>
 
         </div>

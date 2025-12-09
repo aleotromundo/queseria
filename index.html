@@ -910,7 +910,7 @@
         }
 
         .total-amount {
-            color: var(--accent-gold);
+            color: var(--text-light);
         }
 
         .checkout-btn {
@@ -1626,7 +1626,7 @@
             pointer-events: none;
             border-radius: 15px;
             transition: transform 0.6s ease;
-            filter: brightness(0.7);
+            filter: brightness(1.1);
         }
 
         #productos .section-header::before {
@@ -1635,23 +1635,23 @@
 
         /* Texto blanco en modo claro */
         #productos .section-title {
-            color: white !important;
+            color: black !important;
             text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.95);
         }
 
         #productos .section-subtitle {
-            color: white !important;
+            color: black !important;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
         }
 
         /* Texto blanco también en modo oscuro con sombras negras */
         body.dark-mode #productos .section-title {
-            color: white !important;
+            color: black !important;
             text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.95);
         }
 
         body.dark-mode #productos .section-subtitle {
-            color: white !important;
+            color: black !important;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
         }
 
@@ -1668,8 +1668,8 @@
                 background-size: cover;
                 background-position: center;
                 background-repeat: no-repeat;
-                opacity: 1;
-                filter: brightness(0.7);
+                opacity: 2;
+                filter: brightness(0.6);
             }
 
             #productos .section-header {
@@ -1681,6 +1681,25 @@
                 border-radius: 0;
             }
         }
+
+/* Escritorio: Texto NEGRO siempre */
+@media (min-width: 769px) {
+    #productos .section-title, 
+    #productos .section-subtitle {
+        color: black !important;
+        text-shadow: none !important;
+    }
+}
+
+/* Móvil: Texto BLANCO siempre */
+@media (max-width: 768px) {
+    #productos .section-title, 
+    #productos .section-subtitle {
+        color: white !important;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8) !important; /* Sombra para que se lea bien */
+    }
+}
+
     </style>
 </head>
 <body class="dark-mode">

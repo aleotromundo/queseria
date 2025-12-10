@@ -164,6 +164,7 @@
             display: flex;
             flex-direction: row; /* Horizontal en desktop */
             min-height: 100vh;
+            position: relative;
         }
 
         .sidebar {
@@ -243,6 +244,8 @@
             padding: 1.5rem; /* Ajuste */
             min-height: 100vh;
             display: none; /* Oculto hasta login */
+            width: 100%;
+            overflow-x: hidden;
         }
 
         /* === DASHBOARD STYLES === */
@@ -683,21 +686,35 @@
 
         /* Botones flotantes */
         .mobile-menu-btn {
-            display: none; /* Visible solo en móvil */
-            position: fixed;
-            bottom: 2rem;
-            left: 2rem;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: var(--shadow-lg);
-            z-index: 99;
-        }
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    z-index: 99;
+}
+
+/* SOLO visible en tablets y móviles */
+@media (max-width: 1023px) {
+    .mobile-menu-btn {
+        display: block !important; /* Fuerza visibilidad en móvil */
+    }
+}
+
+/* NUNCA visible en desktop */
+@media (min-width: 1024px) {
+    .mobile-menu-btn {
+        display: none !important; /* Fuerza ocultamiento en desktop */
+    }
+}
 
         .theme-toggle {
             position: fixed;
@@ -723,19 +740,27 @@
         }
 
         /* Media Queries para Responsividad */
-        @media (min-width: 1024px) {
-            .sidebar {
-                position: sticky; /* Fijo en desktop */
-                left: 0;
-                top: 0;
-            }
-            .main-content {
-                margin-left: 260px; /* Ajusta espacio para el sidebar fijo */
-            }
-            .mobile-menu-btn {
-                display: none; /* Oculta el botón de menú en desktop */
-            }
-        }
+       @media (min-width: 1024px) {
+    .sidebar {
+        position: sticky; /* Fijo en desktop */
+        left: 0;
+        top: 0;
+        height: 100vh;
+    }
+    
+    .main-content {
+        margin-left: 260px; /* Espacio para el sidebar */
+        min-height: 100vh;
+    }
+    
+    .mobile-menu-btn {
+        display: none !important; /* Asegura que NO aparezca */
+    }
+    
+    .dashboard-container {
+        flex-direction: row; /* Horizontal en desktop */
+    }
+}
 
         @media (max-width: 1023px) {
             .dashboard-container {
@@ -1428,77 +1453,107 @@ async function uploadImage(file) {
                 }
             });
 
-            // Save product
-            document.getElementById('saveProductBtn').addEventListener('click', async () => {
-                const form = document.getElementById('productForm');
-                if (!form.checkValidity()) {
-                    form.reportValidity();
-                    return;
-                }
-                if (!supabase) {
-                    showToast('Error: Supabase no configurado', 'error');
-                    return;
-                }
-                // Disable button and show loading
-                const saveBtn = document.getElementById('saveProductBtn');
-                const originalText = saveBtn.innerHTML;
-                saveBtn.disabled = true;
-                saveBtn.innerHTML = '<span class="loading-spinner"></span> Guardando...';
-                try {
-                    let imageUrl = document.getElementById('productImageUrl').value;
-                    // Upload image if file is selected
-                    if (currentImageFile) {
-                        imageUrl = await uploadImage(currentImageFile);
-                        if (!imageUrl) {
-                            throw new Error('Error al subir la imagen');
-                        }
-                    }
-                    if (!imageUrl) {
-                        throw new Error('Debes proporcionar una imagen');
-                    }
-                    const name = document.getElementById('productName').value;
-                    const slug = name.toLowerCase()
-                        .normalize('NFD')
-                        .replace(/[\u0300-\u036f]/g, '')
-                        .replace(/[^a-z0-9]+/g, '-')
-                        .replace(/(^-|-$)/g, '');
-                    const productData = {
-                        name: name,
-                        slug: slug,
-                        category_slug: document.getElementById('productCategory').value,
-                        description: document.getElementById('productDescription').value,
-                        price: parseFloat(document.getElementById('productPrice').value),
-                        badge: document.getElementById('productBadge').value || null,
-                        image_url: imageUrl,
-                        is_active: true
-                    };
-                    let result;
-                    if (editingProductId) {
-                        // Update existing product
-                        result = await supabase
-                            .from('products')
-                            .update(productData)
-                            .eq('id', editingProductId);
-                        if (result.error) throw result.error;
-                        showToast('✅ Producto actualizado correctamente', 'success');
-                    } else {
-                        // Insert new product
-                        result = await supabase
-                            .from('products')
-                            .insert([productData]);
-                        if (result.error) throw result.error;
-                        showToast('✅ Producto agregado correctamente', 'success');
-                    }
-                    closeModal();
-                    loadProducts();
-                } catch (error) {
-                    console.error('Error saving product:', error);
-                    showToast('Error al guardar: ' + error.message, 'error');
-                } finally {
-                    saveBtn.disabled = false;
-                    saveBtn.innerHTML = originalText;
-                }
-            });
+            // Save product (VERSIÓN CON MEJOR DEBUG)
+// Save product (VERSIÓN DEBUG EXTREMO)
+document.getElementById('saveProductBtn').addEventListener('click', async () => {
+    const form = document.getElementById('productForm');
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+    
+    if (!supabase) {
+        alert('❌ SUPABASE NO ESTÁ CONFIGURADO');
+        return;
+    }
+    
+    const saveBtn = document.getElementById('saveProductBtn');
+    const originalText = saveBtn.innerHTML;
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = '<span class="loading-spinner"></span> Guardando...';
+    
+    try {
+        let imageUrl = document.getElementById('productImageUrl').value;
+        
+        if (currentImageFile) {
+            alert('📤 Subiendo imagen... (esto puede tardar)');
+            imageUrl = await uploadImage(currentImageFile);
+            alert('✅ Imagen subida: ' + imageUrl);
+        }
+        
+        if (!imageUrl) {
+            alert('❌ No hay imagen para subir');
+            throw new Error('Debes proporcionar una imagen');
+        }
+        
+        const name = document.getElementById('productName').value;
+        const slug = name.toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)/g, '');
+        
+        const productData = {
+            name: name,
+            slug: slug,
+            category_slug: document.getElementById('productCategory').value,
+            description: document.getElementById('productDescription').value,
+            price: parseFloat(document.getElementById('productPrice').value),
+            badge: document.getElementById('productBadge').value || null,
+            image_url: imageUrl,
+            is_active: true
+        };
+        
+        alert('💾 Intentando guardar en tabla: products\n\nDatos:\n' + JSON.stringify(productData, null, 2));
+        
+        let result;
+        if (editingProductId) {
+            result = await supabase
+                .from('products')
+                .update(productData)
+                .eq('id', editingProductId);
+            
+            alert('📝 Resultado UPDATE:\n' + JSON.stringify(result, null, 2));
+        } else {
+            result = await supabase
+                .from('products')
+                .insert([productData])
+                .select(); // <-- IMPORTANTE: Esto devuelve los datos insertados
+            
+            alert('➕ Resultado INSERT:\n' + JSON.stringify(result, null, 2));
+        }
+        
+        if (result.error) {
+            alert('❌ ERROR DE SUPABASE:\n\n' + 
+                  'Mensaje: ' + result.error.message + '\n' +
+                  'Código: ' + result.error.code + '\n' +
+                  'Hint: ' + (result.error.hint || 'N/A') + '\n' +
+                  'Detalles: ' + (result.error.details || 'N/A'));
+            throw result.error;
+        }
+        
+        if (result.data && result.data.length > 0) {
+            alert('✅ PRODUCTO GUARDADO EXITOSAMENTE!\n\nID: ' + result.data[0].id);
+            showToast('✅ Producto guardado correctamente', 'success');
+        } else {
+            alert('⚠️ No hubo error pero tampoco se devolvió ningún dato');
+        }
+        
+        closeModal();
+        await loadProducts();
+        
+    } catch (error) {
+        alert('❌ ERROR CAPTURADO:\n\n' + 
+              'Tipo: ' + error.name + '\n' +
+              'Mensaje: ' + error.message + '\n' +
+              'Stack: ' + error.stack);
+        showToast('Error: ' + error.message, 'error');
+    } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = originalText;
+    }
+});
+
 
             // Edit product
             window.editProduct = async function(id) {

@@ -1653,11 +1653,9 @@
         #productos .section-header {
             position: relative;
             overflow: hidden;
-            padding: 6rem 5%;
-            width: 88.8vw;
-            max-width: none;
-            margin-left: 50%;
-            transform: translateX(-50%);
+            padding: 6rem 2rem;
+            max-width: 1400px;  /* Ancho máximo controlado */
+            margin: 0 auto 4rem;  /* Centrado normal */
             border-radius: 15px;
             text-align: center;
         }
@@ -1685,17 +1683,15 @@
             image-rendering: crisp-edges;
         }
 
-        /* DESKTOP: Texto NEGRO con sombra suave */
+        /* /* DESKTOP: Texto NEGRO con sombra suave */
         #productos .section-title {
             color: #000000 !important;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important;
-            padding-left: 2ch;
         }
 
         #productos .section-subtitle {
             color: #000000 !important;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2) !important;
-            padding-left: 2ch;
         }
 
         /* Igual en modo oscuro desktop */
@@ -1728,10 +1724,9 @@
 
             #productos .section-header {
                 min-height: 220px;
-                padding: 2.5rem 5%;
-                width: 100vw;
-                margin-left: 0;
-                transform: none;
+                padding: 2.5rem 1.5rem;
+                width: 100%;  /* No más 100vw */
+                margin: 0 0 2rem 0;
                 border-radius: 0;
             }
 
@@ -1741,7 +1736,6 @@
             body #productos .section-header .section-title {
                 color: #FFFFFF !important;
                 text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.95) !important;
-                padding-left: 2ch !important;
             }
 
             #productos .section-header .section-subtitle,
@@ -1749,7 +1743,6 @@
             body #productos .section-header .section-subtitle {
                 color: #FFFFFF !important;
                 text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9) !important;
-                padding-left: 2ch !important;
             }
         }
 

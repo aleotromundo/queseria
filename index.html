@@ -1929,10 +1929,15 @@
 
     <!-- Sección Nosotros -->
     <section id="nosotros" style="
-        padding: 6rem 5%;
+        scroll-margin-top: 100px; /* Esto FRENARÁ el scroll exactamente debajo del menú */
+        min-height: 100vh;        /* Obliga a ocupar toda la pantalla */
+        padding: 4rem 5% 4rem;
         background: var(--bg-primary);
         position: relative;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Centra verticalmente */
     ">
         <div style="
             position: absolute;
@@ -1957,67 +1962,69 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-radius: 24px;
-            padding: 3.5rem 2.5rem;
+            padding: 3rem 1.5rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: var(--shadow-lg);
         ">
             <h2 class="section-title" style="
                 color: var(--accent-gold);
-                font-size: 2.8rem;
+                font-size: 2.5rem;
                 margin-bottom: 1.8rem;
                 text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
             ">Sobre Nosotros</h2>
 
             <!-- Contenedor Flexible para Logo y Video -->
-<div style="
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-    flex-wrap: wrap; /* Para que baje en celulares */
-    margin-bottom: 2rem;
-">
-    
-    <!-- 1. El Logo (Tu código original) -->
-    <div style="
-        width: 300px;
-        height: 300px;
-        border-radius: 18px;
-        overflow: hidden;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.45);
-        background: var(--bg-secondary);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    ">
-        <img src="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp"
-             alt="Logo V&C"
-             style="width: 100%; height: 100%; object-fit: contain;">
-    </div>
+            <div style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                flex-wrap: wrap; 
+                margin-bottom: 2rem;
+            ">
+                
+                <!-- 1. El Logo -->
+                <div style="
+                    width: 300px;
+                    height: 300px;
+                    max-width: 100%;
+                    border-radius: 18px;
+                    overflow: hidden;
+                    box-shadow: 0 8px 25px rgba(0,0,0,0.45);
+                    background: var(--bg-secondary);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                ">
+                    <img src="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp"
+                         alt="Logo V&C"
+                         style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
 
-    <!-- 2. El Video (Nuevo, mismo tamaño y estilo) -->
-    <div style="
-        width: 300px;
-        height: 300px;
-        border-radius: 18px;
-        overflow: hidden;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.45);
-        background: black; /* Fondo negro por si tarda en cargar */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    ">
-        <video autoplay muted loop playsinline style="
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; /* 'cover' recorta para llenar el cuadrado, 'contain' muestra todo el video con bandas negras */
-        ">
-            <source src="nosotros.mp4" type="video/mp4">
-            Tu navegador no soporta el video.
-        </video>
-    </div>
+                <!-- 2. El Video -->
+                <div style="
+                    width: 300px;
+                    height: 300px;
+                    max-width: 100%;
+                    border-radius: 18px;
+                    overflow: hidden;
+                    box-shadow: 0 8px 25px rgba(0,0,0,0.45);
+                    background: black; 
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                ">
+                    <video autoplay muted loop playsinline style="
+                        width: 100%; 
+                        height: 100%; 
+                        object-fit: cover; 
+                    ">
+                        <source src="nosotros.mp4" type="video/mp4">
+                        Tu navegador no soporta el video.
+                    </video>
+                </div>
 
-</div>
+            </div>
 
             <p style="
                 color: var(--accent-gold);
@@ -2903,69 +2910,30 @@ function createProductCard(product) {
             document.getElementById('sideMenu').classList.toggle('active');
         });
 
-        // Mejorar los links del menú para evitar carga infinita durante navegación
+        // Mejorar los links del menú (Versión Simplificada y Corregida)
         document.querySelectorAll('.menu-link, .desktop-nav a, a[href^="#"]').forEach(link => {
             link.addEventListener('click', (e) => {
                 const href = link.getAttribute('href');
 
                 // Si es un anchor link
                 if (href && href.startsWith('#')) {
-                    e.preventDefault();
+                    // NO usamos e.preventDefault() aquí.
+                    // Dejamos que el navegador use 'scroll-behavior: smooth' del CSS
+                    // y 'scroll-margin-top' que definimos en la sección.
 
-                    // Marcar que estamos navegando INMEDIATAMENTE
+                    // 1. Pausar carga infinita (lógica de negocio)
                     isNavigating = true;
-                    console.log('🚫 Navegación bloqueada - carga de productos pausada');
+                    console.log('🚫 Navegación detectada - carga de productos pausada');
 
-                    // Cerrar menú móvil si está abierto
+                    // 2. Cerrar menú móvil si está abierto
                     document.getElementById('sideMenu').classList.remove('active');
                     document.getElementById('menuToggle').classList.remove('active');
 
-                    // Obtener la sección destino
-                    const targetId = href.substring(1);
-                    const targetSection = document.getElementById(targetId);
-
-                    if (targetSection) {
-                        const headerOffset = document.getElementById('header')?.offsetHeight || 80;
-                        const elementPosition = targetSection.getBoundingClientRect().top;
-                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: 'smooth'
-                        });
-
-                        // Listener para cuando termine el scroll
-                        const onScrollEnd = () => {
-                            setTimeout(() => {
-                                isNavigating = false;
-                                console.log('✅ Navegación completada - carga de productos reactivada');
-                            }, 500); // Medio segundo extra después de terminar
-                            window.removeEventListener('scrollend', onScrollEnd);
-                        };
-
-                        // Usar scrollend si está disponible
-                        if ('onscrollend' in window) {
-                            window.addEventListener('scrollend', onScrollEnd, {
-                                once: true
-                            });
-                        } else {
-                            // Fallback para navegadores que no soportan scrollend
-                            setTimeout(() => {
-                                isNavigating = false;
-                                console.log('✅ Navegación completada (fallback) - carga de productos reactivada');
-                            }, 2000);
-                        }
-
-                        // Timeout de seguridad por si algo falla
-                        setTimeout(() => {
-                            if (isNavigating) {
-                                isNavigating = false;
-                                console.log('⏱️ Timeout de seguridad - carga reactivada');
-                            }
-                        }, 3000);
-                    } else {
+                    // 3. Reactivar la carga de productos después de un tiempo
+                    setTimeout(() => {
                         isNavigating = false;
-                    }
+                        console.log('✅ Navegación terminada');
+                    }, 1500);
                 }
             });
         });

@@ -54,9 +54,10 @@
             color: var(--text-dark);
             line-height: 1.6;
             transition: all 0.3s ease;
-            overflow-x: hidden;
-            overflow-y: auto;
+            overflow-x: hidden; /* Evita scroll horizontal no deseado */
+            overflow-y: auto; /* Permite scroll vertical */
         }
+        /* === LOGIN SCREEN === */
         .login-screen {
             display: flex;
             justify-content: center;
@@ -65,35 +66,45 @@
             padding: 20px;
             background: linear-gradient(135deg, var(--bg-main) 0%, var(--primary) 100%);
         }
+
         .login-box {
             background: var(--bg-card);
             border-radius: 16px;
-            padding: 2rem;
+            padding: 2rem; /* Ajuste para móviles */
             box-shadow: var(--shadow-lg);
             border: 1px solid var(--border);
             max-width: 400px;
             width: 100%;
             text-align: center;
         }
+
+        .login-logo {
+            margin-bottom: 1.5rem; /* Ajuste */
+        }
+
         .login-logo h1 {
             color: var(--primary);
-            font-size: 1.5rem;
+            font-size: 1.5rem; /* Ajuste */
             margin-bottom: 0.3rem;
         }
+
         .login-logo p {
             color: var(--text-medium);
-            font-size: 0.9rem;
+            font-size: 0.9rem; /* Ajuste */
         }
+
         .form-group {
-            margin-bottom: 1.2rem;
+            margin-bottom: 1.2rem; /* Ajuste */
             text-align: left;
         }
+
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
             color: var(--text-dark);
         }
+
         .form-input {
             width: 100%;
             padding: 0.75rem 1rem;
@@ -105,11 +116,13 @@
             background: var(--bg-main);
             color: var(--text-dark);
         }
+
         .form-input:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.1);
         }
+
         .btn {
             padding: 0.75rem 1.5rem;
             border: none;
@@ -122,16 +135,19 @@
             align-items: center;
             gap: 0.5rem;
         }
+
         .btn-primary {
             background: var(--primary);
             color: white;
             width: 100%;
         }
+
         .btn-primary:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
+
         .error-message {
             background: rgba(239, 68, 68, 0.1);
             border: 1px solid var(--danger);
@@ -139,19 +155,22 @@
             padding: 12px;
             margin-top: 1rem;
             color: var(--danger);
-            display: none;
-            font-size: 0.9rem;
+            display: none; /* Oculto por defecto */
+            font-size: 0.9rem; /* Ajuste */
         }
+
+        /* === DASHBOARD LAYOUT === */
         .dashboard-container {
             display: flex;
-            flex-direction: row;
+            flex-direction: row; /* Horizontal en desktop */
             min-height: 100vh;
             position: relative;
         }
+
         .sidebar {
-            position: fixed;
+            position: fixed; /* Fijo en móvil */
             top: 0;
-            left: -280px;
+            left: -280px; /* Oculto inicialmente en móvil */
             width: 260px;
             height: 100vh;
             background: var(--primary);
@@ -161,62 +180,75 @@
             box-shadow: var(--shadow-lg);
             overflow-y: auto;
             transition: left 0.3s ease;
-            display: block;
+            display: block; /* Siempre visible en desktop */
         }
+
         .sidebar.active {
-            left: 0;
+            left: 0; /* Visible en móvil */
         }
+
         body.dark-mode .sidebar {
             background: linear-gradient(180deg, #2c2520 0%, #1a1612 100%);
             border-right: 1px solid var(--border);
         }
+
         .logo-dashboard {
-            padding: 0 1.5rem 1.5rem;
+            padding: 0 1.5rem 1.5rem; /* Ajuste */
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.5rem; /* Ajuste */
         }
+
         .logo-dashboard h1 {
-            font-size: 1.3rem;
+            font-size: 1.3rem; /* Ajuste */
             font-weight: 700;
             margin-bottom: 0.2rem;
         }
+
         .logo-dashboard p {
-            font-size: 0.8rem;
+            font-size: 0.8rem; /* Ajuste */
             opacity: 0.8;
         }
+
         .nav-menu {
             list-style: none;
         }
+
         .nav-item {
-            margin: 0.4rem 0;
+            margin: 0.4rem 0; /* Ajuste */
         }
+
         .nav-link {
             display: flex;
             align-items: center;
             gap: 1rem;
-            padding: 0.8rem 1.5rem;
+            padding: 0.8rem 1.5rem; /* Ajuste */
             color: white;
             text-decoration: none;
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
         }
+
         .nav-link:hover,
         .nav-link.active {
             background: rgba(255,255,255,0.1);
             border-left-color: var(--accent);
         }
+
         .nav-icon {
-            font-size: 1.2rem;
+            font-size: 1.2rem; /* Ajuste */
         }
+
         .main-content {
-            flex: 1;
-            margin-left: 0;
-            padding: 1.5rem;
+            flex: 1; /* Ocupa el resto del espacio */
+            margin-left: 0; /* Se ajusta con JS en desktop */
+            padding: 1.5rem; /* Ajuste */
             min-height: 100vh;
-            display: none;
+            display: none; /* Oculto hasta login */
             width: 100%;
             overflow-x: hidden;
         }
+
+        /* === DASHBOARD STYLES === */
         .dashboard-header {
             background: var(--bg-card);
             padding: 1.5rem;
@@ -224,23 +256,32 @@
             box-shadow: var(--shadow-sm);
             margin-bottom: 1.5rem;
             display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            flex-direction: column; /* Vertical en móviles */
+            gap: 1rem; /* Espacio entre elementos */
         }
+
         .header-title {
-            font-size: 1.6rem;
+            font-size: 1.6rem; /* Ajuste */
             color: var(--primary);
         }
+
         .header-actions {
             display: flex;
-            justify-content: flex-end;
+            justify-content: flex-end; /* Alinea botones a la derecha */
         }
+
+        .btn {
+            padding: 0.6rem 1rem; /* Ajuste */
+            font-size: 0.9rem; /* Ajuste */
+        }
+
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive */
+            gap: 1rem; /* Ajuste */
             margin-bottom: 1.5rem;
         }
+
         .stat-card {
             background: var(--bg-card);
             padding: 1.2rem;
@@ -248,129 +289,152 @@
             box-shadow: var(--shadow-sm);
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 0.8rem; /* Ajuste */
         }
+
         .stat-icon {
-            width: 50px;
-            height: 50px;
+            width: 50px; /* Ajuste */
+            height: 50px; /* Ajuste */
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+            font-size: 1.8rem; /* Ajuste */
         }
+
         .stat-info h3 {
-            font-size: 1.6rem;
+            font-size: 1.6rem; /* Ajuste */
             color: var(--primary);
             margin-bottom: 0.2rem;
         }
+
         .stat-info p {
             color: var(--text-light);
-            font-size: 0.85rem;
+            font-size: 0.85rem; /* Ajuste */
         }
+
         .products-container {
             background: var(--bg-card);
             padding: 1.5rem;
             border-radius: 12px;
             box-shadow: var(--shadow-sm);
         }
+
         .table-header {
             display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            flex-direction: column; /* Vertical en móviles */
+            gap: 1rem; /* Espacio entre título y búsqueda */
             margin-bottom: 1.5rem;
         }
+
         .table-title {
-            font-size: 1.3rem;
+            font-size: 1.3rem; /* Ajuste */
             color: var(--primary);
         }
+
         .search-bar {
             display: flex;
             gap: 1rem;
             align-items: center;
         }
+
         .search-input {
             padding: 0.75rem 1rem;
             border: 2px solid var(--border);
             border-radius: 8px;
             font-size: 0.95rem;
-            width: 100%;
+            width: 100%; /* Ancho completo en móviles */
             transition: all 0.3s ease;
         }
+
         .search-input:focus {
             outline: none;
             border-color: var(--primary);
         }
+
         .products-table {
             width: 100%;
             border-collapse: collapse;
-            display: block;
-            overflow-x: auto;
-            white-space: nowrap;
+            display: block; /* Permite scroll horizontal */
+            overflow-x: auto; /* Añade scroll horizontal */
+            white-space: nowrap; /* Mantiene el contenido en una línea */
         }
+
         .products-table thead {
             background: var(--bg-main);
         }
+
         .products-table th {
-            padding: 0.8rem 1rem;
+            padding: 0.8rem 1rem; /* Ajuste */
             text-align: left;
             font-weight: 600;
             color: var(--text-medium);
-            font-size: 0.85rem;
+            font-size: 0.85rem; /* Ajuste */
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
+
         .products-table td {
-            padding: 0.8rem 1rem;
+            padding: 0.8rem 1rem; /* Ajuste */
             border-bottom: 1px solid var(--border);
         }
+
         .products-table tbody tr {
             transition: all 0.3s ease;
         }
+
         .products-table tbody tr:hover {
             background: var(--bg-main);
         }
+
         .product-image-cell {
-            width: 60px;
-            height: 60px;
+            width: 60px; /* Ajuste */
+            height: 60px; /* Ajuste */
             border-radius: 8px;
             object-fit: cover;
         }
+
         .product-name-cell {
             font-weight: 600;
             color: var(--primary);
         }
+
         .category-badge {
             display: inline-block;
-            padding: 0.3rem 0.7rem;
+            padding: 0.3rem 0.7rem; /* Ajuste */
             background: var(--secondary);
             color: white;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.8rem; /* Ajuste */
             font-weight: 500;
         }
+
         .price-cell {
-            font-size: 1rem;
+            font-size: 1rem; /* Ajuste */
             font-weight: 600;
             color: var(--accent);
         }
+
         .actions-cell {
             display: flex;
             gap: 0.5rem;
         }
+
         .icon-btn {
             background: none;
             border: none;
             cursor: pointer;
-            font-size: 1.1rem;
-            padding: 0.3rem;
+            font-size: 1.1rem; /* Ajuste */
+            padding: 0.3rem; /* Ajuste */
             transition: all 0.3s ease;
             border-radius: 6px;
         }
+
         .icon-btn:hover {
             transform: scale(1.1);
             background: var(--bg-main);
         }
+
         .modal-overlay {
             display: none;
             position: fixed;
@@ -382,12 +446,14 @@
             z-index: 200;
             align-items: center;
             justify-content: center;
-            padding: 1rem;
+            padding: 1rem; /* Ajuste */
             overflow-y: auto;
         }
+
         .modal-overlay.active {
             display: flex;
         }
+
         .modal {
             background: var(--bg-card);
             border-radius: 16px;
@@ -397,8 +463,9 @@
             overflow-y: auto;
             box-shadow: var(--shadow-lg);
             animation: modalSlideIn 0.3s ease;
-            margin: 1rem;
+            margin: 1rem; /* Ajuste */
         }
+
         @keyframes modalSlideIn {
             from {
                 opacity: 0;
@@ -409,41 +476,49 @@
                 transform: translateY(0);
             }
         }
+
         .modal-header {
-            padding: 1.5rem;
+            padding: 1.5rem; /* Ajuste */
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         .modal-title {
-            font-size: 1.5rem;
+            font-size: 1.5rem; /* Ajuste */
             color: var(--primary);
         }
+
         .close-modal {
             background: none;
             border: none;
-            font-size: 1.8rem;
+            font-size: 1.8rem; /* Ajuste */
             cursor: pointer;
             color: var(--text-light);
             transition: all 0.3s ease;
         }
+
         .close-modal:hover {
             color: var(--danger);
             transform: rotate(90deg);
         }
+
         .modal-body {
-            padding: 1.5rem;
+            padding: 1.5rem; /* Ajuste */
         }
+
         .form-group {
-            margin-bottom: 1.2rem;
+            margin-bottom: 1.2rem; /* Ajuste */
         }
+
         .form-label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
             color: var(--text-dark);
         }
+
         .form-input,
         .form-select,
         .form-textarea {
@@ -455,6 +530,7 @@
             font-family: inherit;
             transition: all 0.3s ease;
         }
+
         .form-input:focus,
         .form-select:focus,
         .form-textarea:focus {
@@ -462,14 +538,16 @@
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.1);
         }
+
         .form-textarea {
             resize: vertical;
             min-height: 100px;
         }
-        .image-preview,
+
         .image-upload-container {
             margin-top: 1rem;
         }
+
         .image-upload-btn {
             width: 100%;
             padding: 1rem;
@@ -484,68 +562,80 @@
             align-items: center;
             gap: 0.5rem;
         }
+
         .image-upload-btn:hover {
             border-color: var(--primary);
             background: rgba(139, 115, 85, 0.05);
         }
+
         .image-upload-btn input[type="file"] {
             display: none;
         }
+
         .image-preview {
             width: 100%;
-            height: 150px;
+            height: 150px; /* Ajuste */
             border: 2px dashed var(--border);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-top: 1rem;
             overflow: hidden;
             background: var(--bg-main);
             position: relative;
         }
+
         .image-preview img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
+
         .image-preview-placeholder {
             text-align: center;
             color: var(--text-light);
         }
+
         .remove-image-btn {
             position: absolute;
-            top: 8px;
-            right: 8px;
+            top: 8px; /* Ajuste */
+            right: 8px; /* Ajuste */
             background: var(--danger);
             color: white;
             border: none;
-            width: 24px;
-            height: 24px;
+            width: 24px; /* Ajuste */
+            height: 24px; /* Ajuste */
             border-radius: 50%;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.9rem; /* Ajuste */
             display: none;
         }
+
         .image-preview:hover .remove-image-btn {
             display: block;
         }
+
         .modal-footer {
-            padding: 1rem 1.5rem;
+            padding: 1rem 1.5rem; /* Ajuste */
             border-top: 1px solid var(--border);
             display: flex;
             justify-content: flex-end;
             gap: 1rem;
         }
+
         .empty-state {
             text-align: center;
-            padding: 3rem 1.5rem;
+            padding: 3rem 1.5rem; /* Ajuste */
             color: var(--text-light);
         }
+
         .empty-icon {
-            font-size: 3rem;
+            font-size: 3rem; /* Ajuste */
             opacity: 0.3;
             margin-bottom: 0.8rem;
         }
+
         .loading-spinner {
             display: inline-block;
             width: 20px;
@@ -555,9 +645,11 @@
             border-top-color: white;
             animation: spin 1s linear infinite;
         }
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
         .toast {
             position: fixed;
             top: 2rem;
@@ -570,14 +662,17 @@
             z-index: 300;
             animation: slideInRight 0.3s ease;
             display: none;
-            font-size: 0.9rem;
+            font-size: 0.9rem; /* Ajuste */
         }
+
         .toast.show {
             display: block;
         }
+
         .toast.error {
             background: var(--danger);
         }
+
         @keyframes slideInRight {
             from {
                 transform: translateX(400px);
@@ -588,32 +683,39 @@
                 opacity: 1;
             }
         }
+
+        /* Botones flotantes */
         .mobile-menu-btn {
-            display: none;
-            position: fixed;
-            bottom: 2rem;
-            left: 2rem;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: var(--shadow-lg);
-            z-index: 99;
-        }
-        @media (max-width: 1023px) {
-            .mobile-menu-btn {
-                display: block !important;
-            }
-        }
-        @media (min-width: 1024px) {
-            .mobile-menu-btn {
-                display: none !important;
-            }
-        }
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    z-index: 99;
+}
+
+/* SOLO visible en tablets y móviles */
+@media (max-width: 1023px) {
+    .mobile-menu-btn {
+        display: block !important; /* Fuerza visibilidad en móvil */
+    }
+}
+
+/* NUNCA visible en desktop */
+@media (min-width: 1024px) {
+    .mobile-menu-btn {
+        display: none !important; /* Fuerza ocultamiento en desktop */
+    }
+}
+
         .theme-toggle {
             position: fixed;
             bottom: 2rem;
@@ -630,52 +732,62 @@
             justify-content: center;
             box-shadow: var(--shadow-lg);
             z-index: 101;
-            display: none;
+            display: none; /* Visible solo tras login */
         }
+
         .theme-toggle:hover {
             transform: scale(1.1) rotate(180deg);
         }
-        @media (min-width: 1024px) {
-            .sidebar {
-                position: sticky;
-                left: 0;
-                top: 0;
-                height: 100vh;
-            }
-            .main-content {
-                margin-left: 260px;
-                min-height: 100vh;
-            }
-            .mobile-menu-btn {
-                display: none !important;
-            }
-            .dashboard-container {
-                flex-direction: row;
-            }
-        }
+
+        /* Media Queries para Responsividad */
+       @media (min-width: 1024px) {
+    .sidebar {
+        position: sticky; /* Fijo en desktop */
+        left: 0;
+        top: 0;
+        height: 100vh;
+    }
+    
+    .main-content {
+        margin-left: 260px; /* Espacio para el sidebar */
+        min-height: 100vh;
+    }
+    
+    .mobile-menu-btn {
+        display: none !important; /* Asegura que NO aparezca */
+    }
+    
+    .dashboard-container {
+        flex-direction: row; /* Horizontal en desktop */
+    }
+}
+
         @media (max-width: 1023px) {
             .dashboard-container {
-                flex-direction: column;
+                flex-direction: column; /* Vertical en móviles */
             }
             .sidebar {
-                position: fixed;
+                position: fixed; /* Fijo en móvil */
                 height: 100vh;
                 z-index: 100;
             }
             .main-content {
                 margin-left: 0;
                 padding: 1rem;
-                margin-top: 0;
+                margin-top: 0; /* Ajuste */
             }
             .mobile-menu-btn {
-                display: block;
+                display: block; /* Muestra el botón de menú en móvil */
             }
             .stats-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr; /* Una columna en móviles */
             }
             .search-bar {
-                flex-direction: column;
+                flex-direction: column; /* Vertical en móviles */
                 align-items: stretch;
+            }
+            .search-input {
+                width: 100%;
             }
             .dashboard-header {
                 flex-direction: column;
@@ -687,39 +799,40 @@
                 justify-content: flex-end;
             }
             .btn {
-                padding: 0.6rem 0.8rem;
-                font-size: 0.85rem;
+                padding: 0.6rem 0.8rem; /* Ajuste */
+                font-size: 0.85rem; /* Ajuste */
             }
             .modal {
-                max-height: 95vh;
+                max-height: 95vh; /* Ajuste */
             }
             .modal-header {
-                padding: 1.2rem;
+                padding: 1.2rem; /* Ajuste */
             }
             .modal-body {
-                padding: 1.2rem;
+                padding: 1.2rem; /* Ajuste */
             }
             .modal-footer {
-                padding: 0.8rem 1.2rem;
+                padding: 0.8rem 1.2rem; /* Ajuste */
             }
             .modal-title {
-                font-size: 1.4rem;
+                font-size: 1.4rem; /* Ajuste */
             }
             .form-input,
             .form-select,
             .form-textarea {
-                font-size: 1rem;
+                font-size: 1rem; /* Ajuste */
             }
         }
+
         @media (max-width: 768px) {
             .login-box {
-                padding: 1.5rem;
+                padding: 1.5rem; /* Ajuste */
             }
             .login-logo h1 {
-                font-size: 1.4rem;
+                font-size: 1.4rem; /* Ajuste */
             }
             .stats-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr; /* Asegura una columna */
             }
             .stat-card {
                 flex-direction: row;
@@ -730,32 +843,32 @@
                 text-align: right;
             }
             .products-table {
-                font-size: 0.8rem;
+                font-size: 0.8rem; /* Reduce tamaño de texto */
             }
             .products-table th,
             .products-table td {
-                padding: 0.6rem 0.5rem;
+                padding: 0.6rem 0.5rem; /* Ajuste */
             }
             .product-image-cell {
-                width: 50px;
-                height: 50px;
+                width: 50px; /* Ajuste */
+                height: 50px; /* Ajuste */
             }
             .icon-btn {
-                font-size: 1rem;
-                padding: 0.2rem;
+                font-size: 1rem; /* Ajuste */
+                padding: 0.2rem; /* Ajuste */
             }
             .modal {
-                margin: 0.5rem;
+                margin: 0.5rem; /* Ajuste */
             }
             .modal-header {
-                padding: 1rem;
+                padding: 1rem; /* Ajuste */
             }
             .modal-body {
-                padding: 1rem;
+                padding: 1rem; /* Ajuste */
             }
             .modal-footer {
-                padding: 0.7rem 1rem;
-                flex-direction: column;
+                padding: 0.7rem 1rem; /* Ajuste */
+                flex-direction: column; /* Botones verticales */
                 align-items: stretch;
             }
             .btn {
@@ -763,46 +876,50 @@
                 justify-content: center;
             }
         }
+
         @media (max-width: 480px) {
             .login-logo h1 {
-                font-size: 1.3rem;
+                font-size: 1.3rem; /* Ajuste */
             }
             .login-logo p {
-                font-size: 0.85rem;
+                font-size: 0.85rem; /* Ajuste */
             }
             .header-title {
-                font-size: 1.4rem;
+                font-size: 1.4rem; /* Ajuste */
             }
             .table-title {
-                font-size: 1.2rem;
+                font-size: 1.2rem; /* Ajuste */
             }
             .stat-info h3 {
-                font-size: 1.4rem;
+                font-size: 1.4rem; /* Ajuste */
             }
             .stat-info p {
-                font-size: 0.8rem;
+                font-size: 0.8rem; /* Ajuste */
             }
             .form-input,
             .form-select,
             .form-textarea {
-                padding: 0.6rem 0.8rem;
+                padding: 0.6rem 0.8rem; /* Ajuste */
             }
             .btn {
-                padding: 0.5rem 0.8rem;
+                padding: 0.5rem 0.8rem; /* Ajuste */
             }
             .modal-title {
-                font-size: 1.3rem;
+                font-size: 1.3rem; /* Ajuste */
             }
             .close-modal {
-                font-size: 1.5rem;
+                font-size: 1.5rem; /* Ajuste */
             }
         }
+
+        /* Ocultar elementos antes del login */
         .sidebar, .main-content, .theme-toggle, .mobile-menu-btn {
             display: none;
         }
     </style>
 </head>
 <body class="dark-mode">
+    <!-- Pantalla de Login -->
     <div class="login-screen" id="loginScreen">
         <div class="login-box">
             <div class="login-logo">
@@ -824,6 +941,7 @@
         </div>
     </div>
 
+    <!-- Dashboard Container -->
     <div class="dashboard-container">
         <aside class="sidebar" id="sidebar">
             <div class="logo-dashboard">
@@ -839,13 +957,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" data-section="analytics">
-                            <span class="nav-icon">📊</span>
-                            <span>Analytics</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="../index.html" class="nav-link">
+                        <a href="../index.html" class="nav-link"> <!-- Ajusta la ruta si es necesario -->
                             <span class="nav-icon">🌐</span>
                             <span>Ver Sitio Web</span>
                         </a>
@@ -853,6 +965,7 @@
                 </ul>
             </nav>
         </aside>
+
         <main class="main-content" id="mainContent">
             <!-- Products Section -->
             <div id="productsSection">
@@ -921,136 +1034,6 @@
                     </table>
                 </div>
             </div>
-
-            <!-- Analytics Section -->
-            <div id="analyticsSection" style="display: none;">
-                <div class="dashboard-header">
-                    <h1 class="header-title">📊 Analytics Dashboard</h1>
-                    <div class="header-actions">
-                        <button class="btn btn-primary" id="refreshAnalyticsBtn">
-                            🔄 Actualizar Datos
-                        </button>
-                    </div>
-                </div>
-
-                <!-- KPIs Grid -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background: #8B735515; color: #8B7355;">👁️</div>
-                        <div class="stat-info">
-                            <h3 id="totalVisits">—</h3>
-                            <p>Visitas Totales</p>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background: #D4A57415; color: #D4A574;">👥</div>
-                        <div class="stat-info">
-                            <h3 id="uniqueVisitors">—</h3>
-                            <p>Visitantes Únicos</p>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background: #C9A96215; color: #C9A962;">📈</div>
-                        <div class="stat-info">
-                            <h3 id="todayVisits">—</h3>
-                            <p>Visitas Hoy</p>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background: #10b98115; color: #10b981;">💰</div>
-                        <div class="stat-info">
-                            <h3 id="conversionRate">—</h3>
-                            <p>Tasa de Conversión</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Charts Container -->
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
-                    <div class="products-container">
-                        <div class="table-header">
-                            <h2 class="table-title">🏆 Top 5 Productos Más Vistos</h2>
-                        </div>
-                        <table class="products-table">
-                            <thead>
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Vistas</th>
-                                    <th>Carritos</th>
-                                    <th>Conversión</th>
-                                </tr>
-                            </thead>
-                            <tbody id="topProductsTable">
-                                <tr>
-                                    <td colspan="4" style="text-align: center; padding: 2rem; color: var(--text-light);">
-                                        Cargando datos...
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="products-container">
-                        <div class="table-header">
-                            <h2 class="table-title">⚡ Actividad Reciente</h2>
-                        </div>
-                        <div id="recentActivity" style="padding: 1rem; max-height: 400px; overflow-y: auto;">
-                            <div style="text-align: center; padding: 2rem; color: var(--text-light);">
-                                Cargando actividad...
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Device & Time Stats -->
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
-                    <div class="products-container">
-                        <div class="table-header">
-                            <h2 class="table-title">📱 Dispositivos</h2>
-                        </div>
-                        <div id="deviceStats" style="padding: 1.5rem;">
-                            <div style="margin-bottom: 1rem;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                                    <span>📱 Móvil</span>
-                                    <span id="mobilePercent">—</span>
-                                </div>
-                                <div style="background: var(--bg-main); height: 10px; border-radius: 5px; overflow: hidden;">
-                                    <div id="mobileBar" style="background: #8B7355; height: 100%; width: 0%; transition: width 0.5s;"></div>
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 1rem;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                                    <span>💻 Desktop</span>
-                                    <span id="desktopPercent">—</span>
-                                </div>
-                                <div style="background: var(--bg-main); height: 10px; border-radius: 5px; overflow: hidden;">
-                                    <div id="desktopBar" style="background: #D4A574; height: 100%; width: 0%; transition: width 0.5s;"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                                    <span>📟 Tablet</span>
-                                    <span id="tabletPercent">—</span>
-                                </div>
-                                <div style="background: var(--bg-main); height: 10px; border-radius: 5px; overflow: hidden;">
-                                    <div id="tabletBar" style="background: #C9A962; height: 100%; width: 0%; transition: width 0.5s;"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="products-container">
-                        <div class="table-header">
-                            <h2 class="table-title">🕐 Horarios Pico</h2>
-                        </div>
-                        <div id="peakHours" style="padding: 1.5rem;">
-                            <div style="text-align: center; color: var(--text-light);">
-                                Sin datos
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </main>
     </div>
 
@@ -1114,16 +1097,19 @@
             </div>
         </div>
     </div>
+
     <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
     <button class="theme-toggle" id="themeToggle">☀️</button>
     <div class="toast" id="toast"></div>
 
     <script>
+        // Credenciales de acceso
         const CREDENTIALS = {
             username: 'admin',
             password: 'admin123'
         };
 
+        // Referencias a elementos del DOM
         const loginScreen = document.getElementById('loginScreen');
         const mainContent = document.getElementById('mainContent');
         const sidebar = document.getElementById('sidebar');
@@ -1132,14 +1118,18 @@
         const loginForm = document.getElementById('loginForm');
         const errorMessage = document.getElementById('errorMessage');
 
+        // Manejar el envío del formulario de login
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+
             if (username === CREDENTIALS.username && password === CREDENTIALS.password) {
+                // Login exitoso
                 sessionStorage.setItem('authenticated', 'true');
                 showDashboard();
             } else {
+                // Login fallido
                 errorMessage.style.display = 'block';
                 setTimeout(() => {
                     errorMessage.style.display = 'none';
@@ -1147,24 +1137,27 @@
             }
         });
 
+        // Mostrar el dashboard y ocultar el login
         function showDashboard() {
             loginScreen.style.display = 'none';
             sidebar.style.display = 'block';
             mainContent.style.display = 'block';
             themeToggle.style.display = 'block';
             mobileMenuBtn.style.display = 'block';
-            loadDashboardContent();
+            loadDashboardContent(); // Iniciar la carga del contenido del dashboard
         }
 
+        // Cargar contenido del dashboard (Supabase, etc.)
         async function loadDashboardContent() {
+             // Supabase Configuration - CREDENCIALES PRECONFIGURADAS
             const SUPABASE_URL = 'https://mytpwjkvtezixhggyxht.supabase.co';
             const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im15dHB3amt2dGV6aXhoZ2d5eGh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM1MTE1ODcsImV4cCI6MjA3OTA4NzU4N30.oMxZljrtvgM_3CZjOvMDcfJz8uB7T4N9JvQAphmp3HM';
             let supabase = null;
             let currentImageFile = null;
             let editingProductId = null;
             let categories = [];
-            let products = [];
 
+            // Initialize Supabase
             function initSupabase() {
                 try {
                     const { createClient } = window.supabase;
@@ -1177,6 +1170,7 @@
                 }
             }
 
+            // Load categories
             async function loadCategories() {
                 if (!supabase) {
                     showToast('Error: Supabase no inicializado', 'error');
@@ -1192,20 +1186,24 @@
                     updateCategorySelects();
                     console.log(`✅ ${categories.length} categorías cargadas`);
                 } catch (error) {
-                    console.error('Error loading categories:', error.message || error);
-                    showToast('Error al cargar categorías: ' + (error.message || error), 'error');
+                    console.error('Error loading categories:', error);
+                    showToast('Error al cargar categorías: ' + error.message, 'error');
                 }
             }
 
+            // Update category select elements
             function updateCategorySelects() {
                 const categoryFilter = document.getElementById('categoryFilter');
                 const productCategory = document.getElementById('productCategory');
+                // Update filter
                 categoryFilter.innerHTML = '<option value="todos">Todas las categorías</option>' +
                     categories.map(cat => `<option value="${cat.slug}">${cat.name}</option>`).join('');
+                // Update form select
                 productCategory.innerHTML = '<option value="">Seleccionar categoría</option>' +
                     categories.map(cat => `<option value="${cat.slug}">${cat.name}</option>`).join('');
             }
 
+            // Load products from Supabase
             async function loadProducts(categoryFilter = 'todos', searchTerm = '') {
                 if (!supabase) {
                     document.getElementById('productsTableBody').innerHTML = `
@@ -1234,16 +1232,16 @@
                     }
                     const { data, error } = await query;
                     if (error) throw error;
-                    products = data;
                     renderProducts(data);
                     updateStats(data);
                     console.log(`✅ ${data.length} productos cargados`);
                 } catch (error) {
-                    console.error('Error loading products:', error.message || error);
-                    showToast('Error al cargar productos: ' + (error.message || error), 'error');
+                    console.error('Error loading products:', error);
+                    showToast('Error al cargar productos: ' + error.message, 'error');
                 }
             }
 
+            // Render products table
             function renderProducts(products) {
                 const tbody = document.getElementById('productsTableBody');
                 if (!products || products.length === 0) {
@@ -1276,12 +1274,14 @@
                 `).join('');
             }
 
+            // Update statistics
             function updateStats(products) {
                 document.getElementById('totalProducts').textContent = products.length;
                 const uniqueCategories = [...new Set(products.map(p => p.category_slug))];
                 document.getElementById('totalCategories').textContent = uniqueCategories.length;
             }
 
+            // Show toast notification
             function showToast(message, type = 'success') {
                 const toast = document.getElementById('toast');
                 toast.textContent = message;
@@ -1291,242 +1291,159 @@
                 }, 3000);
             }
 
-            // === ANALYTICS FUNCTIONS CORREGIDAS ===
-            async function loadAnalyticsData() {
-                if (!supabase) {
-                    showToast('Supabase no inicializado', 'error');
-                    return;
+// === FUNCIÓN DE CONVERSIÓN A WEBP ===
+async function convertToWebP(file, maxWidth = 1920, quality = 0.85) {
+    return new Promise((resolve, reject) => {
+        if (!file.type.startsWith('image/')) {
+            reject(new Error('El archivo no es una imagen'));
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onerror = () => reject(new Error('Error al leer el archivo'));
+        
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onerror = () => reject(new Error('Error al cargar la imagen'));
+            
+            img.onload = () => {
+                let width = img.width;
+                let height = img.height;
+                
+                if (width > maxWidth) {
+                    height = (height * maxWidth) / width;
+                    width = maxWidth;
                 }
-                try {
-                    const { data, error } = await supabase
-                        .from('analytics')
-                        .select('*')
-                        .order('created_at', { ascending: false })
-                        .limit(1000);
+                
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, width, height);
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                canvas.toBlob(
+                    (blob) => {
+                        if (!blob) {
+                            reject(new Error('Error al convertir a WebP'));
+                            return;
+                        }
+                        
+                        const webpFile = new File(
+                            [blob], 
+                            file.name.replace(/\.(jpg|jpeg|png)$/i, '.webp'),
+                            { type: 'image/webp' }
+                        );
+                        
+                        resolve(webpFile);
+                    },
+                    'image/webp',
+                    quality
+                );
+            };
+            
+            img.src = e.target.result;
+        };
+        
+        reader.readAsDataURL(file);
+    });
+}
 
-                    if (error) {
-                        console.error('Error al cargar analytics:', error.message || error);
-                        showToast('Error al cargar datos de analytics', 'error');
-                        return;
-                    }
+// Upload image to Supabase Storage (CON CONVERSIÓN A WEBP)
+async function uploadImage(file) {
+    if (!supabase) return null;
+    try {
+        // CONVERTIR A WEBP ANTES DE SUBIR
+        const webpFile = await convertToWebP(file, 1920, 0.85);
+        
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.webp`;
+        const filePath = `${fileName}`;
+        
+        const { data, error } = await supabase.storage
+            .from('product-images')
+            .upload(filePath, webpFile);
+            
+        if (error) throw error;
+        
+        const publicUrlResponse = supabase.storage
+            .from('product-images')
+            .getPublicUrl(filePath);
+            
+        return publicUrlResponse.data.publicUrl;
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        showToast('Error al subir imagen: ' + error.message, 'error');
+        return null;
+    }
+}
+            // Handle image upload
+            document.getElementById('imageUpload').addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                currentImageFile = file;
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('imagePreview').innerHTML = `
+                        <img src="${e.target.result}" alt="Preview">
+                        <button type="button" class="remove-image-btn" id="removeImageBtn">✕</button>
+                    `;
+                    document.getElementById('removeImageBtn').addEventListener('click', removeImage);
+                };
+                reader.readAsDataURL(file);
+                // Clear URL input
+                document.getElementById('productImageUrl').value = '';
+            });
 
-                    if (!data || data.length === 0) {
-                        return;
-                    }
-
-                    processAnalyticsData(data);
-                } catch (error) {
-                    console.error('Error inesperado al cargar analytics:', error.message || error);
-                    showToast('Error al procesar datos de analytics', 'error');
-                }
-            }
-
-            function processAnalyticsData(data) {
-                // ✅ Solo eventos de tipo "page_view"
-                const pageViews = data.filter(d => d.event_type === 'page_view');
-                const totalVisits = pageViews.length;
-
-                // ✅ Visitantes Únicos: session_id distintos SOLO de page_view
-                const uniqueSessions = new Set(pageViews.map(d => d.session_id));
-                const uniqueVisitors = uniqueSessions.size;
-
-                // ✅ Visitas Hoy: solo page_view del día actual
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                const todayVisits = pageViews.filter(d => {
-                    const eventDate = new Date(d.created_at);
-                    eventDate.setHours(0, 0, 0, 0);
-                    return eventDate.getTime() === today.getTime();
-                }).length;
-
-                // Actualizar KPIs
-                document.getElementById('totalVisits').textContent = totalVisits.toLocaleString();
-                document.getElementById('uniqueVisitors').textContent = uniqueVisitors.toLocaleString();
-                document.getElementById('todayVisits').textContent = todayVisits.toLocaleString();
-
-                // === Tasa de conversión (sin cambios) ===
-                const productViews = data.filter(d => d.event_type === 'product_view').length;
-                const cartAdds = data.filter(d => d.event_type === 'add_to_cart').length;
-                const conversionRate = productViews > 0 ? ((cartAdds / productViews) * 100).toFixed(1) : 0;
-                document.getElementById('conversionRate').textContent = conversionRate + '%';
-
-                // === Render resto ===
-                const productCounts = {};
-                data.filter(d => d.event_type === 'product_view').forEach(d => {
-                    if (d.product_id) {
-                        productCounts[d.product_id] = (productCounts[d.product_id] || 0) + 1;
-                    }
-                });
-
-                renderTopProducts(productCounts, data);
-                renderRecentActivity(data.slice(0, 10));
-                renderDeviceStats(data);
-            }
-
-            function renderTopProducts(productCounts, eventData) {
-                const topProducts = Object.entries(productCounts)
-                    .sort(([,a], [,b]) => b - a)
-                    .slice(0, 5)
-                    .map(([id, views]) => ({ id: parseInt(id), views }));
-
-                if (topProducts.length === 0) {
-                    document.getElementById('topProductsTable').innerHTML = '<tr><td colspan="4" style="text-align:center;padding:2rem;">Sin datos</td></tr>';
-                    return;
-                }
-
-                const tableData = topProducts.map(p => {
-                    const carts = eventData.filter(d => d.event_type === 'add_to_cart' && d.product_id === p.id).length;
-                    const conversion = p.views > 0 ? ((carts / p.views) * 100).toFixed(1) : '0';
-                    return {
-                        name: `Producto #${p.id}`,
-                        views: p.views,
-                        carts: carts,
-                        conversion: conversion + '%'
-                    };
-                });
-
-                renderTopProductsTable(tableData);
-            }
-
-            function renderTopProductsTable(products) {
-                const tbody = document.getElementById('topProductsTable');
-                tbody.innerHTML = products.map(p => `
-                    <tr>
-                        <td class="product-name-cell">${p.name}</td>
-                        <td>${p.views}</td>
-                        <td>${p.carts}</td>
-                        <td><span class="category-badge">${p.conversion}</span></td>
-                    </tr>
-                `).join('');
-            }
-
-            function renderRecentActivity(data) {
-                const container = document.getElementById('recentActivity');
-                if (data.length === 0) {
-                    container.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text-light);">Sin actividad reciente</div>';
-                    return;
-                }
-                const activities = data.map(d => {
-                    let icon = '❓';
-                    let text = '';
-                    if (d.event_type === 'page_view') icon = '👁️', text = 'Página vista';
-                    else if (d.event_type === 'product_view') icon = '📦', text = 'Producto visto: ' + (d.product_name || d.product_id);
-                    else if (d.event_type === 'add_to_cart') icon = '🛒', text = 'Producto agregado al carrito';
-                    return {
-                        icon,
-                        text,
-                        time: new Date(d.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                    };
-                });
-                container.innerHTML = activities.map(a => `
-                    <div style="padding: 0.75rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 1rem;">
-                        <span style="font-size: 1.5rem;">${a.icon}</span>
-                        <div style="flex: 1;">
-                            <div style="font-weight: 500; color: var(--text-dark);">${a.text}</div>
-                            <div style="font-size: 0.85rem; color: var(--text-light);">${a.time}</div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            function renderDeviceStats(data) {
-                const devices = { mobile: 0, desktop: 0, tablet: 0 };
-                data.forEach(d => {
-                    if (d.device_type === 'mobile') devices.mobile++;
-                    else if (d.device_type === 'desktop') devices.desktop++;
-                    else devices.tablet++;
-                });
-
-                const total = devices.mobile + devices.desktop + devices.tablet;
-                if (total === 0) return;
-
-                const mobileP = Math.round((devices.mobile / total) * 100);
-                const desktopP = Math.round((devices.desktop / total) * 100);
-                const tabletP = 100 - mobileP - desktopP;
-
-                document.getElementById('mobilePercent').textContent = mobileP + '%';
-                document.getElementById('mobileBar').style.width = mobileP + '%';
-
-                document.getElementById('desktopPercent').textContent = desktopP + '%';
-                document.getElementById('desktopBar').style.width = desktopP + '%';
-
-                document.getElementById('tabletPercent').textContent = tabletP + '%';
-                document.getElementById('tabletBar').style.width = tabletP + '%';
-
-                renderPeakHours(data);
-            }
-
-            function renderPeakHours(data) {
-                const hours = new Array(24).fill(0);
-                data.forEach(d => {
-                    const hour = new Date(d.created_at).getHours();
-                    hours[hour]++;
-                });
-
-                const peakHours = [
-                    { label: '🌅 6:00 - 12:00', start: 6, end: 12 },
-                    { label: '☀️ 12:00 - 18:00', start: 12, end: 18 },
-                    { label: '🌙 18:00 - 0:00', start: 18, end: 24 }
-                ];
-
-                const html = peakHours.map(period => {
-                    const count = hours.slice(period.start, period.end).reduce((a, b) => a + b, 0);
-                    const max = Math.max(...hours);
-                    const width = max > 0 ? Math.round((count / max) * 100) : 0;
-                    return `
-                        <div style="margin-bottom: 1rem;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                                <span>${period.label}</span>
-                                <span style="font-weight: 600; color: var(--accent-primary);">${count} visitas</span>
-                            </div>
-                            <div style="background: var(--bg-main); height: 8px; border-radius: 4px; overflow: hidden;">
-                                <div style="background: #8B7355; height: 100%; width: ${width}%;"></div>
-                            </div>
+            // Handle image URL input
+            document.getElementById('productImageUrl').addEventListener('input', (e) => {
+                const url = e.target.value;
+                const preview = document.getElementById('imagePreview');
+                if (url) {
+                    currentImageFile = null;
+                    preview.innerHTML = `
+                        <img src="${url}" alt="Preview" onerror="this.parentElement.innerHTML='<div class=\\'image-preview-placeholder\\'><p>❌</p><p>Error al cargar imagen</p></div>'">
+                        <button type="button" class="remove-image-btn" id="removeImageBtn">✕</button>
+                    `;
+                    document.getElementById('removeImageBtn').addEventListener('click', removeImage);
+                } else if (!currentImageFile) {
+                    preview.innerHTML = `
+                        <div class="image-preview-placeholder">
+                            <p>📷</p>
+                            <p>Vista previa de la imagen</p>
                         </div>
                     `;
-                }).join('');
-
-                document.getElementById('peakHours').innerHTML = html;
-            }
-
-            // === Navegación con Analytics ===
-            document.querySelectorAll('.nav-link[data-section]').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                    link.classList.add('active');
-                    const section = link.dataset.section;
-                    document.getElementById('productsSection').style.display = section === 'products' ? 'block' : 'none';
-                    document.getElementById('analyticsSection').style.display = section === 'analytics' ? 'block' : 'none';
-                    if (section === 'analytics') {
-                        loadAnalyticsData();
-                    }
-                });
+                }
             });
 
-            // === Botón de refresco ===
-            document.getElementById('refreshAnalyticsBtn')?.addEventListener('click', () => {
-                loadAnalyticsData();
-                showToast('📊 Datos actualizados', 'success');
-            });
-
-            // === Resto del código (edit, delete, search, etc.) ===
-            document.getElementById('addProductBtn').addEventListener('click', () => {
-                editingProductId = null;
-                document.getElementById('modalTitle').textContent = 'Agregar Producto';
-                document.getElementById('productForm').reset();
+            // Remove image
+            function removeImage() {
+                currentImageFile = null;
+                document.getElementById('productImageUrl').value = '';
+                document.getElementById('imageUpload').value = '';
                 document.getElementById('imagePreview').innerHTML = `
                     <div class="image-preview-placeholder">
                         <p>📷</p>
                         <p>Vista previa de la imagen</p>
                     </div>
-                    <button type="button" class="remove-image-btn" id="removeImageBtn">✕</button>
                 `;
+            }
+
+            // Open modal for new product
+            document.getElementById('addProductBtn').addEventListener('click', () => {
+                editingProductId = null;
+                document.getElementById('modalTitle').textContent = 'Agregar Producto';
+                document.getElementById('productForm').reset();
+                removeImage();
                 document.getElementById('productModal').classList.add('active');
             });
 
+            // Close modal
             function closeModal() {
                 document.getElementById('productModal').classList.remove('active');
+                removeImage();
             }
             document.getElementById('closeModal').addEventListener('click', closeModal);
             document.getElementById('cancelBtn').addEventListener('click', closeModal);
@@ -1536,67 +1453,109 @@
                 }
             });
 
-            document.getElementById('saveProductBtn').addEventListener('click', async () => {
-                const form = document.getElementById('productForm');
-                if (!form.checkValidity()) {
-                    form.reportValidity();
-                    return;
-                }
-                if (!supabase) {
-                    showToast('❌ SUPABASE NO ESTÁ CONFIGURADO', 'error');
-                    return;
-                }
-                const saveBtn = document.getElementById('saveProductBtn');
-                const originalText = saveBtn.innerHTML;
-                saveBtn.disabled = true;
-                saveBtn.innerHTML = '<span class="loading-spinner"></span> Guardando...';
-                try {
-                    let imageUrl = document.getElementById('productImageUrl').value;
-                    if (!imageUrl) throw new Error('Debe proporcionar una URL de imagen');
+            // Save product (VERSIÓN CON MEJOR DEBUG)
+// Save product (VERSIÓN DEBUG EXTREMO)
+document.getElementById('saveProductBtn').addEventListener('click', async () => {
+    const form = document.getElementById('productForm');
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+    
+    if (!supabase) {
+        alert('❌ SUPABASE NO ESTÁ CONFIGURADO');
+        return;
+    }
+    
+    const saveBtn = document.getElementById('saveProductBtn');
+    const originalText = saveBtn.innerHTML;
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = '<span class="loading-spinner"></span> Guardando...';
+    
+    try {
+        let imageUrl = document.getElementById('productImageUrl').value;
+        
+        if (currentImageFile) {
+            alert('📤 Subiendo imagen... (esto puede tardar)');
+            imageUrl = await uploadImage(currentImageFile);
+            alert('✅ Imagen subida: ' + imageUrl);
+        }
+        
+        if (!imageUrl) {
+            alert('❌ No hay imagen para subir');
+            throw new Error('Debes proporcionar una imagen');
+        }
+        
+        const name = document.getElementById('productName').value;
+        const slug = name.toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)/g, '');
+        
+        const productData = {
+            name: name,
+            slug: slug,
+            category_slug: document.getElementById('productCategory').value,
+            description: document.getElementById('productDescription').value,
+            price: parseFloat(document.getElementById('productPrice').value),
+            badge: document.getElementById('productBadge').value || null,
+            image_url: imageUrl,
+            is_active: true
+        };
+        
+        alert('💾 Intentando guardar en tabla: products\n\nDatos:\n' + JSON.stringify(productData, null, 2));
+        
+        let result;
+        if (editingProductId) {
+            result = await supabase
+                .from('products')
+                .update(productData)
+                .eq('id', editingProductId);
+            
+            alert('📝 Resultado UPDATE:\n' + JSON.stringify(result, null, 2));
+        } else {
+            result = await supabase
+                .from('products')
+                .insert([productData])
+                .select(); // <-- IMPORTANTE: Esto devuelve los datos insertados
+            
+            alert('➕ Resultado INSERT:\n' + JSON.stringify(result, null, 2));
+        }
+        
+        if (result.error) {
+            alert('❌ ERROR DE SUPABASE:\n\n' + 
+                  'Mensaje: ' + result.error.message + '\n' +
+                  'Código: ' + result.error.code + '\n' +
+                  'Hint: ' + (result.error.hint || 'N/A') + '\n' +
+                  'Detalles: ' + (result.error.details || 'N/A'));
+            throw result.error;
+        }
+        
+        if (result.data && result.data.length > 0) {
+            alert('✅ PRODUCTO GUARDADO EXITOSAMENTE!\n\nID: ' + result.data[0].id);
+            showToast('✅ Producto guardado correctamente', 'success');
+        } else {
+            alert('⚠️ No hubo error pero tampoco se devolvió ningún dato');
+        }
+        
+        closeModal();
+        await loadProducts();
+        
+    } catch (error) {
+        alert('❌ ERROR CAPTURADO:\n\n' + 
+              'Tipo: ' + error.name + '\n' +
+              'Mensaje: ' + error.message + '\n' +
+              'Stack: ' + error.stack);
+        showToast('Error: ' + error.message, 'error');
+    } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = originalText;
+    }
+});
 
-                    const name = document.getElementById('productName').value;
-                    const slug = name.toLowerCase()
-                        .normalize('NFD')
-                        .replace(/[\u0300-\u036f]/g, '')
-                        .replace(/[^a-z0-9]+/g, '-')
-                        .replace(/(^-|-$)/g, '');
-                    const productData = {
-                        name: name,
-                        slug: slug,
-                        category_slug: document.getElementById('productCategory').value,
-                        description: document.getElementById('productDescription').value,
-                        price: parseFloat(document.getElementById('productPrice').value),
-                        badge: document.getElementById('productBadge').value || null,
-                        image_url: imageUrl,
-                        is_active: true
-                    };
 
-                    let result;
-                    if (editingProductId) {
-                        result = await supabase
-                            .from('products')
-                            .update(productData)
-                            .eq('id', editingProductId);
-                    } else {
-                        result = await supabase
-                            .from('products')
-                            .insert([productData])
-                            .select();
-                    }
-
-                    if (result.error) throw result.error;
-
-                    showToast('✅ Producto guardado correctamente', 'success');
-                    closeModal();
-                    await loadProducts();
-                } catch (error) {
-                    showToast('Error: ' + (error.message || error), 'error');
-                } finally {
-                    saveBtn.disabled = false;
-                    saveBtn.innerHTML = originalText;
-                }
-            });
-
+            // Edit product
             window.editProduct = async function(id) {
                 if (!supabase) return;
                 try {
@@ -1618,6 +1577,7 @@
                         <img src="${data.image_url}" alt="Preview">
                         <button type="button" class="remove-image-btn" id="removeImageBtn">✕</button>
                     `;
+                    document.getElementById('removeImageBtn').addEventListener('click', removeImage);
                     document.getElementById('productModal').classList.add('active');
                 } catch (error) {
                     console.error('Error loading product:', error);
@@ -1625,6 +1585,7 @@
                 }
             };
 
+            // Delete product
             window.deleteProduct = async function(id) {
                 if (!confirm('¿Estás seguro de que deseas eliminar este producto?')) {
                     return;
@@ -1644,6 +1605,7 @@
                 }
             };
 
+            // Search functionality
             let searchTimeout;
             document.getElementById('searchInput').addEventListener('input', (e) => {
                 clearTimeout(searchTimeout);
@@ -1654,26 +1616,43 @@
                 }, 500);
             });
 
+            // Category filter
             document.getElementById('categoryFilter').addEventListener('change', (e) => {
                 const category = e.target.value;
                 const searchTerm = document.getElementById('searchInput').value;
                 loadProducts(category, searchTerm);
             });
 
+            // Navigation between sections
+            document.querySelectorAll('.nav-link[data-section]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Update active state
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    // Show/hide sections
+                    const section = link.dataset.section;
+                    document.getElementById('productsSection').style.display = section === 'products' ? 'block' : 'none';
+                });
+            });
+
+            // Mobile menu toggle
             document.getElementById('mobileMenuBtn').addEventListener('click', () => {
                 document.getElementById('sidebar').classList.toggle('active');
             });
 
+            // Close sidebar when clicking outside on mobile
             document.addEventListener('click', (e) => {
                 const sidebar = document.getElementById('sidebar');
                 const menuBtn = document.getElementById('mobileMenuBtn');
-                if (window.innerWidth <= 1023) {
+                if (window.innerWidth <= 1023) { // Cambiado a 1023
                     if (!sidebar.contains(e.target) && !menuBtn.contains(e.target) && sidebar.classList.contains('active')) {
                         sidebar.classList.remove('active');
                     }
                 }
             });
 
+            // Keyboard shortcuts
             document.addEventListener('keydown', (e) => {
                 if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
                     e.preventDefault();
@@ -1688,23 +1667,28 @@
                 }
             });
 
+            // Theme toggle functionality
             document.getElementById('themeToggle').addEventListener('click', function() {
                 document.body.classList.toggle('dark-mode');
-                this.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-                localStorage.setItem('dashboardTheme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+                const isDark = document.body.classList.contains('dark-mode');
+                this.textContent = isDark ? '☀️' : '🌙';
+                localStorage.setItem('dashboardTheme', isDark ? 'dark' : 'light');
             });
 
+            // Initialize on page load
+            console.log('🧀 Dashboard Quesería y Almacén V&C - Inicializando...');
+            // Load saved theme preference or default to dark mode
             const savedTheme = localStorage.getItem('dashboardTheme') || 'dark';
             if (savedTheme === 'dark') {
                 document.body.classList.add('dark-mode');
             } else {
                 document.body.classList.remove('dark-mode');
             }
-
+            // Initialize Supabase
             const connected = initSupabase();
             if (connected) {
-                await loadCategories();
-                await loadProducts();
+                loadCategories();
+                loadProducts();
                 showToast('✅ Dashboard conectado a Supabase', 'success');
             } else {
                 showToast('❌ Error al conectar con Supabase', 'error');
@@ -1712,11 +1696,15 @@
             console.log('✅ Dashboard inicializado');
         }
 
+
+        // Verificar autenticación al cargar la página
         if (sessionStorage.getItem('authenticated') === 'true') {
             showDashboard();
         } else {
+            // Mantener la pantalla de login visible por defecto
             loginScreen.style.display = 'flex';
         }
+
     </script>
 </body>
 </html>

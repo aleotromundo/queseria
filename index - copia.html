@@ -2266,43 +2266,6 @@
             }
         }
 
-        // --- FUNCIONES DE ANALÍTICAS ---
-        function getSessionId() {
-            let session = sessionStorage.getItem('vyc_session_id');
-            if (!session) {
-                session = 'sess_' + Date.now() + '_' + Math.random().toString(36).substring(7);
-                sessionStorage.setItem('vyc_session_id', session);
-            }
-            return session;
-        }
-
-        function getDeviceType() {
-            const width = window.innerWidth;
-            if (width < 768) return 'mobile';
-            if (width < 1024) return 'tablet';
-            return 'desktop';
-        }
-
-        async function trackEvent(eventType, details = {}) {
-            if (!supabase) return;
-
-            const payload = {
-                event_type: eventType,
-                session_id: getSessionId(),
-                device_type: getDeviceType(),
-                user_agent: navigator.userAgent,
-                page: window.location.hash || 'home',
-                product_id: details.productId || null,
-                product_name: details.productName || null
-            };
-
-            // Enviar sin bloquear la ejecución (fire and forget)
-            supabase.from('analytics').insert([payload]).then(({ error }) => {
-                if (error) console.warn('Error en analytics:', error);
-            });
-        }
-        // --- FIN ANALÍTICAS ---
-
         // Load products from Supabase
         async function loadProductsFromSupabase() {
             if (!supabase) {
@@ -2856,14 +2819,6 @@ function createProductCard(product) {
                 });
             }
 
-            // ANALYTICS TRACKING
-            if(product) {
-                trackEvent('add_to_cart', {
-                    productId: product.id,
-                    productName: product.name
-                });
-            }
-
             updateCart();
             animateCartIcon();
         }
@@ -3047,11 +3002,6 @@ document.getElementById('checkoutForm').addEventListener('submit', (e) => {
         } catch (historyError) {
             console.warn('No se pudo guardar el historial local, pero el pedido continuará:', historyError);
         }
-        
-        // ANALYTICS: TRACK ORDER COMPLETED
-        trackEvent('order_completed', { 
-             productName: `Total: $${total} - Items: ${cart.length}` 
-        });
 
         // 4. Armar el mensaje de WhatsApp
         let message = '🛒 *Nuevo Pedido - Quesería y Almacén Natural V&C*\n\n';
@@ -3248,22 +3198,6 @@ document.getElementById('checkoutForm').addEventListener('submit', (e) => {
             renderHistory(); // Cargar historial al iniciar
             initBackgroundMusic();
             initSearchFloatButton();
-
-            // ANALYTICS: TRACK PAGE VIEW & INIT LISTENERS
-            trackEvent('page_view');
-
-            // Track navigation changes
-            window.addEventListener('hashchange', () => {
-                trackEvent('page_view');
-            });
-
-            // Track WhatsApp float button click
-            const waFloat = document.querySelector('.whatsapp-float');
-            if(waFloat) {
-                waFloat.addEventListener('click', () => {
-                     trackEvent('whatsapp_click', { productName: 'General Contact' });
-                });
-            }
 
             console.log('✅ Aplicación inicializada');
         });

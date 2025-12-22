@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Quesería y Almacén V&C</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Chart.js para Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --primary: #8B7355;
+            --primary-dark: #6d5a43;
+            --secondary: #D4A574;
+            --accent: #C9A962;
+            --bg-main: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-dark: #2c2416;
+            --text-medium: #5a4d3f;
+            --text-light: #8a7d6f;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+        }
+        body.dark-mode {
+            --primary: #D4A574;
+            --primary-dark: #E6B887;
+            --secondary: #8B7355;
+            --accent: #E6C177;
+            --bg-main: #1a1612;
+            --bg-card: #2c2520;
+            --text-dark: #f5f1eb;
+            --text-medium: #d4cfc5;
+            --text-light: #a39a8d;
+            --border: #3d3530;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.4);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.5);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        /* === LOGIN SCREEN === */
+        .login-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--bg-main) 0%, var(--primary) 100%);
+        }
+
+        .login-box {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .login-logo {
+            margin-bottom: 1.5rem;
+        }
+
+        .login-logo h1 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .login-logo p {
+            color: var(--text-medium);
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: var(--bg-main);
+            color: var(--text-dark);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.1);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-medium);
+        }
+
+        .btn-primary:hover, .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            filter: brightness(1.1);
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 1rem;
+            color: var(--danger);
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        /* === DASHBOARD LAYOUT === */
+        .dashboard-container {
+            display: flex;
+            flex-direction: row;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 260px;
+            height: 100vh;
+            background: var(--primary);
+            color: white;
+            padding: 2rem 0;
+            z-index: 100;
+            box-shadow: var(--shadow-lg);
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            display: block;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        body.dark-mode .sidebar {
+            background: linear-gradient(180deg, #2c2520 0%, #1a1612 100%);
+            border-right: 1px solid var(--border);
+        }
+
+        .logo-dashboard {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .logo-dashboard h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .logo-dashboard p {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin: 0.4rem 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255,255,255,0.1);
+            border-left-color: var(--accent);
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 0;
+            padding: 1.5rem;
+            min-height: 100vh;
+            display: none;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* === DASHBOARD STYLES === */
+        .dashboard-header {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .header-title {
+            font-size: 1.6rem;
+            color: var(--primary);
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .stat-info h3 {
+            font-size: 1.6rem;
+            color: var(--primary);
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-info p {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .products-container {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .table-header {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .table-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .form-select {
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background-color: var(--bg-card);
+            color: var(--text-dark);
+        }
+
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .products-table thead {
+            background: var(--bg-main);
+        }
+
+        .products-table th {
+            padding: 0.8rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-medium);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .products-table td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .products-table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .products-table tbody tr:hover {
+            background: var(--bg-main);
+        }
+
+        .product-image-cell {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .product-name-cell {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 0.3rem 0.7rem;
+            background: var(--secondary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .price-cell {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .actions-cell {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0.3rem;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.1);
+            background: var(--bg-main);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: 16px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: modalSlideIn 0.3s ease;
+            margin: 1rem;
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--danger);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            resize: vertical;
+            min-height: 100px;
+            background: var(--bg-main);
+            color: var(--text-dark);
+        }
+
+        .image-upload-container {
+            margin-top: 1rem;
+        }
+
+        .image-upload-btn {
+            width: 100%;
+            padding: 1rem;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            background: var(--bg-main);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .image-upload-btn input[type="file"] {
+            display: none;
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 150px;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1rem;
+            overflow: hidden;
+            background: var(--bg-main);
+            position: relative;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-image-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .image-preview:hover .remove-image-btn {
+            display: block;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            color: var(--text-light);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            opacity: 0.3;
+            margin-bottom: 0.8rem;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .toast {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--success);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            z-index: 300;
+            animation: slideInRight 0.3s ease;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        .toast.error {
+            background: var(--danger);
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Buttons and Mobile */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            z-index: 99;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-lg);
+            z-index: 101;
+            display: none;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(180deg);
+        }
+
+        /* Media Queries */
+        @media (min-width: 1024px) {
+            .sidebar {
+                position: sticky;
+                left: 0;
+                top: 0;
+                height: 100vh;
+            }
+            .main-content {
+                margin-left: 260px;
+            }
+            .dashboard-container {
+                flex-direction: row;
+            }
+        }
+
+        @media (max-width: 1023px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                position: fixed;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        /* Ocultar elementos antes del login */
+        .sidebar, .main-content, .theme-toggle, .mobile-menu-btn {
+            display: none;
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <!-- Pantalla de Login -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <div class="login-logo">
+                <h1>🔐 Panel de Admin</h1>
+                <p>Quesería y Almacén V&C</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" class="form-input" id="username" name="username" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" class="form-input" id="password" name="password" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                <div class="error-message" id="errorMessage">Usuario o contraseña incorrectos</div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="logo-dashboard">
+                <h1>🧀 Quesería y Almacén V&C</h1>
+                <p>Panel de Administración</p>
+            </div>
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-section="products">
+                            <span class="nav-icon">📦</span>
+                            <span>Productos</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="analytics">
+                            <span class="nav-icon">📊</span>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">
+                            <span class="nav-icon">🌐</span>
+                            <span>Ver Sitio Web</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content" id="mainContent">
+            
+            <!-- Products Section -->
+            <div id="productsSection">
+                <div class="dashboard-header">
+                    <h1 class="header-title">Gestión de Productos</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-success" id="addProductBtn">
+                            ➕ Agregar Producto
+                        </button>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon products" style="background: rgba(139,115,85,0.1);">📦</div>
+                        <div class="stat-info">
+                            <h3 id="totalProducts">0</h3>
+                            <p>Total de Productos</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon categories" style="background: rgba(212,165,116,0.1);">🏷️</div>
+                        <div class="stat-info">
+                            <h3 id="totalCategories">0</h3>
+                            <p>Categorías</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="products-container">
+                    <div class="table-header">
+                        <h2 class="table-title">Lista de Productos</h2>
+                        <div class="search-bar">
+                            <input type="text" class="search-input" id="searchInput" placeholder="🔍 Buscar productos...">
+                            <select class="form-select" id="categoryFilter" style="min-width: 150px;">
+                                <option value="todos">Todas las categorías</option>
+                            </select>
+                        </div>
+                    </div>
+                    <table class="products-table" id="productsTable">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th>Precio</th>
+                                <th>Badge</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <tr>
+                                <td colspan="6">
+                                    <div class="empty-state">
+                                        <div class="empty-icon">⏳</div>
+                                        <p>Cargando productos...</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="analyticsSection" style="display: none;">
+                <div class="dashboard-header">
+                    <h1 class="header-title">Analíticas del Sitio</h1>
+                    <div class="header-actions">
+                        <select id="analyticsTimeRange" class="form-select" style="min-width: 150px;">
+                            <option value="7">Últimos 7 días</option>
+                            <option value="30" selected>Últimos 30 días</option>
+                            <option value="90">Últimos 3 meses</option>
+                        </select>
+                        <button class="btn btn-primary" id="refreshAnalyticsBtn">🔄 Actualizar</button>
+                    </div>
+                </div>
+
+                <!-- KPIs -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">👁️</div>
+                        <div class="stat-info">
+                            <h3 id="statTotalViews">0</h3>
+                            <p>Vistas de Página</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">🛒</div>
+                        <div class="stat-info">
+                            <h3 id="statAddToCart">0</h3>
+                            <p>Agregados al Carrito</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">📱</div>
+                        <div class="stat-info">
+                            <h3 id="statWhatsApp">0</h3>
+                            <p>Interacciones / Pedidos</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">👥</div>
+                        <div class="stat-info">
+                            <h3 id="statSessions">0</h3>
+                            <p>Sesiones Únicas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráficos -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
+                    <!-- Gráfico de Visitas -->
+                    <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-sm);">
+                        <h3 style="margin-bottom: 1rem; color: var(--primary);">Tráfico (Vistas vs Pedidos)</h3>
+                        <canvas id="trafficChart"></canvas>
+                    </div>
+                    
+                    <!-- Gráfico de Dispositivos -->
+                    <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-sm);">
+                        <h3 style="margin-bottom: 1rem; color: var(--primary);">Dispositivos</h3>
+                        <div style="height: 250px; display: flex; justify-content: center;">
+                            <canvas id="deviceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabla de Productos Populares -->
+                <div class="products-container">
+                    <div class="table-header">
+                        <h2 class="table-title">Productos Más Interesantes (Top 5)</h2>
+                    </div>
+                    <table class="products-table">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Veces Agregado al Carrito</th>
+                            </tr>
+                        </thead>
+                        <tbody id="topProductsBody">
+                            <tr><td colspan="2" style="text-align:center">Cargando datos...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Modal Agregar/Editar Producto -->
+    <div class="modal-overlay" id="productModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Agregar Producto</h2>
+                <button class="close-modal" id="closeModal">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="productForm">
+                    <input type="hidden" id="productId">
+                    <div class="form-group">
+                        <label class="form-label">Nombre del Producto *</label>
+                        <input type="text" class="form-input" id="productName" required placeholder="Ej: Queso Artesanal Premium">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Categoría *</label>
+                        <select class="form-select" id="productCategory" required>
+                            <option value="">Seleccionar categoría</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Descripción *</label>
+                        <textarea class="form-textarea" id="productDescription" required placeholder="Describe tu producto..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Precio ($) *</label>
+                        <input type="number" class="form-input" id="productPrice" required placeholder="0" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Badge (Etiqueta)</label>
+                        <input type="text" class="form-input" id="productBadge" placeholder="Ej: Premium, Orgánico, Nuevo">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Imagen del Producto *</label>
+                        <div class="image-upload-container">
+                            <label class="image-upload-btn" for="imageUpload">
+                                <span style="font-size: 2rem;">📷</span>
+                                <span>Hacer clic para seleccionar imagen</span>
+                                <span style="font-size: 0.85rem; color: var(--text-light);">O pega una URL de imagen abajo</span>
+                                <input type="file" id="imageUpload" accept="image/*">
+                            </label>
+                            <input type="url" class="form-input" id="productImageUrl" placeholder="https://ejemplo.com/imagen.jpg" style="margin-top: 0.5rem;">
+                        </div>
+                        <div class="image-preview" id="imagePreview">
+                            <div class="image-preview-placeholder">
+                                <p>📷</p>
+                                <p>Vista previa de la imagen</p>
+                            </div>
+                            <button type="button" class="remove-image-btn" id="removeImageBtn">✕</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelBtn">Cancelar</button>
+                <button class="btn btn-success" id="saveProductBtn">
+                    <span id="saveBtnText">💾 Guardar Producto</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+    <button class="theme-toggle" id="themeToggle">☀️</button>
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Credenciales de acceso (Simuladas)
+        const CREDENTIALS = {
+            username: 'admin',
+            password: 'admin123'
+        };
+
+        // Elementos del DOM
+        const loginScreen = document.getElementById('loginScreen');
+        const mainContent = document.getElementById('mainContent');
+        const sidebar = document.getElementById('sidebar');
+        const themeToggle = document.getElementById('themeToggle');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Login Handler
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === CREDENTIALS.username && password === CREDENTIALS.password) {
+                sessionStorage.setItem('authenticated', 'true');
+                showDashboard();
+            } else {
+                errorMessage.style.display = 'block';
+                setTimeout(() => { errorMessage.style.display = 'none'; }, 3000);
+            }
+        });
+
+        function showDashboard() {
+            loginScreen.style.display = 'none';
+            sidebar.style.display = 'block';
+            mainContent.style.display = 'block';
+            themeToggle.style.display = 'block';
+            mobileMenuBtn.style.display = 'block';
+            loadDashboardContent();
+        }
+
+        // --- DASHBOARD LOGIC ---
+        async function loadDashboardContent() {
+             // Configuración Supabase
+            const SUPABASE_URL = 'https://mytpwjkvtezixhggyxht.supabase.co';
+            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im15dHB3amt2dGV6aXhoZ2d5eGh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM1MTE1ODcsImV4cCI6MjA3OTA4NzU4N30.oMxZljrtvgM_3CZjOvMDcfJz8uB7T4N9JvQAphmp3HM';
+            let supabase = null;
+            let currentImageFile = null;
+            let editingProductId = null;
+            let categories = [];
+            
+            // Variables para Charts
+            let trafficChartInstance = null;
+            let deviceChartInstance = null;
+
+            // Initialize Supabase
+            function initSupabase() {
+                try {
+                    const { createClient } = window.supabase;
+                    supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+                    console.log('✅ Supabase inicializado correctamente');
+                    return true;
+                } catch (error) {
+                    console.error('❌ Error al inicializar Supabase:', error);
+                    return false;
+                }
+            }
+
+            // --- PRODUCT LOGIC ---
+            async function loadCategories() {
+                if (!supabase) return;
+                try {
+                    const { data, error } = await supabase.from('categories').select('*').order('name');
+                    if (error) throw error;
+                    categories = data;
+                    updateCategorySelects();
+                } catch (error) {
+                    showToast('Error al cargar categorías', 'error');
+                }
+            }
+
+            function updateCategorySelects() {
+                const categoryFilter = document.getElementById('categoryFilter');
+                const productCategory = document.getElementById('productCategory');
+                const options = categories.map(cat => `<option value="${cat.slug}">${cat.name}</option>`).join('');
+                
+                categoryFilter.innerHTML = '<option value="todos">Todas las categorías</option>' + options;
+                productCategory.innerHTML = '<option value="">Seleccionar categoría</option>' + options;
+            }
+
+            async function loadProducts(categoryFilter = 'todos', searchTerm = '') {
+                if (!supabase) return;
+                try {
+                    let query = supabase.from('products').select('*').eq('is_active', true).order('created_at', { ascending: false });
+                    if (categoryFilter !== 'todos') query = query.eq('category_slug', categoryFilter);
+                    if (searchTerm) query = query.or(`name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
+                    
+                    const { data, error } = await query;
+                    if (error) throw error;
+                    renderProducts(data);
+                    updateStats(data);
+                } catch (error) {
+                    showToast('Error al cargar productos', 'error');
+                }
+            }
+
+            function renderProducts(products) {
+                const tbody = document.getElementById('productsTableBody');
+                if (!products || products.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><p>No se encontraron productos</p></div></td></tr>`;
+                    return;
+                }
+                tbody.innerHTML = products.map(product => `
+                    <tr>
+                        <td><img src="${product.image_url}" alt="${product.name}" class="product-image-cell"></td>
+                        <td class="product-name-cell">${product.name}</td>
+                        <td><span class="category-badge">${product.category_slug}</span></td>
+                        <td class="price-cell">$${product.price}</td>
+                        <td>${product.badge || '-'}</td>
+                        <td class="actions-cell">
+                            <button class="icon-btn" onclick="editProduct(${product.id})" title="Editar">✏️</button>
+                            <button class="icon-btn" onclick="deleteProduct(${product.id})" title="Eliminar">🗑️</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            function updateStats(products) {
+                document.getElementById('totalProducts').textContent = products.length;
+                const uniqueCategories = [...new Set(products.map(p => p.category_slug))];
+                document.getElementById('totalCategories').textContent = uniqueCategories.length;
+            }
+
+            // --- ANALYTICS LOGIC (NUEVO) ---
+            async function loadAnalytics() {
+                if (!supabase) return;
+                
+                const days = document.getElementById('analyticsTimeRange').value;
+                const startDate = new Date();
+                startDate.setDate(startDate.getDate() - days);
+
+                // Mostrar indicadores de carga
+                document.getElementById('statTotalViews').textContent = '...';
+
+                try {
+                    // Obtener datos de analytics
+                    const { data, error } = await supabase
+                        .from('analytics')
+                        .select('*')
+                        .gte('created_at', startDate.toISOString());
+
+                    if (error) throw error;
+
+                    processAnalyticsData(data);
+                    showToast('✅ Analíticas actualizadas', 'success');
+
+                } catch (error) {
+                    console.error('Error analytics:', error);
+                    showToast('Error al cargar analíticas', 'error');
+                }
+            }
+
+            function processAnalyticsData(data) {
+                // 1. Contadores Simples
+                const pageViews = data.filter(e => e.event_type === 'page_view').length;
+                const addToCarts = data.filter(e => e.event_type === 'add_to_cart').length;
+                // WhatsApp clicks + pedidos completados
+                const interactions = data.filter(e => e.event_type === 'whatsapp_click' || e.event_type === 'order_completed').length;
+                const uniqueSessions = new Set(data.map(e => e.session_id)).size;
+
+                document.getElementById('statTotalViews').textContent = pageViews;
+                document.getElementById('statAddToCart').textContent = addToCarts;
+                document.getElementById('statWhatsApp').textContent = interactions;
+                document.getElementById('statSessions').textContent = uniqueSessions;
+
+                // 2. Gráfico de Dispositivos
+                const devices = {
+                    mobile: data.filter(e => e.device_type === 'mobile').length,
+                    desktop: data.filter(e => e.device_type === 'desktop').length,
+                    tablet: data.filter(e => e.device_type === 'tablet').length
+                };
+                renderDeviceChart(devices);
+
+                // 3. Gráfico de Tráfico por Día
+                const trafficByDate = {};
+                data.forEach(e => {
+                    const date = new Date(e.created_at).toLocaleDateString();
+                    if (!trafficByDate[date]) trafficByDate[date] = { views: 0, actions: 0 };
+                    
+                    if (e.event_type === 'page_view') trafficByDate[date].views++;
+                    if (['add_to_cart', 'whatsapp_click', 'order_completed'].includes(e.event_type)) trafficByDate[date].actions++;
+                });
+                renderTrafficChart(trafficByDate);
+
+                // 4. Productos Populares (Top add_to_cart)
+                const productCounts = {};
+                data.filter(e => e.event_type === 'add_to_cart' && e.product_name)
+                    .forEach(e => {
+                        productCounts[e.product_name] = (productCounts[e.product_name] || 0) + 1;
+                    });
+                
+                const sortedProducts = Object.entries(productCounts)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 5);
+                
+                const topProductsBody = document.getElementById('topProductsBody');
+                if (sortedProducts.length === 0) {
+                    topProductsBody.innerHTML = '<tr><td colspan="2" style="text-align:center">No hay datos suficientes aún</td></tr>';
+                } else {
+                    topProductsBody.innerHTML = sortedProducts.map(([name, count]) => `
+                        <tr>
+                            <td style="font-weight:600; color:var(--primary)">${name}</td>
+                            <td>${count} veces</td>
+                        </tr>
+                    `).join('');
+                }
+            }
+
+            function renderDeviceChart(devices) {
+                const ctx = document.getElementById('deviceChart').getContext('2d');
+                const isDark = document.body.classList.contains('dark-mode');
+                
+                if (deviceChartInstance) deviceChartInstance.destroy();
+
+                deviceChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Móvil', 'Escritorio', 'Tablet'],
+                        datasets: [{
+                            data: [devices.mobile, devices.desktop, devices.tablet],
+                            backgroundColor: ['#D4A574', '#8B7355', '#C9A962'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom', labels: { color: isDark ? '#fff' : '#000' } }
+                        }
+                    }
+                });
+            }
+
+            function renderTrafficChart(trafficData) {
+                const ctx = document.getElementById('trafficChart').getContext('2d');
+                const isDark = document.body.classList.contains('dark-mode');
+                const labels = Object.keys(trafficData).sort((a, b) => {
+                    const da = a.split('/').reverse().join('-');
+                    const db = b.split('/').reverse().join('-');
+                    return new Date(da) - new Date(db);
+                });
+                const views = labels.map(d => trafficData[d].views);
+                const actions = labels.map(d => trafficData[d].actions);
+
+                if (trafficChartInstance) trafficChartInstance.destroy();
+
+                trafficChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Vistas',
+                                data: views,
+                                borderColor: '#8B7355',
+                                backgroundColor: 'rgba(139, 115, 85, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            },
+                            {
+                                label: 'Acciones',
+                                data: actions,
+                                borderColor: '#10b981',
+                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { labels: { color: isDark ? '#fff' : '#000' } }
+                        },
+                        scales: {
+                            y: { grid: { color: 'rgba(200,200,200,0.1)' }, ticks: { color: isDark ? '#aaa' : '#666' } },
+                            x: { grid: { display: false }, ticks: { color: isDark ? '#aaa' : '#666' } }
+                        }
+                    }
+                });
+            }
+
+            // --- UTILS ---
+            function showToast(message, type = 'success') {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.className = `toast ${type} show`;
+                setTimeout(() => { toast.classList.remove('show'); }, 3000);
+            }
+
+            async function convertToWebP(file, maxWidth = 1920, quality = 0.85) {
+                return new Promise((resolve, reject) => {
+                    if (!file.type.startsWith('image/')) { reject(new Error('No es imagen')); return; }
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            let width = img.width, height = img.height;
+                            if (width > maxWidth) { height = (height * maxWidth) / width; width = maxWidth; }
+                            const canvas = document.createElement('canvas');
+                            canvas.width = width; canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, width, height);
+                            ctx.drawImage(img, 0, 0, width, height);
+                            canvas.toBlob((blob) => {
+                                resolve(new File([blob], file.name.replace(/\.(jpg|jpeg|png)$/i, '.webp'), { type: 'image/webp' }));
+                            }, 'image/webp', quality);
+                        };
+                        img.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            async function uploadImage(file) {
+                if (!supabase) return null;
+                try {
+                    const webpFile = await convertToWebP(file);
+                    const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.webp`;
+                    const { error } = await supabase.storage.from('product-images').upload(fileName, webpFile);
+                    if (error) throw error;
+                    return supabase.storage.from('product-images').getPublicUrl(fileName).data.publicUrl;
+                } catch (error) {
+                    showToast('Error subiendo imagen', 'error');
+                    return null;
+                }
+            }
+
+            // --- EVENT LISTENERS ---
+            
+            // Navegación Sidebar
+            document.querySelectorAll('.nav-link[data-section]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    
+                    const section = link.dataset.section;
+                    document.getElementById('productsSection').style.display = section === 'products' ? 'block' : 'none';
+                    
+                    // Lógica Analytics
+                    const analyticsSection = document.getElementById('analyticsSection');
+                    if (section === 'analytics') {
+                        analyticsSection.style.display = 'block';
+                        loadAnalytics();
+                    } else {
+                        analyticsSection.style.display = 'none';
+                    }
+
+                    if(window.innerWidth <= 1023) document.getElementById('sidebar').classList.remove('active');
+                });
+            });
+
+            // Analytics Controls
+            document.getElementById('refreshAnalyticsBtn').addEventListener('click', loadAnalytics);
+            document.getElementById('analyticsTimeRange').addEventListener('change', loadAnalytics);
+
+            // Image Upload
+            document.getElementById('imageUpload').addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                currentImageFile = file;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('imagePreview').innerHTML = `<img src="${e.target.result}"><button type="button" class="remove-image-btn" id="removeImageBtn">✕</button>`;
+                    document.getElementById('removeImageBtn').addEventListener('click', removeImage);
+                };
+                reader.readAsDataURL(file);
+                document.getElementById('productImageUrl').value = '';
+            });
+
+            // Product Save
+            document.getElementById('saveProductBtn').addEventListener('click', async () => {
+                const form = document.getElementById('productForm');
+                if (!form.checkValidity()) { form.reportValidity(); return; }
+                
+                const btn = document.getElementById('saveProductBtn');
+                btn.innerHTML = '<span class="loading-spinner"></span> Guardando...';
+                btn.disabled = true;
+
+                try {
+                    let imageUrl = document.getElementById('productImageUrl').value;
+                    if (currentImageFile) imageUrl = await uploadImage(currentImageFile);
+                    
+                    const name = document.getElementById('productName').value;
+                    const slug = name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                    
+                    const productData = {
+                        name: name,
+                        slug: slug,
+                        category_slug: document.getElementById('productCategory').value,
+                        description: document.getElementById('productDescription').value,
+                        price: parseFloat(document.getElementById('productPrice').value),
+                        badge: document.getElementById('productBadge').value || null,
+                        image_url: imageUrl,
+                        is_active: true
+                    };
+
+                    let result;
+                    if (editingProductId) {
+                        result = await supabase.from('products').update(productData).eq('id', editingProductId);
+                    } else {
+                        result = await supabase.from('products').insert([productData]);
+                    }
+
+                    if (result.error) throw result.error;
+                    
+                    showToast('✅ Producto guardado correctamente', 'success');
+                    closeModal();
+                    loadProducts();
+                } catch (error) {
+                    showToast('Error al guardar: ' + error.message, 'error');
+                } finally {
+                    btn.innerHTML = '<span id="saveBtnText">💾 Guardar Producto</span>';
+                    btn.disabled = false;
+                }
+            });
+
+            // Helpers UI
+            function removeImage() {
+                currentImageFile = null;
+                document.getElementById('productImageUrl').value = '';
+                document.getElementById('imageUpload').value = '';
+                document.getElementById('imagePreview').innerHTML = `<div class="image-preview-placeholder"><p>📷</p><p>Vista previa</p></div>`;
+            }
+            
+            function closeModal() {
+                document.getElementById('productModal').classList.remove('active');
+                removeImage();
+            }
+
+            // Global functions for HTML access
+            window.editProduct = async function(id) {
+                try {
+                    const { data, error } = await supabase.from('products').select('*').eq('id', id).single();
+                    if (error) throw error;
+                    editingProductId = id;
+                    document.getElementById('modalTitle').textContent = 'Editar Producto';
+                    document.getElementById('productName').value = data.name;
+                    document.getElementById('productCategory').value = data.category_slug;
+                    document.getElementById('productDescription').value = data.description;
+                    document.getElementById('productPrice').value = data.price;
+                    document.getElementById('productBadge').value = data.badge || '';
+                    document.getElementById('productImageUrl').value = data.image_url;
+                    document.getElementById('imagePreview').innerHTML = `<img src="${data.image_url}"><button type="button" class="remove-image-btn" id="removeImageBtn">✕</button>`;
+                    document.getElementById('removeImageBtn').addEventListener('click', removeImage);
+                    document.getElementById('productModal').classList.add('active');
+                } catch(e) { showToast('Error cargando producto', 'error'); }
+            };
+
+            window.deleteProduct = async function(id) {
+                if (!confirm('¿Eliminar producto?')) return;
+                const { error } = await supabase.from('products').update({ is_active: false }).eq('id', id);
+                if (!error) { showToast('Producto eliminado', 'success'); loadProducts(); }
+            };
+
+            // Modal Triggers
+            document.getElementById('addProductBtn').addEventListener('click', () => {
+                editingProductId = null;
+                document.getElementById('modalTitle').textContent = 'Agregar Producto';
+                document.getElementById('productForm').reset();
+                removeImage();
+                document.getElementById('productModal').classList.add('active');
+            });
+            document.getElementById('closeModal').addEventListener('click', closeModal);
+            document.getElementById('cancelBtn').addEventListener('click', closeModal);
+
+            // Theme Toggle
+            document.getElementById('themeToggle').addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                localStorage.setItem('dashboardTheme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+                if(trafficChartInstance) loadAnalytics(); // Redraw chart colors
+                if(deviceChartInstance) loadAnalytics();
+            });
+
+            // Mobile Menu
+            document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+                document.getElementById('sidebar').classList.toggle('active');
+            });
+
+            // --- INITIALIZATION ---
+            if (initSupabase()) {
+                loadCategories();
+                loadProducts();
+                showToast('✅ Sistema conectado', 'success');
+            }
+            
+            const savedTheme = localStorage.getItem('dashboardTheme') || 'dark';
+            if (savedTheme === 'dark') document.body.classList.add('dark-mode');
+            else document.body.classList.remove('dark-mode');
+        }
+
+        // Check Auth
+        if (sessionStorage.getItem('authenticated') === 'true') {
+            showDashboard();
+        } else {
+            loginScreen.style.display = 'flex';
+        }
+    </script>
+</body>
+</html>

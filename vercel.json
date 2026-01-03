@@ -8,7 +8,7 @@
   "redirects": [
     {
       "source": "/video",
-      "destination": "https://jkhrpbpdewhkzgqqrwmp.supabase.co/storage/v1/object/public/imagenes/queseria-video.mp4.mp4",
+      "destination": "https://jkhrpbpdewhkzgqqrwmp.supabase.co/storage/v1/object/public/imagenes/video.mp4",
       "permanent": false
     }
   ]

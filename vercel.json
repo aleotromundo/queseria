@@ -4,5 +4,12 @@
       "source": "/admin",
       "destination": "/dashboard.html"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/video",
+      "destination": "https://jkhrpbpdewhkzgqqrwmp.supabase.co/storage/v1/object/public/imagenes/QueseriayalmacenV&C.mp4",
+      "permanent": false
+    }
   ]
 }

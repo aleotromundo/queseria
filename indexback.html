@@ -2851,56 +2851,31 @@ function createProductCard(product) {
             }
         }
 
-// --- PERSISTENCIA DEL CARRITO EN LOCALSTORAGE ---
-function saveCartToLocalStorage() {
-    localStorage.setItem('vyc_cart', JSON.stringify(cart));
-    const badge = document.getElementById('cartBadge');
-    const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-    if (itemCount > 0) {
-        badge.style.display = 'flex';
-        badge.textContent = itemCount;
-    } else {
-        badge.style.display = 'none';
-    }
-}
-
-function loadCartFromLocalStorage() {
-    const savedCart = localStorage.getItem('vyc_cart');
-    if (savedCart) {
-        try {
-            cart = JSON.parse(savedCart);
-            updateCart();
-            console.log('🛒 Carrito restaurado desde localStorage');
-        } catch (e) {
-            console.error('Error al leer el carrito:', e);
-            localStorage.removeItem('vyc_cart');
-        }
-    }
-}
-// -----------------------------------------------
-
         // Cart Functions
         function addToCart(productId) {
-    const product = products.find(p => p.id === productId);
-    const existingItem = cart.find(item => item.id === productId);
-    if (existingItem) {
-        existingItem.quantity++;
-    } else {
-        cart.push({
-            ...product,
-            quantity: 1
-        });
-    }
-    if(product) {
-        trackEvent('add_to_cart', {
-            productId: product.id,
-            productName: product.name
-        });
-    }
-    updateCart();
-    animateCartIcon();
-    saveCartToLocalStorage(); // ← AGREGADA ESTA LÍNEA
-}
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: 1
+                });
+            }
+
+            // ANALYTICS TRACKING
+            if(product) {
+                trackEvent('add_to_cart', {
+                    productId: product.id,
+                    productName: product.name
+                });
+            }
+
+            updateCart();
+            animateCartIcon();
+        }
 
         function animateCartIcon() {
             const cartBtn = document.getElementById('cartBtn');
@@ -2951,23 +2926,21 @@ function loadCartFromLocalStorage() {
         }
 
         function updateQuantity(productId, change) {
-    const item = cart.find(i => i.id === productId);
-    if (item) {
-        item.quantity += change;
-        if (item.quantity <= 0) {
-            removeFromCart(productId);
-        } else {
-            updateCart();
-            saveCartToLocalStorage(); // ← AGREGADA ESTA LÍNEA
+            const item = cart.find(i => i.id === productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    updateCart();
+                }
+            }
         }
-    }
-}
 
         function removeFromCart(productId) {
-    cart = cart.filter(item => item.id !== productId);
-    updateCart();
-    saveCartToLocalStorage(); // ← AGREGADA ESTA LÍNEA
-}
+            cart = cart.filter(item => item.id !== productId);
+            updateCart();
+        }
 
         function shareProduct(productId, platform) {
             const product = products.find(p => p.id === productId);
@@ -3114,9 +3087,8 @@ document.getElementById('checkoutForm').addEventListener('submit', (e) => {
         window.open(whatsappUrl, '_blank');
 
         // 6. Limpieza final
-        cart = [];
-	localStorage.removeItem('vyc_cart'); // ← AGREGADA ESTA LÍNEA
-	updateCart();
+        cart = []; // Vaciar carrito en memoria
+        updateCart(); // Actualizar visualmente
         
         // Cerrar modales
         const modal = document.getElementById('checkoutModal');
@@ -3282,7 +3254,6 @@ document.getElementById('checkoutForm').addEventListener('submit', (e) => {
             initCarousel();
             renderProducts();
             updateCart();
-	    loadCartFromLocalStorage(); // ← AGREGAR DESPUÉS DE updateCart();
             renderHistory(); // Cargar historial al iniciar
             initBackgroundMusic();
             initSearchFloatButton();

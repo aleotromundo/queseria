@@ -1,6 +1,19 @@
+const GEMINI_API_KEYS = [
+    process.env.GEMINI_KEY_1,
+    process.env.GEMINI_KEY_2,
+    process.env.GEMINI_KEY_3,
+    process.env.GEMINI_KEY_4
+].filter(Boolean);
+
+const MODELS = [
+    "gemini-2.5-flash-preview-04-17",
+    "gemini-2.0-flash",
+    "gemini-1.5-flash"
+];
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
+        return res.status(405).json({ error: 'Método no permitido' });
     }
 
     const { prompt } = req.body;
@@ -9,23 +22,38 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Prompt requerido' });
     }
 
-    try {
-        const response = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{ parts: [{ text: prompt }] }],
-                    generationConfig: { maxOutputTokens: 300, temperature: 0.1 }
-                })
+    const contents = [{ parts: [{ text: prompt }] }];
+
+    for (let modelName of MODELS) {
+        let keys = [...GEMINI_API_KEYS].sort(() => Math.random() - 0.5);
+
+        for (let key of keys) {
+            for (let ver of ['v1beta', 'v1']) {
+                try {
+                    const response = await fetch(
+                        `https://generativelanguage.googleapis.com/${ver}/models/${modelName}:generateContent?key=${key}`,
+                        {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                contents,
+                                generationConfig: { maxOutputTokens: 300, temperature: 0.1 }
+                            })
+                        }
+                    );
+
+                    const data = await response.json();
+
+                    if (response.ok && data.candidates) {
+                        return res.status(200).json(data);
+                    }
+
+                } catch (error) {
+                    console.error(`Error con ${modelName}:`, error.message);
+                }
             }
-        );
-
-        const data = await response.json();
-        res.status(200).json(data);
-
-    } catch (error) {
-        res.status(500).json({ error: 'Error al contactar Gemini' });
+        }
     }
+
+    return res.status(500).json({ error: 'Todas las claves API están agotadas o bloqueadas' });
 }

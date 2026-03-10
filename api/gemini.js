@@ -39,9 +39,11 @@ export default async function handler(req, res) {
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 contents,
-                                generationConfig: { maxOutputTokens: 1024, temperature: 0.1 }
-                            })
-                        }
+                                generationConfig: { 
+    maxOutputTokens: 1024, 
+    temperature: 0.1,
+    thinkingConfig: { thinkingBudget: 0 }
+}
                     );
 
                     const data = await response.json();

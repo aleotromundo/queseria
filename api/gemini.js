@@ -45,7 +45,7 @@ export default async function handler(req, res) {
                     );
 
                     const data = await response.json();
-console.error(`${modelName} | ${ver} | status: ${response.status} | ${JSON.stringify(data?.error?.message)}`);
+console.error(`${modelName} | ${ver} | status: ${response.status} | ${JSON.stringify(data)}`);
 
 if (response.ok && data.candidates) {
     return res.status(200).json(data);

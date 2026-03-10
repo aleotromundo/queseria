@@ -6,8 +6,10 @@ const GEMINI_API_KEYS = [
 ].filter(Boolean);
 
 const MODELS = [
-    "gemini-2.5-flash-preview-04-17",
-    "gemini-2.0-flash",
+    "gemini-3-flash-preview",
+    "gemini-3-pro",
+    "gemini-3-flash-8b",
+    "gemini-3-flash",
     "gemini-1.5-flash"
 ];
 

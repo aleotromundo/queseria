@@ -39,19 +39,20 @@ module.exports = async function handler(req, res) {
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 contents,
-                                generationConfig: { 
-    maxOutputTokens: 1024, 
-    temperature: 0.1,
-    thinkingConfig: { thinkingBudget: 0 }
-}
+                                generationConfig: {
+                                    maxOutputTokens: 1024,
+                                    temperature: 0.1
+                                }
+                            })
+                        }
                     );
 
                     const data = await response.json();
-console.error(`${modelName} | ${ver} | status: ${response.status} | ${JSON.stringify(data)}`);
+                    console.error(`${modelName} | ${ver} | status: ${response.status} | ${JSON.stringify(data?.error?.message)}`);
 
-if (response.ok && data.candidates) {
-    return res.status(200).json(data);
-}
+                    if (response.ok && data.candidates) {
+                        return res.status(200).json(data);
+                    }
 
                 } catch (error) {
                     console.error(`Error con ${modelName}:`, error.message);

@@ -43,10 +43,11 @@ export default async function handler(req, res) {
                     );
 
                     const data = await response.json();
+console.error(`${modelName} | ${ver} | status: ${response.status} | ${JSON.stringify(data?.error?.message)}`);
 
-                    if (response.ok && data.candidates) {
-                        return res.status(200).json(data);
-                    }
+if (response.ok && data.candidates) {
+    return res.status(200).json(data);
+}
 
                 } catch (error) {
                     console.error(`Error con ${modelName}:`, error.message);

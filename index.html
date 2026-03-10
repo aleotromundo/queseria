@@ -2631,12 +2631,7 @@
 
             // Limitar a 150 productos para no exceder tokens
             const poolLimited = pool.slice(0, 150);
-            const catalog = poolLimited.map(p => ({
-                id: p.id,
-                name: p.name,
-                category: p.category,
-                description: (p.description || '').slice(0, 100)
-            }));
+            const catalog = poolLimited.map(p => `${p.id}:${p.name}`).join('\n');
 
             const prompt = `Sos un asistente de búsqueda para una tienda de productos artesanales y naturales.
 El usuario busca: "${query}"

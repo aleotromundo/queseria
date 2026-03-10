@@ -2633,20 +2633,10 @@
             const poolLimited = pool.slice(0, 150);
             const catalog = poolLimited.map(p => `${p.id}:${p.name}`).join('\n');
 
-            const prompt = `Sos un asistente de búsqueda para una tienda de productos artesanales y naturales.
-El usuario busca: "${query}"
-
-Devolvé SOLO un objeto JSON válido con los IDs de los productos más relevantes, ordenados por relevancia.
-Reglas:
-- Interpretá sinónimos, descripciones y usos (ej: "algo dulce" puede ser miel, mermelada, etc.)
-- Devolvé máximo 20 IDs
-- Si ninguno es relevante devolvé {"ids": []}
-- NO incluyas texto fuera del JSON. SOLO el JSON.
-
-Catálogo disponible (id, nombre, categoría, descripción):
-${JSON.stringify(catalog)}
-
-Respuesta (solo JSON):`;
+            const prompt = `Tienda de productos naturales. Usuario busca: "${query}"
+Devolvé SOLO JSON con IDs relevantes. Máximo 20. Formato: {"ids":[1,2,3]}
+Catálogo (id:nombre):
+${catalog}`;
 
             try {
                 const res = await fetch(

@@ -1537,6 +1537,120 @@ async function loadAnalytics() {
 }
 $('refreshAnalytics').addEventListener('click', loadAnalytics);
 $('analyticsRange').addEventListener('change', loadAnalytics);
+
+// ─── PWA ──────────────────────────────────────────────────
+// Manifest inline
+(function() {
+    const manifest = {
+        name: 'Panel Admin · Quesería V&C',
+        short_name: 'Panel V&C',
+        description: 'Panel de administración de productos',
+        start_url: './panel.html',
+        display: 'standalone',
+        background_color: '#18140f',
+        theme_color: '#8B7355',
+        orientation: 'any',
+        icons: [
+            { src: 'https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp', sizes: '192x192', type: 'image/webp' },
+            { src: 'https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp', sizes: '512x512', type: 'image/webp' }
+        ]
+    };
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = URL.createObjectURL(new Blob([JSON.stringify(manifest)], { type: 'application/json' }));
+    document.head.appendChild(link);
+
+    // Meta tags Apple
+    const metas = [
+        ['mobile-web-app-capable', 'yes'],
+        ['apple-mobile-web-app-capable', 'yes'],
+        ['apple-mobile-web-app-status-bar-style', 'black-translucent'],
+        ['apple-mobile-web-app-title', 'Panel V&C'],
+        ['theme-color', '#8B7355']
+    ];
+    metas.forEach(([name, content]) => {
+        const m = document.createElement('meta');
+        m.name = name; m.content = content;
+        document.head.appendChild(m);
+    });
+
+    // Apple touch icon
+    const icon = document.createElement('link');
+    icon.rel = 'apple-touch-icon';
+    icon.href = 'https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp';
+    document.head.appendChild(icon);
+
+    // Service Worker mínimo (requerido para habilitar instalación)
+    if ('serviceWorker' in navigator) {
+        const swCode = `
+            self.addEventListener('install', () => self.skipWaiting());
+            self.addEventListener('activate', () => clients.claim());
+            self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => new Response(''))));
+        `;
+        navigator.serviceWorker.register(
+            URL.createObjectURL(new Blob([swCode], { type: 'application/javascript' }))
+        ).catch(() => {});
+    }
+})();
+
+// Banner de instalación
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    // Solo mostrar si no fue descartado antes
+    if (!localStorage.getItem('pwaDeclined')) showInstallBanner();
+});
+
+function showInstallBanner() {
+    if (document.getElementById('installBanner')) return;
+    const banner = document.createElement('div');
+    banner.id = 'installBanner';
+    banner.innerHTML = `
+        <div style="display:flex;align-items:center;gap:.8rem;flex:1;min-width:0">
+            <img src="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp"
+                 style="width:40px;height:40px;border-radius:10px;object-fit:cover;flex-shrink:0">
+            <div style="min-width:0">
+                <div style="font-weight:600;font-size:.92rem">Instalar Panel V&C</div>
+                <div style="font-size:.8rem;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Accedé más rápido desde tu pantalla de inicio</div>
+            </div>
+        </div>
+        <div style="display:flex;gap:.5rem;flex-shrink:0">
+            <button id="installBtn" style="padding:.5rem 1rem;background:var(--primary);color:#fff;border:none;border-radius:8px;font-family:inherit;font-weight:600;font-size:.88rem;cursor:pointer">Instalar</button>
+            <button id="dismissBtn" style="padding:.5rem .7rem;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text-muted);font-family:inherit;font-size:.88rem;cursor:pointer">✕</button>
+        </div>
+    `;
+    banner.style.cssText = `
+        position:fixed;bottom:calc(var(--bottom-nav-h) + .6rem);left:.8rem;right:.8rem;
+        background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);
+        padding:1rem;display:flex;align-items:center;gap:.8rem;
+        box-shadow:var(--shadow-lg);z-index:700;
+        animation:toastIn .3s ease;
+    `;
+    document.body.appendChild(banner);
+
+    document.getElementById('installBtn').addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        banner.remove();
+        if (outcome === 'accepted') toast('✅ App instalada correctamente');
+    });
+
+    document.getElementById('dismissBtn').addEventListener('click', () => {
+        localStorage.setItem('pwaDeclined', '1');
+        banner.remove();
+    });
+}
+
+// En desktop mostrar el botón de instalar en el sidebar si está disponible
+window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    const banner = document.getElementById('installBanner');
+    if (banner) banner.remove();
+});
 </script>
 </body>
 </html>

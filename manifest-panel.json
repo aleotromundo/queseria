@@ -1,0 +1,21 @@
+{
+  "name": "Panel Admin · Quesería V&C",
+  "short_name": "Panel V&C",
+  "start_url": "./panel.html",
+  "display": "standalone",
+  "background_color": "#18140f",
+  "theme_color": "#8B7355",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp",
+      "sizes": "192x192",
+      "type": "image/webp"
+    },
+    {
+      "src": "https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp",
+      "sizes": "512x512",
+      "type": "image/webp"
+    }
+  ]
+}

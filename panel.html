@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Panel Admin · Quesería V&C</title>
+    <link rel="manifest" href="./manifest-panel.json">
+    <meta name="theme-color" content="#8B7355">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Panel V&C">
+    <link rel="apple-touch-icon" href="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1539,59 +1546,10 @@ $('refreshAnalytics').addEventListener('click', loadAnalytics);
 $('analyticsRange').addEventListener('change', loadAnalytics);
 
 // ─── PWA ──────────────────────────────────────────────────
-// Manifest inline
-(function() {
-    const manifest = {
-        name: 'Panel Admin · Quesería V&C',
-        short_name: 'Panel V&C',
-        description: 'Panel de administración de productos',
-        start_url: './panel.html',
-        display: 'standalone',
-        background_color: '#18140f',
-        theme_color: '#8B7355',
-        orientation: 'any',
-        icons: [
-            { src: 'https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp', sizes: '192x192', type: 'image/webp' },
-            { src: 'https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp', sizes: '512x512', type: 'image/webp' }
-        ]
-    };
-    const link = document.createElement('link');
-    link.rel = 'manifest';
-    link.href = URL.createObjectURL(new Blob([JSON.stringify(manifest)], { type: 'application/json' }));
-    document.head.appendChild(link);
-
-    // Meta tags Apple
-    const metas = [
-        ['mobile-web-app-capable', 'yes'],
-        ['apple-mobile-web-app-capable', 'yes'],
-        ['apple-mobile-web-app-status-bar-style', 'black-translucent'],
-        ['apple-mobile-web-app-title', 'Panel V&C'],
-        ['theme-color', '#8B7355']
-    ];
-    metas.forEach(([name, content]) => {
-        const m = document.createElement('meta');
-        m.name = name; m.content = content;
-        document.head.appendChild(m);
-    });
-
-    // Apple touch icon
-    const icon = document.createElement('link');
-    icon.rel = 'apple-touch-icon';
-    icon.href = 'https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp';
-    document.head.appendChild(icon);
-
-    // Service Worker mínimo (requerido para habilitar instalación)
-    if ('serviceWorker' in navigator) {
-        const swCode = `
-            self.addEventListener('install', () => self.skipWaiting());
-            self.addEventListener('activate', () => clients.claim());
-            self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => new Response(''))));
-        `;
-        navigator.serviceWorker.register(
-            URL.createObjectURL(new Blob([swCode], { type: 'application/javascript' }))
-        ).catch(() => {});
-    }
-})();
+// Registrar SW (usa el sw.js ya existente en el proyecto)
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
 
 // Banner de instalación
 let deferredPrompt = null;

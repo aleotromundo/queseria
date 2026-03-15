@@ -2,8 +2,7 @@
 const CACHE_NAME = 'vyc-cache-v1';
 const urlsToCache = [
   './index.html',
-  './manifest.json',
-  './panel.html'
+  './manifest.json'
 ];
 
 // Instalación

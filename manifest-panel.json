@@ -8,14 +8,14 @@
   "orientation": "any",
   "icons": [
     {
-      "src": "https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp",
+      "src": "https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo.png",
       "sizes": "192x192",
-      "type": "image/webp"
+      "type": "image/png"
     },
     {
-      "src": "https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp",
+      "src": "https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo.png",
       "sizes": "512x512",
-      "type": "image/webp"
+      "type": "image/png"
     }
   ]
 }

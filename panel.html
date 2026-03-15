@@ -1262,11 +1262,14 @@ function renderProducts(products) {
                 <div class="prod-card-meta">
                     <span class="badge badge-cat">${cat ? cat.name : p.category_slug}</span>
                     ${p.badge ? `<span class="badge badge-label">${p.badge}</span>` : ''}
-                    ${p.is_active ? `<span class="badge badge-ok">Activo</span>` : `<span class="badge badge-off">Inactivo</span>`}
                 </div>
                 <div class="prod-card-price">$${Number(p.price).toLocaleString('es-UY')}</div>
                 <div class="prod-card-actions">
                     <button class="btn btn-ghost" style="padding:.45rem .9rem;font-size:.85rem" onclick="openEdit('${p.id}')">✏️ Editar</button>
+                    <label class="toggle" title="${p.is_active ? 'Activo' : 'Inactivo'}" style="margin-left:.2rem">
+                        <input type="checkbox" ${p.is_active ? 'checked' : ''} onchange="toggleActive('${p.id}', this.checked)">
+                        <span class="toggle-track"></span>
+                    </label>
                     <button class="btn" style="padding:.45rem .9rem;font-size:.85rem;background:rgba(220,38,38,.1);color:var(--err);border:1px solid rgba(220,38,38,.2)" onclick="askDelete('${p.id}')">🗑️</button>
                 </div>
             </div>

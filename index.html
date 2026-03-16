@@ -1975,7 +1975,7 @@
             <span id="aiSearchStatus">Buscando con IA...</span>
         </div>
         <div class="search-container" id="searchContainer">
-            <input type="text" id="searchInput" placeholder="🔍 Buscá con IA: ej. &quot;algo dulce para regalo&quot;..." oninput="scheduleAISearch()" autocomplete="off">
+            <input type="text" id="searchInput" placeholder="🔍 Buscá productos... ej. &quot;algo dulce para regalo&quot;" oninput="scheduleAISearch()" autocomplete="off">
             <button class="search-close-btn" id="searchCloseBtn">✕</button>
         </div>
         <div class="products-grid" id="productsGrid">
@@ -2576,17 +2576,42 @@
 
         let aiSearchTimer = null;
         let lastAIQuery = '';
+        let aiAbortController = null;
 
         function scheduleAISearch() {
             clearTimeout(aiSearchTimer);
             const term = document.getElementById('searchInput').value.trim();
+
             if (!term) {
-                filterProducts();
                 hideAIIndicator();
+                filterProducts();
                 return;
             }
-            showAIIndicator('Analizando tu búsqueda...');
-            aiSearchTimer = setTimeout(() => runAISearch(term), 700);
+
+            // 1. Búsqueda normal instantánea primero
+            const activeCategory = document.querySelector('.filter-btn.active')?.dataset.category || 'todos';
+            let pool = products;
+            if (activeCategory !== 'todos') pool = products.filter(p => p.category === activeCategory);
+
+            const normalResults = pool.filter(p =>
+                p.name.toLowerCase().includes(term.toLowerCase()) ||
+                p.description.toLowerCase().includes(term.toLowerCase()) ||
+                p.category.toLowerCase().includes(term.toLowerCase())
+            );
+
+            if (normalResults.length > 0) {
+                // Encontró resultados normales — mostrarlos sin IA
+                hideAIIndicator();
+                currentFilteredProducts = normalResults;
+                currentProductIndex = normalResults.length;
+                const grid = document.getElementById('productsGrid');
+                if (grid) grid.innerHTML = normalResults.map(p => createProductCard(p)).join('');
+                return;
+            }
+
+            // 2. Sin resultados normales — esperar un poco y llamar a la IA
+            showAIIndicator('Buscando con IA...');
+            aiSearchTimer = setTimeout(() => runAISearch(term), 900);
         }
 
         function showAIIndicator(msg) {
@@ -2605,7 +2630,10 @@
             if (query === lastAIQuery) return;
             lastAIQuery = query;
 
-            // Esperar hasta 3s a que los productos carguen desde Supabase
+            // Cancelar llamada anterior si sigue en curso
+            if (aiAbortController) aiAbortController.abort();
+            aiAbortController = new AbortController();
+
             if (products.length === 0) {
                 showAIIndicator('Cargando catálogo...');
                 let waited = 0;
@@ -2614,45 +2642,36 @@
                     waited += 200;
                 }
                 if (products.length === 0) {
-                    showAIIndicator('No se pudo cargar el catálogo. Reintentá en un momento.');
-                    setTimeout(hideAIIndicator, 3000);
+                    hideAIIndicator();
                     return;
                 }
             }
 
             const activeCategory = document.querySelector('.filter-btn.active')?.dataset.category || 'todos';
             let pool = products;
-            if (activeCategory !== 'todos') {
-                pool = products.filter(p => p.category === activeCategory);
-            }
+            if (activeCategory !== 'todos') pool = products.filter(p => p.category === activeCategory);
             if (pool.length === 0) { hideAIIndicator(); return; }
 
-            console.log(`🤖 Búsqueda IA: "${query}" | productos en memoria: ${products.length} | pool: ${pool.length}`);
-
-            // Limitar a 150 productos para no exceder tokens
-            const poolLimited = pool.slice(0, 150);
-            const catalog = poolLimited.map(p => `${p.id}:${p.name}`).join('\n');
-
-            const prompt = `Tienda de productos naturales. Usuario busca: "${query}"
-Devolvé SOLO JSON con IDs relevantes. Máximo 20. Formato: {"ids":[1,2,3]}
-Catálogo (id:nombre):
+            // Prompt compacto — solo nombres para ahorrar tokens
+            const catalog = pool.slice(0, 100).map(p => `${p.id}:${p.name}`).join('\n');
+            const prompt = `Tienda de productos naturales uruguaya. El usuario buscó: "${query}" pero no hubo resultados exactos.
+Analizá el catálogo y devolvé los IDs de productos relacionados o similares. Considerá errores de tipeo, sinónimos y descripciones alternativas.
+Devolvé SOLO JSON. Máximo 12. Formato: {"ids":[1,2,3]}
+Catálogo:
 ${catalog}`;
 
             try {
-                const res = await fetch(
-                    '/api/gemini' ,
-                    {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ prompt: prompt })
-                    }
-                );
+                const res = await fetch('/api/gemini', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt }),
+                    signal: aiAbortController.signal
+                });
 
                 const data = await res.json();
                 const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '{"ids":[]}';
                 const parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
                 const matchedIds = parsed.ids || [];
-
                 const grid = document.getElementById('productsGrid');
 
                 if (matchedIds.length === 0) {
@@ -2661,14 +2680,13 @@ ${catalog}`;
                         <div class="search-no-results-ai">
                             <div style="font-size:3rem;margin-bottom:1rem">🤔</div>
                             <p style="font-size:1.1rem">No encontré productos para "<strong>${query}</strong>"</p>
-                            <p class="suggestion" onclick="document.getElementById('searchInput').value='';scheduleAISearch()">Ver todos los productos</p>
+                            <p class="suggestion" onclick="document.getElementById('searchInput').value='';filterProducts()">Ver todos los productos</p>
                         </div>`;
                     return;
                 }
 
                 const ordered = matchedIds.map(id => pool.find(p => p.id == id)).filter(Boolean);
-                showAIIndicator(`✨ IA encontró ${ordered.length} producto${ordered.length !== 1 ? 's' : ''} para vos`);
-
+                showAIIndicator(`✨ IA encontró ${ordered.length} resultado${ordered.length !== 1 ? 's' : ''} para vos`);
                 currentFilteredProducts = ordered;
                 currentProductIndex = ordered.length;
                 grid.innerHTML = ordered.map(p => createProductCard(p)).join('');
@@ -2681,7 +2699,8 @@ ${catalog}`;
                 }
 
             } catch(e) {
-                console.warn('Error búsqueda IA, usando búsqueda clásica:', e);
+                if (e.name === 'AbortError') return; // llamada cancelada, ignorar
+                console.warn('Error búsqueda IA:', e);
                 hideAIIndicator();
                 filterProducts();
             }

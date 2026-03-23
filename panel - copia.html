@@ -800,15 +800,16 @@
         .ad-logo-badge img { width: 100%; height: 100%; object-fit: cover; }
         .ad-body {
             position: absolute; z-index: 5;
-            left: 15px; top: 15px;
-            width: 175px; height: 175px;
+            left: 10px; top: -5px;
+            width: 185px; height: 185px;
             border-radius: 50%;
-            background: rgba(245,239,230,.92);
+            background: rgba(245,239,230,.50);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
-            text-align: center; padding: 20px;
+            text-align: center; padding: 30px 24px 24px;
             overflow: visible;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .ad-tag {
             font-family: Georgia, serif; font-size: 16px;
@@ -829,7 +830,7 @@
         .ad-divider-icon { color: #8B6B3D; font-size: 14px; }
         .ad-lower {
             position: absolute; z-index: 5;
-            top: 250px; left: 28px; right: 155px; bottom: 85px;
+            top: 268px; left: 28px; right: 155px; bottom: 70px;
             display: flex; flex-direction: column; justify-content: flex-start; gap: 6px;
         }
         .ad-description {
@@ -850,7 +851,7 @@
         .ad-footer {
             display: flex; align-items: center; justify-content: space-between;
             padding: 0 28px;
-            position: absolute; bottom: 25px; left: 0; right: 0; z-index: 5;
+            position: absolute; bottom: 22px; left: 0; right: 0; z-index: 5;
         }
         .ad-price-label {
             font-family: Georgia, serif; font-size: 13px;
@@ -1842,21 +1843,8 @@ $('downloadAdBtn').addEventListener('click', async () => {
     btn.disabled = true;
     try {
         const canvas = await html2canvas($('adCard'), {
-            scale: 2, 
-            useCORS: true, 
-            allowTaint: true,
-            backgroundColor: '#f5efe6', 
-            logging: false, 
-            imageTimeout: 15000,
-            width: 500, 
-            height: 500,
-            windowWidth: 500,
-            onclone: (clonedDoc) => {
-                const el = clonedDoc.getElementById('adCard');
-                el.style.transform = 'none';
-                el.style.margin = '0';
-                el.style.position = 'relative';
-            }
+            scale: 2, useCORS: true, allowTaint: true,
+            backgroundColor: '#f5efe6', logging: false, imageTimeout: 15000
         });
         const link = document.createElement('a');
         const nombre = currentAdProduct?.name?.replace(/\s+/g, '_').toLowerCase() || 'publicidad';
@@ -1864,10 +1852,7 @@ $('downloadAdBtn').addEventListener('click', async () => {
         link.href = canvas.toDataURL('image/png');
         link.click();
         toast('Imagen descargada ✅');
-    } catch(e) { 
-        console.error(e);
-        toast('Error generando imagen', 'err'); 
-    }
+    } catch(e) { toast('Error generando imagen', 'err'); }
     finally { btn.textContent = '⬇️ Descargar imagen'; btn.disabled = false; }
 });
 

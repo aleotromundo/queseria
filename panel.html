@@ -15,6 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -742,6 +743,151 @@
             .stats-row { grid-template-columns: 1fr 1fr; }
             #toastContainer { bottom: calc(var(--bottom-nav-h) + .5rem); right: .8rem; left: .8rem; align-items: stretch; }
         }
+
+        /* ═══════════════════════════════
+           MODAL PUBLICIDAD
+        ═══════════════════════════════ */
+        .pub-modal { max-width: 560px; }
+
+        .pub-status {
+            text-align: center; padding: 2rem;
+            color: var(--text-muted); font-size: .95rem;
+        }
+        .pub-spinner {
+            display: inline-block; width: 36px; height: 36px;
+            border: 3px solid var(--border); border-top-color: var(--primary);
+            border-radius: 50%; animation: spin .8s linear infinite;
+            margin-bottom: .8rem;
+        }
+
+        /* Tarjeta 500×500 */
+        #adCard {
+            width: 500px; height: 500px;
+            background: #f5efe6;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            font-family: Georgia, serif;
+            margin: 0 auto;
+            flex-shrink: 0;
+        }
+        .ad-border {
+            position: absolute; inset: 10px;
+            border: 2px solid #8B6B3D; border-radius: 2px;
+            pointer-events: none; z-index: 10;
+        }
+        .ad-border::before {
+            content: ''; position: absolute; inset: 4px;
+            border: 1px solid #C4A265; border-radius: 1px;
+        }
+        .ad-img-block { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+        .ad-img-block img {
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: center top; display: block;
+            filter: sepia(15%) contrast(1.05);
+        }
+        .ad-img-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, #f5efe6 20%, rgba(245,239,230,.55) 62%, transparent 100%);
+            z-index: 1;
+        }
+        .ad-logo-badge {
+            position: absolute; top: 265px; right: 22px;
+            width: 125px; height: 118px;
+            border-radius: 50%; background: #f5efe6;
+            overflow: hidden; z-index: 5; opacity: .8;
+        }
+        .ad-logo-badge img { width: 100%; height: 100%; object-fit: cover; }
+        .ad-body {
+            position: absolute; z-index: 5;
+            left: 10px; top: -5px;
+            width: 185px; height: 185px;
+            border-radius: 50%;
+            background: rgba(245,239,230,.50);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            text-align: center; padding: 30px 24px 24px;
+            overflow: visible;
+        }
+        .ad-tag {
+            font-family: Georgia, serif; font-size: 16px;
+            letter-spacing: 2px; text-transform: uppercase;
+            color: #8B6B3D; margin-bottom: 6px; flex-shrink: 0;
+        }
+        .ad-name {
+            font-family: Georgia, serif; font-size: 22px; font-weight: bold;
+            color: #3d2b1f; margin: 0 0 4px; line-height: 1.2; text-align: center;
+            word-break: normal; overflow-wrap: normal; white-space: normal; hyphens: none;
+        }
+        .ad-divider {
+            position: absolute; z-index: 5;
+            top: 248px; left: 28px; right: 28px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .ad-divider-line { flex: 1; height: 1px; background: #C4A265; }
+        .ad-divider-icon { color: #8B6B3D; font-size: 14px; }
+        .ad-lower {
+            position: absolute; z-index: 5;
+            top: 268px; left: 28px; right: 155px; bottom: 70px;
+            display: flex; flex-direction: column; justify-content: flex-start; gap: 6px;
+        }
+        .ad-description {
+            font-family: Georgia, serif; font-size: 18px;
+            color: #7a5c3a; font-style: italic;
+            text-align: left; margin-bottom: 4px; line-height: 1.4;
+        }
+        .ad-bullets { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
+        .ad-bullets li {
+            font-family: Georgia, serif; font-size: 19px;
+            color: #5c3d2a; padding-left: 16px;
+            position: relative; line-height: 1.4; text-align: left;
+        }
+        .ad-bullets li::before {
+            content: '◆'; position: absolute; left: 0;
+            font-size: 9px; color: #8B6B3D; top: 4px;
+        }
+        .ad-footer {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 28px;
+            position: absolute; bottom: 22px; left: 0; right: 0; z-index: 5;
+        }
+        .ad-price-label {
+            font-family: Georgia, serif; font-size: 13px;
+            letter-spacing: 2px; text-transform: uppercase;
+            color: #8B6B3D; margin-bottom: 1px;
+        }
+        .ad-price { font-family: Georgia, serif; font-size: 40px; font-weight: bold; color: #3d2b1f; line-height: 1; }
+        .ad-price span { font-size: 20px; font-weight: normal; }
+        .ad-whatsapp {
+            display: flex; align-items: center; gap: 6px;
+            background: #25D366; color: #fff;
+            padding: 8px 14px; border-radius: 2px;
+            font-family: Georgia, serif; font-size: 16px; letter-spacing: .5px;
+        }
+        .ad-whatsapp svg { width: 18px; height: 18px; fill: #fff; flex-shrink: 0; }
+
+        .pub-preview-wrap { overflow-x: auto; padding: 1rem 1.5rem 0; }
+        .pub-actions {
+            display: flex; gap: .75rem; justify-content: flex-end;
+            padding: 1rem 1.5rem; border-top: 1px solid var(--border); flex-wrap: wrap;
+        }
+        .btn-download {
+            background: #3d2b1f; color: #f5efe6; border: none;
+            padding: .7rem 1.4rem; border-radius: var(--radius); font-weight: 700;
+            cursor: pointer; font-size: .9rem;
+            display: flex; align-items: center; gap: .5rem; transition: all .2s;
+        }
+        .btn-download:hover { filter: brightness(1.2); transform: translateY(-1px); }
+        .btn-regen {
+            background: transparent; border: 1.5px solid var(--border);
+            color: var(--text-mid); padding: .7rem 1.1rem;
+            border-radius: var(--radius); font-weight: 600; cursor: pointer;
+            font-size: .9rem; display: flex; align-items: center; gap: .5rem; transition: all .2s;
+            font-family: inherit;
+        }
+        .btn-regen:hover { border-color: #8B6B3D; color: #8B6B3D; }
     </style>
 </head>
 <body class="dark">
@@ -1000,6 +1146,68 @@
     </div>
 </div>
 
+
+<!-- ══════════════ MODAL PUBLICIDAD ══════════════ -->
+<div class="modal-backdrop" id="pubModal">
+    <div class="modal pub-modal">
+        <div class="modal-head">
+            <h2>🎨 Generar Publicidad</h2>
+            <button class="close-btn" id="closePubModal">✕</button>
+        </div>
+
+        <!-- Estado: generando -->
+        <div id="pubLoading" class="pub-status">
+            <div><div class="pub-spinner"></div></div>
+            <p id="pubLoadingText">Generando con IA…</p>
+        </div>
+
+        <!-- Estado: tarjeta lista -->
+        <div id="pubReady" style="display:none">
+            <div class="pub-preview-wrap">
+                <div id="adCard">
+                    <div class="ad-border"></div>
+                    <div class="ad-img-block">
+                        <img id="adImg" src="" alt="producto">
+                        <div class="ad-img-overlay"></div>
+                    </div>
+                    <div class="ad-logo-badge">
+                        <img src="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp" alt="V&C logo">
+                    </div>
+                    <div class="ad-body">
+                        <div class="ad-tag">✦ Artesanal</div>
+                        <div class="ad-name" id="adTitle">Nombre del producto</div>
+                    </div>
+                    <div class="ad-divider">
+                        <div class="ad-divider-line"></div>
+                        <div class="ad-divider-icon">✦</div>
+                        <div class="ad-divider-line"></div>
+                    </div>
+                    <div class="ad-lower">
+                        <div class="ad-description" id="adDescription"></div>
+                        <ul class="ad-bullets" id="adBullets"><li>Cargando…</li></ul>
+                    </div>
+                    <div class="ad-footer">
+                        <div>
+                            <div class="ad-price-label">Precio</div>
+                            <div class="ad-price" id="adPrice"><span>$ </span>0</div>
+                        </div>
+                        <div class="ad-whatsapp">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                            </svg>
+                            Consultar por WhatsApp
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pub-actions">
+                <button class="btn-regen" id="regenBtn">🔄 Regenerar</button>
+                <button class="btn-download" id="downloadAdBtn">⬇️ Descargar imagen</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- ══════════════ CONFIRM DIALOG ══════════════ -->
 <div class="confirm-backdrop" id="confirmDialog">
     <div class="confirm-box">
@@ -1243,6 +1451,7 @@ function renderProducts(products) {
                 <div class="actions-cell">
                     <button class="btn-icon" onclick="openEdit('${p.id}')" title="Editar">✏️</button>
                     <button class="btn-icon danger" onclick="askDelete('${p.id}')" title="Eliminar">🗑️</button>
+                    <button class="btn-icon" onclick="openPubModal('${p.id}')" title="Generar publicidad">🎨</button>
                 </div>
             </td>
         </tr>`;
@@ -1271,6 +1480,7 @@ function renderProducts(products) {
                         <span class="toggle-track"></span>
                     </label>
                     <button class="btn" style="padding:.45rem .9rem;font-size:.85rem;background:rgba(220,38,38,.1);color:var(--err);border:1px solid rgba(220,38,38,.2)" onclick="askDelete('${p.id}')">🗑️</button>
+                    <button class="btn btn-ghost" style="padding:.45rem .9rem;font-size:.85rem" onclick="openPubModal('${p.id}')">🎨</button>
                 </div>
             </div>
         </div>`;
@@ -1547,6 +1757,104 @@ async function loadAnalytics() {
 }
 $('refreshAnalytics').addEventListener('click', loadAnalytics);
 $('analyticsRange').addEventListener('change', loadAnalytics);
+
+
+// ─── PUBLICIDAD ───────────────────────────────────────────
+let currentAdProduct = null;
+
+window.openPubModal = async function(id) {
+    if (!sb) return;
+    try {
+        const { data, error } = await sb.from('products').select('*').eq('id', id).single();
+        if (error) throw error;
+        currentAdProduct = data;
+        $('pubLoading').style.display = 'block';
+        $('pubReady').style.display = 'none';
+        $('pubModal').classList.add('open');
+        generateAd(data);
+    } catch(e) { toast('Error cargando producto', 'err'); }
+};
+
+$('closePubModal').addEventListener('click', () => $('pubModal').classList.remove('open'));
+$('pubModal').addEventListener('click', e => { if (e.target === $('pubModal')) $('pubModal').classList.remove('open'); });
+
+async function generateAd(product) {
+    $('pubLoadingText').textContent = 'Generando con IA…';
+    $('pubLoading').style.display = 'block';
+    $('pubReady').style.display = 'none';
+    try {
+        const { bullets, razon } = await getAdContentFromAI(product);
+        renderAdCard(product, bullets, razon);
+    } catch(e) {
+        renderAdCard(product, [product.description || product.name], '');
+    }
+}
+
+async function getAdContentFromAI(product) {
+    const prompt = `Sos un experto en marketing para tiendas de alimentos y productos gourmet.
+
+Producto: "${product.name}"
+
+Basándote solo en el nombre del producto, generá:
+- 1 frase corta (máx 10 palabras) con una característica o razón irresistible para consumirlo. Debe ser evocadora y apetitosa.
+- 3 bullets cortos (máx 7 palabras cada uno) destacando características típicas de este tipo de producto.
+
+Respondé ÚNICAMENTE con este JSON, sin backticks, sin explicaciones:
+{"razon": "frase aquí", "bullets": ["bullet 1", "bullet 2", "bullet 3"]}`;
+
+    const res = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
+    });
+    if (!res.ok) throw new Error('Error en proxy');
+    const data = await res.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const clean = text.replace(/```json|```/gi, '').trim();
+    const match = clean.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error('No JSON');
+    const parsed = JSON.parse(match[0]);
+    if (!Array.isArray(parsed.bullets) || !parsed.bullets.length) throw new Error('Vacío');
+    return { bullets: parsed.bullets, razon: parsed.razon || '' };
+}
+
+function renderAdCard(product, bullets, razon) {
+    $('adTitle').textContent = product.name;
+    $('adPrice').innerHTML = `<span>$ </span>${Number(product.price).toLocaleString('es-UY')}`;
+    const adImg = $('adImg');
+    adImg.src = product.image_url || '';
+    adImg.crossOrigin = 'anonymous';
+
+    const supabaseDesc = product.description || '';
+    const shortDesc = supabaseDesc.length > 80 ? supabaseDesc.substring(0, 77) + '…' : supabaseDesc;
+    const fullDesc = [shortDesc, razon].filter(Boolean).join(' — ');
+    $('adDescription').textContent = fullDesc;
+
+    $('adBullets').innerHTML = bullets.map(b => `<li>${b}</li>`).join('');
+    $('pubLoading').style.display = 'none';
+    $('pubReady').style.display = 'block';
+}
+
+$('regenBtn').addEventListener('click', () => { if (currentAdProduct) generateAd(currentAdProduct); });
+
+$('downloadAdBtn').addEventListener('click', async () => {
+    const btn = $('downloadAdBtn');
+    btn.textContent = '⏳ Generando…';
+    btn.disabled = true;
+    try {
+        const canvas = await html2canvas($('adCard'), {
+            scale: 2, useCORS: true, allowTaint: true,
+            backgroundColor: '#f5efe6', logging: false, imageTimeout: 15000
+        });
+        const link = document.createElement('a');
+        const nombre = currentAdProduct?.name?.replace(/\s+/g, '_').toLowerCase() || 'publicidad';
+        link.download = `publicidad_${nombre}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        toast('Imagen descargada ✅');
+    } catch(e) { toast('Error generando imagen', 'err'); }
+    finally { btn.textContent = '⬇️ Descargar imagen'; btn.disabled = false; }
+});
 
 // ─── PWA ──────────────────────────────────────────────────
 // Registrar SW (usa el sw.js ya existente en el proyecto)

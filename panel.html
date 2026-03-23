@@ -748,13 +748,6 @@
            MODAL PUBLICIDAD
         ═══════════════════════════════ */
         .pub-modal { max-width: 560px; }
-        .pub-modal .modal-body-pub { padding: 0; }
-        /* En desktop el modal crece para mostrar la tarjeta completa */
-        @media (min-width: 560px) {
-            .pub-modal {
-                max-height: 98vh;
-            }
-        }
 
         .pub-status {
             text-align: center; padding: 2rem;
@@ -875,25 +868,7 @@
         }
         .ad-whatsapp svg { width: 18px; height: 18px; fill: #fff; flex-shrink: 0; }
 
-        .pub-preview-wrap {
-            overflow: auto;
-            padding: 1rem 1.5rem 0;
-            display: flex;
-            justify-content: center;
-        }
-
-        /* Escalar la tarjeta en pantallas donde no entra */
-        @media (max-width: 559px) {
-            #adCard {
-                transform-origin: top center;
-                transform: scale(0.62);
-                margin-bottom: calc(-500px * 0.38); /* compensa el espacio vacío que deja el scale */
-            }
-            .pub-preview-wrap {
-                min-height: calc(500px * 0.62 + 1rem);
-                align-items: flex-start;
-            }
-        }
+        .pub-preview-wrap { overflow-x: auto; padding: 1rem 1.5rem 0; }
         .pub-actions {
             display: flex; gap: .75rem; justify-content: flex-end;
             padding: 1rem 1.5rem; border-top: 1px solid var(--border); flex-wrap: wrap;
@@ -1868,15 +1843,27 @@ $('downloadAdBtn').addEventListener('click', async () => {
     btn.disabled = true;
     try {
         const canvas = await html2canvas($('adCard'), {
-            scale: 2, useCORS: true, allowTaint: true,
+            scale: 1.5, useCORS: true, allowTaint: true,
             backgroundColor: '#f5efe6', logging: false, imageTimeout: 15000
         });
-        const link = document.createElement('a');
         const nombre = currentAdProduct?.name?.replace(/\s+/g, '_').toLowerCase() || 'publicidad';
-        link.download = `publicidad_${nombre}.png`;
-        link.href = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+
+        // Intentar WebP (más liviano), fallback a JPEG
+        const supportsWebP = canvas.toDataURL('image/webp').startsWith('data:image/webp');
+        if (supportsWebP) {
+            link.href = canvas.toDataURL('image/webp', 0.85);
+            link.download = `publicidad_${nombre}.webp`;
+        } else {
+            link.href = canvas.toDataURL('image/jpeg', 0.88);
+            link.download = `publicidad_${nombre}.jpg`;
+        }
+
+        // Mostrar tamaño aproximado
+        const bytes = Math.round((link.href.length * 3) / 4);
+        const kb = Math.round(bytes / 1024);
         link.click();
-        toast('Imagen descargada ✅');
+        toast(`Imagen descargada ✅ (~${kb} KB)`);
     } catch(e) { toast('Error generando imagen', 'err'); }
     finally { btn.textContent = '⬇️ Descargar imagen'; btn.disabled = false; }
 });

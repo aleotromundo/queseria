@@ -1795,7 +1795,9 @@ async function generateAd(product) {
         const { bullets, razon } = await getAdContentFromAI(product);
         renderAdCard(product, bullets, razon);
     } catch(e) {
-        renderAdCard(product, [product.description || product.name], '');
+        console.error('Error IA publicidad:', e);
+        toast('IA no disponible, mostrando info del producto', 'err');
+        renderAdCard(product, ['Producto artesanal', 'Alta calidad', 'Sabor único'], '');
     }
 }
 
@@ -1817,8 +1819,13 @@ Respondé ÚNICAMENTE con este JSON, sin backticks, sin explicaciones:
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt })
     });
-    if (!res.ok) throw new Error('Error en proxy');
+    if (!res.ok) {
+        const errText = await res.text();
+        console.error('Error proxy /api/gemini:', res.status, errText);
+        throw new Error(`Error en proxy: ${res.status}`);
+    }
     const data = await res.json();
+    console.log('Respuesta IA:', data);
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     const clean = text.replace(/```json|```/gi, '').trim();
     const match = clean.match(/\{[\s\S]*\}/);

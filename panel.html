@@ -881,11 +881,10 @@
             padding: 1rem 1.5rem 0;
             display: flex;
             justify-content: center;
-            /* altura reservada dinámicamente por JS */
+            align-items: flex-start;
         }
         #adCard {
             flex-shrink: 0;
-            transform-origin: top center;
         }
         .pub-actions {
             display: flex; gap: .75rem; justify-content: flex-end;
@@ -1190,6 +1189,7 @@
         <!-- Estado: tarjeta lista -->
         <div id="pubReady" style="display:none">
             <div class="pub-preview-wrap">
+                <div id="adCardScaleWrap">
                 <div id="adCard">
                     <div class="ad-border"></div>
                     <div class="ad-img-block">
@@ -1227,7 +1227,8 @@
                     <div class="ad-shipping-bar">
                         🛒 &nbsp;ENVÍOS GRATIS A DOMICILIO SUPERANDO LOS $1.400
                     </div>
-                </div>
+                </div><!-- /adCard -->
+                </div><!-- /adCardScaleWrap -->
             </div>
             <div class="pub-actions">
                 <button class="btn-regen" id="regenBtn">🔄 Regenerar</button>
@@ -1884,30 +1885,35 @@ function renderAdCard(product, bullets, razon) {
 
 function scaleAdCard() {
     const card = $('adCard');
-    const wrap = $('pubReady');
     const modal = document.querySelector('.pub-modal');
-    if (!card || !wrap || !modal) return;
+    if (!card || !modal) return;
 
-    const CARD = 500; // tamaño fijo de la tarjeta
+    const CARD = 500;
 
-    // Espacio horizontal disponible (modal - padding del wrap)
+    // Espacio horizontal: ancho del modal menos padding del wrap (1.5rem * 2 = 48px)
     const hSpace = modal.clientWidth - 48;
 
-    // Espacio vertical disponible (viewport - header modal - botones - margen)
+    // Espacio vertical: alto disponible menos header, botones y padding
     const modalHead = modal.querySelector('.modal-head');
     const pubActions = modal.querySelector('.pub-actions');
     const headH = modalHead ? modalHead.offsetHeight : 60;
     const actH = pubActions ? pubActions.offsetHeight : 60;
-    const vSpace = window.innerHeight * 0.92 - headH - actH - 32;
+    const vSpace = (window.innerHeight * 0.92) - headH - actH - 48;
 
-    // Usar el menor de los dos para que entre en ambos ejes
     const scale = Math.min(1, hSpace / CARD, vSpace / CARD);
 
+    // Aplicar transform al card
     card.style.transform = `scale(${scale})`;
-    card.style.transformOrigin = 'top center';
-    // Reservar el espacio real que ocupa la tarjeta escalada
-    const wrap2 = card.parentElement;
-    wrap2.style.height = Math.ceil(CARD * scale) + 'px';
+    card.style.transformOrigin = 'top left';
+
+    // El wrapper debe tener exactamente el tamaño visual de la tarjeta escalada
+    // para que el modal sepa cuánto espacio reservar
+    const scaledSize = Math.floor(CARD * scale);
+    const wrap = $('adCardScaleWrap');
+    wrap.style.width  = scaledSize + 'px';
+    wrap.style.height = scaledSize + 'px';
+    wrap.style.overflow = 'hidden';
+    wrap.style.flexShrink = '0';
 }
 
 window.addEventListener('resize', () => {
@@ -1924,7 +1930,8 @@ $('downloadAdBtn').addEventListener('click', async () => {
         const card = $('adCard');
         // Resetear scale para capturar a tamaño real
         card.style.transform = 'scale(1)';
-        card.parentElement.style.height = '500px';
+        $('adCardScaleWrap').style.width  = '500px';
+        $('adCardScaleWrap').style.height = '500px';
         await new Promise(r => requestAnimationFrame(r));
 
         const canvas = await html2canvas(card, {

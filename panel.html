@@ -883,6 +883,9 @@
             justify-content: center;
             align-items: flex-start;
         }
+        #adCardScaleWrap {
+            margin: 0 auto;
+        }
         #adCard {
             flex-shrink: 0;
         }
@@ -1885,35 +1888,30 @@ function renderAdCard(product, bullets, razon) {
 
 function scaleAdCard() {
     const card = $('adCard');
+    const wrap = $('adCardScaleWrap');
     const modal = document.querySelector('.pub-modal');
-    if (!card || !modal) return;
+    if (!card || !wrap || !modal) return;
 
     const CARD = 500;
 
-    // Espacio horizontal: ancho del modal menos padding del wrap (1.5rem * 2 = 48px)
-    const hSpace = modal.clientWidth - 48;
+    // Espacio horizontal disponible dentro del modal
+    const hSpace = modal.clientWidth - 48; // 24px padding cada lado
 
-    // Espacio vertical: alto disponible menos header, botones y padding
-    const modalHead = modal.querySelector('.modal-head');
-    const pubActions = modal.querySelector('.pub-actions');
-    const headH = modalHead ? modalHead.offsetHeight : 60;
-    const actH = pubActions ? pubActions.offsetHeight : 60;
-    const vSpace = (window.innerHeight * 0.92) - headH - actH - 48;
+    // Espacio vertical: altura de ventana visible menos partes fijas del modal
+    const headH = (modal.querySelector('.modal-head') || {}).offsetHeight || 65;
+    const actH  = 70; // pub-actions altura fija aprox
+    const vSpace = Math.min(window.innerHeight * 0.94, window.innerHeight - 20) - headH - actH - 24;
 
     const scale = Math.min(1, hSpace / CARD, vSpace / CARD);
+    const scaledSize = Math.floor(CARD * scale);
 
-    // Aplicar transform al card
     card.style.transform = `scale(${scale})`;
     card.style.transformOrigin = 'top left';
 
-    // El wrapper debe tener exactamente el tamaño visual de la tarjeta escalada
-    // para que el modal sepa cuánto espacio reservar
-    const scaledSize = Math.floor(CARD * scale);
-    const wrap = $('adCardScaleWrap');
-    wrap.style.width  = scaledSize + 'px';
-    wrap.style.height = scaledSize + 'px';
+    wrap.style.width    = scaledSize + 'px';
+    wrap.style.height   = scaledSize + 'px';
     wrap.style.overflow = 'hidden';
-    wrap.style.flexShrink = '0';
+    wrap.style.position = 'relative';
 }
 
 window.addEventListener('resize', () => {

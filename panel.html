@@ -830,7 +830,7 @@
         .ad-divider-icon { color: #8B6B3D; font-size: 14px; }
         .ad-lower {
             position: absolute; z-index: 5;
-            top: 268px; left: 28px; right: 155px; bottom: 70px;
+            top: 268px; left: 28px; right: 155px; bottom: 110px;
             display: flex; flex-direction: column; justify-content: flex-start; gap: 6px;
             overflow: hidden;
         }
@@ -860,7 +860,7 @@
         .ad-footer {
             display: flex; align-items: center; justify-content: space-between;
             padding: 0 28px;
-            position: absolute; bottom: 22px; left: 0; right: 0; z-index: 5;
+            position: absolute; bottom: 44px; left: 0; right: 0; z-index: 5;
         }
         .ad-price-label {
             font-family: Georgia, serif; font-size: 13px;
@@ -877,7 +877,16 @@
         }
         .ad-whatsapp svg { width: 18px; height: 18px; fill: #fff; flex-shrink: 0; }
 
-        .pub-preview-wrap { overflow-x: auto; padding: 1rem 1.5rem 0; }
+        .pub-preview-wrap {
+            padding: 1rem 1.5rem 0;
+            display: flex;
+            justify-content: center;
+            /* altura reservada dinámicamente por JS */
+        }
+        #adCard {
+            flex-shrink: 0;
+            transform-origin: top center;
+        }
         .pub-actions {
             display: flex; gap: .75rem; justify-content: flex-end;
             padding: 1rem 1.5rem; border-top: 1px solid var(--border); flex-wrap: wrap;
@@ -896,7 +905,14 @@
             font-size: .9rem; display: flex; align-items: center; gap: .5rem; transition: all .2s;
             font-family: inherit;
         }
-        .btn-regen:hover { border-color: #8B6B3D; color: #8B6B3D; }
+        .ad-shipping-bar {
+            position: absolute; bottom: 0; left: 0; right: 0; z-index: 6;
+            height: 38px;
+            background: linear-gradient(90deg, #C9A23A 0%, #E8C84A 50%, #C9A23A 100%);
+            display: flex; align-items: center; justify-content: center;
+            font-family: Georgia, serif; font-size: 15px; font-weight: bold;
+            color: #1a1000; letter-spacing: 1.5px; text-transform: uppercase;
+        }
     </style>
 </head>
 <body class="dark">
@@ -1206,6 +1222,9 @@
                             </svg>
                             Consultar por WhatsApp
                         </div>
+                    </div>
+                    <div class="ad-shipping-bar">
+                        🛒 &nbsp;ENVÍOS GRATIS A DOMICILIO SUPERANDO LOS $1.400
                     </div>
                 </div>
             </div>
@@ -1857,7 +1876,42 @@ function renderAdCard(product, bullets, razon) {
     $('adBullets').innerHTML = bullets.map(b => `<li>${b}</li>`).join('');
     $('pubLoading').style.display = 'none';
     $('pubReady').style.display = 'block';
+
+    // Escalar la tarjeta para que entre completa en el modal
+    requestAnimationFrame(() => requestAnimationFrame(scaleAdCard));
 }
+
+function scaleAdCard() {
+    const card = $('adCard');
+    const wrap = $('pubReady');
+    const modal = document.querySelector('.pub-modal');
+    if (!card || !wrap || !modal) return;
+
+    const CARD = 500; // tamaño fijo de la tarjeta
+
+    // Espacio horizontal disponible (modal - padding del wrap)
+    const hSpace = modal.clientWidth - 48;
+
+    // Espacio vertical disponible (viewport - header modal - botones - margen)
+    const modalHead = modal.querySelector('.modal-head');
+    const pubActions = modal.querySelector('.pub-actions');
+    const headH = modalHead ? modalHead.offsetHeight : 60;
+    const actH = pubActions ? pubActions.offsetHeight : 60;
+    const vSpace = window.innerHeight * 0.92 - headH - actH - 32;
+
+    // Usar el menor de los dos para que entre en ambos ejes
+    const scale = Math.min(1, hSpace / CARD, vSpace / CARD);
+
+    card.style.transform = `scale(${scale})`;
+    card.style.transformOrigin = 'top center';
+    // Reservar el espacio real que ocupa la tarjeta escalada
+    const wrap2 = card.parentElement;
+    wrap2.style.height = Math.ceil(CARD * scale) + 'px';
+}
+
+window.addEventListener('resize', () => {
+    if ($('pubModal').classList.contains('open')) scaleAdCard();
+});
 
 $('regenBtn').addEventListener('click', () => { if (currentAdProduct) generateAd(currentAdProduct); });
 
@@ -1866,10 +1920,17 @@ $('downloadAdBtn').addEventListener('click', async () => {
     btn.textContent = '⏳ Generando…';
     btn.disabled = true;
     try {
-        const canvas = await html2canvas($('adCard'), {
+        const card = $('adCard');
+        // Resetear scale para capturar a tamaño real
+        card.style.transform = 'scale(1)';
+        card.parentElement.style.height = '500px';
+        await new Promise(r => requestAnimationFrame(r));
+
+        const canvas = await html2canvas(card, {
             scale: 1.5, useCORS: true, allowTaint: true,
             backgroundColor: '#f5efe6', logging: false, imageTimeout: 15000
         });
+
         const link = document.createElement('a');
         const nombre = currentAdProduct?.name?.replace(/\s+/g, '_').toLowerCase() || 'publicidad';
         const supportsWebP = canvas.toDataURL('image/webp').startsWith('data:image/webp');
@@ -1884,7 +1945,11 @@ $('downloadAdBtn').addEventListener('click', async () => {
         link.click();
         toast(`Imagen descargada ✅ (~${kb} KB)`);
     } catch(e) { toast('Error generando imagen', 'err'); }
-    finally { btn.textContent = '⬇️ Descargar imagen'; btn.disabled = false; }
+    finally {
+        scaleAdCard();
+        btn.textContent = '⬇️ Descargar imagen';
+        btn.disabled = false;
+    }
 });
 
 // ─── PWA ──────────────────────────────────────────────────

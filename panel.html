@@ -832,17 +832,26 @@
             position: absolute; z-index: 5;
             top: 268px; left: 28px; right: 155px; bottom: 70px;
             display: flex; flex-direction: column; justify-content: flex-start; gap: 6px;
+            overflow: hidden;
         }
         .ad-description {
-            font-family: Georgia, serif; font-size: 18px;
+            font-family: Georgia, serif; font-size: 15px;
             color: #7a5c3a; font-style: italic;
-            text-align: left; margin-bottom: 4px; line-height: 1.4;
+            text-align: left; margin-bottom: 4px; line-height: 1.35;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
-        .ad-bullets { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
+        .ad-bullets { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 3px; }
         .ad-bullets li {
-            font-family: Georgia, serif; font-size: 19px;
+            font-family: Georgia, serif; font-size: 14px;
             color: #5c3d2a; padding-left: 16px;
-            position: relative; line-height: 1.4; text-align: left;
+            position: relative; line-height: 1.3; text-align: left;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         .ad-bullets li::before {
             content: '◆'; position: absolute; left: 0;
@@ -868,18 +877,7 @@
         }
         .ad-whatsapp svg { width: 18px; height: 18px; fill: #fff; flex-shrink: 0; }
 
-        .pub-preview-wrap {
-            padding: 1rem 1.5rem 0;
-            display: flex;
-            justify-content: center;
-        }
-        @media (max-width: 548px) {
-            .pub-preview-wrap { padding: 0.5rem; overflow: hidden; }
-            #adCard {
-                zoom: calc((100vw - 32px) / 500);
-                transform-origin: top left;
-            }
-        }
+        .pub-preview-wrap { overflow-x: auto; padding: 1rem 1.5rem 0; }
         .pub-actions {
             display: flex; gap: .75rem; justify-content: flex-end;
             padding: 1rem 1.5rem; border-top: 1px solid var(--border); flex-wrap: wrap;
@@ -1807,9 +1805,10 @@ async function getAdContentFromAI(product) {
 Producto: "${product.name}"
 
 Basándote solo en el nombre del producto, generá:
-- 1 frase corta (máx 10 palabras) con una característica o razón irresistible para consumirlo. Debe ser evocadora y apetitosa.
-- 3 bullets cortos (máx 7 palabras cada uno) destacando características típicas de este tipo de producto.
+- 1 frase corta (MÁXIMO 6 palabras) con una característica irresistible para consumirlo. Evocadora y apetitosa.
+- 3 bullets (MÁXIMO 4 palabras cada uno) destacando características del producto.
 
+IMPORTANTE: respetar estrictamente los límites de palabras.
 Respondé ÚNICAMENTE con este JSON, sin backticks, sin explicaciones:
 {"razon": "frase aquí", "bullets": ["bullet 1", "bullet 2", "bullet 3"]}`;
 
@@ -1826,7 +1825,13 @@ Respondé ÚNICAMENTE con este JSON, sin backticks, sin explicaciones:
     if (!match) throw new Error('No JSON');
     const parsed = JSON.parse(match[0]);
     if (!Array.isArray(parsed.bullets) || !parsed.bullets.length) throw new Error('Vacío');
-    return { bullets: parsed.bullets, razon: parsed.razon || '' };
+
+    // Truncar como seguro por si la IA se pasa
+    const truncWords = (str, max) => str.split(' ').slice(0, max).join(' ');
+    return {
+        bullets: parsed.bullets.slice(0, 3).map(b => truncWords(b, 5)),
+        razon: truncWords(parsed.razon || '', 8)
+    };
 }
 
 function renderAdCard(product, bullets, razon) {
@@ -1836,8 +1841,9 @@ function renderAdCard(product, bullets, razon) {
     adImg.src = product.image_url || '';
     adImg.crossOrigin = 'anonymous';
 
+    // Descripción de Supabase primero, luego la frase de la IA
     const supabaseDesc = product.description || '';
-    const shortDesc = supabaseDesc.length > 80 ? supabaseDesc.substring(0, 77) + '…' : supabaseDesc;
+    const shortDesc = supabaseDesc.length > 60 ? supabaseDesc.substring(0, 57) + '…' : supabaseDesc;
     const fullDesc = [shortDesc, razon].filter(Boolean).join(' — ');
     $('adDescription').textContent = fullDesc;
 
@@ -1853,18 +1859,10 @@ $('downloadAdBtn').addEventListener('click', async () => {
     btn.textContent = '⏳ Generando…';
     btn.disabled = true;
     try {
-        const card = $('adCard');
-        const savedZoom = card.style.zoom;
-        card.style.zoom = '1';
-        await new Promise(r => requestAnimationFrame(r));
-
-        const canvas = await html2canvas(card, {
+        const canvas = await html2canvas($('adCard'), {
             scale: 1.5, useCORS: true, allowTaint: true,
             backgroundColor: '#f5efe6', logging: false, imageTimeout: 15000
         });
-
-        card.style.zoom = savedZoom;
-
         const link = document.createElement('a');
         const nombre = currentAdProduct?.name?.replace(/\s+/g, '_').toLowerCase() || 'publicidad';
         const supportsWebP = canvas.toDataURL('image/webp').startsWith('data:image/webp');

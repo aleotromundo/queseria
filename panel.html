@@ -872,15 +872,13 @@
             padding: 1rem 1.5rem 0;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            overflow: visible;
         }
-        /* Contenedor que reserva el espacio real del adCard escalado */
-        #adCardWrapper {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
+        @media (max-width: 548px) {
+            .pub-preview-wrap { padding: 0.5rem; overflow: hidden; }
+            #adCard {
+                zoom: calc((100vw - 32px) / 500);
+                transform-origin: top left;
+            }
         }
         .pub-actions {
             display: flex; gap: .75rem; justify-content: flex-end;
@@ -1177,7 +1175,6 @@
         <!-- Estado: tarjeta lista -->
         <div id="pubReady" style="display:none">
             <div class="pub-preview-wrap">
-                <div id="adCardWrapper">
                 <div id="adCard">
                     <div class="ad-border"></div>
                     <div class="ad-img-block">
@@ -1213,7 +1210,6 @@
                         </div>
                     </div>
                 </div>
-                </div><!-- /adCardWrapper -->
             </div>
             <div class="pub-actions">
                 <button class="btn-regen" id="regenBtn">🔄 Regenerar</button>
@@ -1793,20 +1789,6 @@ window.openPubModal = async function(id) {
 $('closePubModal').addEventListener('click', () => $('pubModal').classList.remove('open'));
 $('pubModal').addEventListener('click', e => { if (e.target === $('pubModal')) $('pubModal').classList.remove('open'); });
 
-function scaleAdCard() {
-    const card = $('adCard');
-    const wrapper = $('adCardWrapper');
-    if (!card || !wrapper) return;
-    const available = wrapper.clientWidth || (window.innerWidth - 48);
-    const cardSize = 500;
-    const scale = Math.min(1, available / cardSize);
-    card.style.transform = `scale(${scale})`;
-    card.style.transformOrigin = 'top left';
-    // Reservar el espacio real que ocupa la tarjeta escalada
-    wrapper.style.height = (cardSize * scale) + 'px';
-    wrapper.style.width = (cardSize * scale) + 'px';
-}
-
 async function generateAd(product) {
     $('pubLoadingText').textContent = 'Generando con IA…';
     $('pubLoading').style.display = 'block';
@@ -1862,30 +1844,29 @@ function renderAdCard(product, bullets, razon) {
     $('adBullets').innerHTML = bullets.map(b => `<li>${b}</li>`).join('');
     $('pubLoading').style.display = 'none';
     $('pubReady').style.display = 'block';
-    // Escalar la tarjeta para que entre en el modal
-    requestAnimationFrame(scaleAdCard);
 }
 
 $('regenBtn').addEventListener('click', () => { if (currentAdProduct) generateAd(currentAdProduct); });
-window.addEventListener('resize', scaleAdCard);
 
 $('downloadAdBtn').addEventListener('click', async () => {
     const btn = $('downloadAdBtn');
     btn.textContent = '⏳ Generando…';
     btn.disabled = true;
     try {
-        // Resetear scale para capturar a tamaño real
         const card = $('adCard');
-        card.style.transform = 'scale(1)';
+        const savedZoom = card.style.zoom;
+        card.style.zoom = '1';
         await new Promise(r => requestAnimationFrame(r));
 
         const canvas = await html2canvas(card, {
             scale: 1.5, useCORS: true, allowTaint: true,
             backgroundColor: '#f5efe6', logging: false, imageTimeout: 15000
         });
+
+        card.style.zoom = savedZoom;
+
         const link = document.createElement('a');
         const nombre = currentAdProduct?.name?.replace(/\s+/g, '_').toLowerCase() || 'publicidad';
-
         const supportsWebP = canvas.toDataURL('image/webp').startsWith('data:image/webp');
         if (supportsWebP) {
             link.href = canvas.toDataURL('image/webp', 0.85);
@@ -1894,17 +1875,11 @@ $('downloadAdBtn').addEventListener('click', async () => {
             link.href = canvas.toDataURL('image/jpeg', 0.88);
             link.download = `publicidad_${nombre}.jpg`;
         }
-
-        const bytes = Math.round((link.href.length * 3) / 4);
-        const kb = Math.round(bytes / 1024);
+        const kb = Math.round((link.href.length * 3) / 4 / 1024);
         link.click();
         toast(`Imagen descargada ✅ (~${kb} KB)`);
     } catch(e) { toast('Error generando imagen', 'err'); }
-    finally {
-        scaleAdCard();
-        btn.textContent = '⬇️ Descargar imagen';
-        btn.disabled = false;
-    }
+    finally { btn.textContent = '⬇️ Descargar imagen'; btn.disabled = false; }
 });
 
 // ─── PWA ──────────────────────────────────────────────────

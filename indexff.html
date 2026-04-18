@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quesería y Almacén Natural V&C</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧀</text></svg>">
     <!-- Meta Tags para SEO y Redes Sociales -->
@@ -92,69 +92,30 @@
             opacity: 0.4;
         }
 
-        /* ══════════════════════════════════════
-           HEADER RÚSTICO – MADERA & ARTESANAL
-           ══════════════════════════════════════ */
+        /* Header Mejorado */
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
+            padding: 1.2rem 5%;
+            background: rgba(253, 251, 247, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             z-index: 1000;
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid rgba(139, 115, 85, 0.1);
             transition: all 0.3s ease;
-            /* Textura madera con gradientes CSS */
-            background:
-                repeating-linear-gradient(
-                    91deg,
-                    transparent 0px, transparent 4px,
-                    rgba(0,0,0,0.06) 4px, rgba(0,0,0,0.06) 5px
-                ),
-                repeating-linear-gradient(
-                    180deg,
-                    transparent 0px, transparent 32px,
-                    rgba(0,0,0,0.04) 32px, rgba(0,0,0,0.04) 34px
-                ),
-                linear-gradient(180deg, #5c3317 0%, #3e2008 40%, #4a2a10 70%, #2d1505 100%);
-            border-bottom: 3px solid #8b5e2a;
-            box-shadow:
-                0 4px 0 #1a0900,
-                0 6px 24px rgba(0,0,0,0.65);
-            padding: 0;
         }
 
-        /* Franja dorada superior */
-        header::before {
-            content: '';
-            display: block;
-            height: 4px;
-            background: linear-gradient(90deg, #3a1e08, #8b5e2a 15%, #c8922a 40%, #e8c060 50%, #c8922a 60%, #8b5e2a 85%, #3a1e08);
-        }
-
-        /* Grain overlay */
-        header::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
-            background-size: 150px;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* Dark mode: madera más oscura */
         body.dark-mode header {
-            background:
-                repeating-linear-gradient(
-                    91deg,
-                    transparent 0px, transparent 4px,
-                    rgba(0,0,0,0.1) 4px, rgba(0,0,0,0.1) 5px
-                ),
-                linear-gradient(180deg, #2d1505 0%, #1a0900 100%);
-            border-bottom-color: #6b4520;
+            background: rgba(26, 22, 18, 0.95);
+            border-bottom-color: rgba(212, 165, 116, 0.2);
         }
 
         header.scrolled {
-            box-shadow: 0 4px 0 #1a0900, 0 8px 30px rgba(0,0,0,0.75);
+            padding: 0.8rem 5%;
+            box-shadow: var(--shadow-md);
         }
 
         .header-container {
@@ -163,15 +124,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 5%;
-            position: relative;
-            z-index: 1;
         }
 
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 1rem;
             cursor: pointer;
             transition: transform 0.3s ease;
         }
@@ -180,18 +138,16 @@
             transform: translateY(-2px);
         }
 
-        /* Logo cuadrado con bordes rústicos */
         .logo-icon-image {
-            width: 70px;
-            height: 70px;
-            border-radius: 8px;
-            object-fit: cover;
-            border: 2px solid #c8922a;
-            box-shadow:
-                0 0 0 1px #7a4a15,
-                0 3px 14px rgba(0,0,0,0.6),
-                inset 0 1px 0 rgba(255,200,100,0.1);
-            background: #2d1505;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+            object-fit: contain;
+            background: white;
         }
 
         .logo-text {
@@ -199,47 +155,19 @@
             flex-direction: column;
         }
 
-        /* Pequeña línea decorativa sobre el título */
-        .logo-text::before {
-            content: '✦ Productos Artesanales ✦';
-            font-family: 'IM Fell English SC', serif;
-            font-size: 9px;
-            letter-spacing: 2.5px;
-            color: #c8922a;
-            opacity: 0.8;
-            margin-bottom: 2px;
-        }
-
         .logo-title {
-            font-family: 'Cinzel Decorative', serif;
-            font-size: clamp(13px, 2.2vw, 20px);
-            font-weight: 900;
-            color: #f2d98a;
-            line-height: 1.15;
-            text-shadow:
-                1px 1px 0 #5c3010,
-                2px 2px 0 #2d1505,
-                0 0 25px rgba(200,146,42,0.35);
-            letter-spacing: 0.5px;
-        }
-
-        /* Separador ornamental */
-        .logo-title::after {
-            content: '';
-            display: block;
-            height: 1px;
-            background: linear-gradient(90deg, #c8922a, transparent);
-            margin-top: 3px;
-            max-width: 180px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            line-height: 1.2;
         }
 
         .logo-subtitle {
-            font-family: 'IM Fell English SC', serif;
-            font-size: 9px;
+            font-size: 0.75rem;
+            color: #9a8989;
             letter-spacing: 2px;
-            color: #a07840;
             text-transform: uppercase;
-            margin-top: 3px;
         }
 
 
@@ -257,17 +185,13 @@
             }
 
             .desktop-nav a {
-                font-family: 'Cinzel', serif;
-                color: #c8922a;
+                color: var(--text-dark);
                 text-decoration: none;
-                font-weight: 600;
-                font-size: 0.85rem;
-                letter-spacing: 1.5px;
-                text-transform: uppercase;
+                font-weight: 500;
+                font-size: 1rem;
                 position: relative;
                 transition: color 0.3s ease;
                 padding: 0.5rem 0;
-                text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
             }
 
             .desktop-nav a::after {
@@ -277,12 +201,12 @@
                 left: 0;
                 width: 0;
                 height: 2px;
-                background: linear-gradient(90deg, #c8922a, #e8c060);
+                background: var(--accent-gold);
                 transition: width 0.3s ease;
             }
 
             .desktop-nav a:hover {
-                color: #f2d98a;
+                color: var(--accent-primary);
             }
 
             .desktop-nav a:hover::after {
@@ -297,99 +221,76 @@
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 1.5rem;
         }
 
         .icon-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid #7a4a15;
-            background: linear-gradient(135deg, #4a2a10, #2d1505);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,200,100,0.1);
+            background: none;
+            border: none;
             cursor: pointer;
-            font-size: 1.2rem;
-            color: #c8922a;
-            transition: all 0.25s ease;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
             position: relative;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 0.5rem;
         }
 
         .icon-btn:hover {
             transform: scale(1.1);
-            border-color: #c8922a;
-            box-shadow: 0 2px 14px rgba(200,146,42,0.35);
+            color: var(--accent-primary);
         }
 
         .cart-badge {
             position: absolute;
-            top: -4px;
-            right: -4px;
-            background: #c8922a;
-            color: #1a0900;
+            top: 0;
+            right: 0;
+            background: var(--accent-gold);
+            color: white;
             border-radius: 50%;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             font-weight: bold;
-            border: 1px solid #1a0900;
-            font-family: 'Cinzel', serif;
+            box-shadow: var(--shadow-sm);
         }
 
         .theme-toggle {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            border: 2px solid #7a4a15;
-            background: linear-gradient(135deg, #4a2a10, #2d1505);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,200,100,0.1);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border: none;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
             transition: all 0.3s ease;
-            color: #c8922a;
+            box-shadow: var(--shadow-sm);
         }
 
         .theme-toggle:hover {
             transform: rotate(180deg) scale(1.1);
-            border-color: #c8922a;
-            box-shadow: 0 2px 14px rgba(200,146,42,0.35);
+            box-shadow: var(--shadow-md);
         }
 
-        /* Hamb menu rústico */
         .menu-toggle {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            border: 2px solid #7a4a15;
-            background: linear-gradient(135deg, #4a2a10, #2d1505);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            background: none;
+            border: none;
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
             gap: 5px;
-            padding: 0;
-            transition: all 0.25s ease;
-        }
-
-        .menu-toggle:hover {
-            border-color: #c8922a;
+            padding: 0.5rem;
         }
 
         .menu-toggle span {
-            width: 18px;
-            height: 2px;
-            background: #e8c060;
+            width: 28px;
+            height: 3px;
+            background: var(--text-dark);
             border-radius: 2px;
             transition: all 0.3s ease;
         }
@@ -1383,16 +1284,13 @@
 
         @media (max-width: 480px) {
             .logo-title {
-                font-size: 12px;
+                font-size: 1.2rem;
             }
 
-            .logo-icon-image {
-                width: 52px;
-                height: 52px;
-            }
-
-            .logo-text::before {
-                display: none;
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.4rem;
             }
 
             .btn-hero {
@@ -1936,7 +1834,6 @@
     <header id="header">
         <div class="header-container">
             <div class="logo-container" onclick="isNavigating = true; window.scrollTo({top: 0, behavior: 'smooth'}); setTimeout(() => isNavigating = false, 1000);">
-                <!-- LOGO: reemplazar URL por la de Supabase una vez subida la nueva imagen -->
                 <img src="https://mytpwjkvtezixhggyxht.supabase.co/storage/v1/object/public/otras_imagenes/logo_resultado.webp" alt="Logo Quesería y Almacén Natural V&C" class="logo-icon-image">
                 <div class="logo-text">
                     <div class="logo-title">Quesería y Almacén Natural V&C</div>
